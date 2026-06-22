@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>WMS图层加载</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 4px;
+      border-radius: 4px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar"></div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+      })
+    })
+
+    var WMSLayer = new Cesium.WebMapServiceImageryProvider({
+      url: 'http://172.20.16.213:8889/geoserver/GlWebTest/wms',
+      layers: 'GlWebTest:四川行政区划',
+      parameters: {
+        service: 'WMS',
+        format: 'image/png',
+        transparent: true,
+      },
+      rectangle: Cesium.Rectangle.fromDegrees(97.34742382600007, 26.049271889000067, 108.54240955500006,
+        34.31470399700004)
+    })
+    viewer.imageryLayers.addImageryProvider(WMSLayer)
+
+    //初始地球色调
+    var layer = viewer.imageryLayers.get(0)
+    layer.saturation = 0
+    layer.hue = 0.56
+    layer.contrast = 1.74
+    layer.brightness = 1.1
+
+    viewer.camera.setView({
+      destination: {
+        x: -1695124.7670598922,
+        y: 8380581.440100933,
+        z: 2496803.1463128375
+      },
+      orientation: {
+        direction: {
+          x: 0.12744846786918324,
+          y: -0.9620171493693785,
+          z: 0.24141228708790413
+        },
+        up: {
+          x: -0.1580487465736309,
+          y: 0.2205891875651592,
+          z: 0.9624764953160401
+        }
+      },
+      duration: 1
+    })
+
+   
+
+  </script>
+</body>
+
+</html>

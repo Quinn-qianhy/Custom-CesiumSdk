@@ -1,0 +1,69 @@
+.el-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  .tagButton {
+    position: fixed;
+    bottom: 20px;
+    left: 1%;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(64, 158, 255, 0.5);
+    
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(64, 158, 255, 0.8);
+    }
+    
+    &.clicked {
+      color: #fff;
+      transform: scale(0.95);
+      box-shadow: 0 0 20px rgba(64, 158, 255, 1);
+      background-color: #66b1ff;
+    }
+  }
+  .el-header {
+    height: 30px;
+    background-color: rgba($color: #999, $alpha: 0.1);
+    color: #fff;
+    z-index: 2;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 2rem;
+  }
+
+  .el-main {
+    min-height: 300px;
+    width: 250px;
+    padding: 0;
+    // background-color: #fff;
+    flex: 0;
+    z-index: 2;
+    position: fixed;
+    top: 40px;
+    right: 15px;
+  }
+  
+  /* 滑动淡入淡出动画 */
+  .slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(0.5, 0, 0.5, 1);
+  }
+
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  .slide-fade-enter-to,
+  .slide-fade-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

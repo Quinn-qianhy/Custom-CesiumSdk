@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>颜色调整</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 4px;
+      border-radius: 4px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar">
+    <table>
+      <tbody>
+        <tr>
+          <td>亮度</td>
+          <td>
+            <input type="range" min="0" max="3" step="0.02" data-bind="value: brightness, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: brightness">
+          </td>
+        </tr>
+        <tr>
+          <td>对比度</td>
+          <td>
+            <input type="range" min="0" max="3" step="0.02" data-bind="value: contrast, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: contrast">
+          </td>
+        </tr>
+        <tr>
+          <td>色调</td>
+          <td>
+            <input type="range" min="0" max="3" step="0.02" data-bind="value: hue, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: hue">
+          </td>
+        </tr>
+        <tr>
+          <td>饱和度</td>
+          <td>
+            <input type="range" min="0" max="3" step="0.02" data-bind="value: saturation, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: saturation">
+          </td>
+        </tr>
+        <tr>
+          <td>伽马</td>
+          <td>
+            <input type="range" min="0" max="3" step="0.02" data-bind="value: gamma, valueUpdate: 'input'">
+            <input type="text" size="5" data-bind="value: gamma">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+      })
+    })
+
+    //初始地球色调
+    var layer = viewer.imageryLayers.get(0)
+    layer.saturation = 0
+    layer.hue = 0.56
+    layer.contrast = 1.74
+    layer.brightness = 1.1
+
+
+    // The viewModel tracks the state of our mini application.
+    var viewModel = {
+      brightness: layer.brightness,
+      contrast: layer.contrast,
+      hue: layer.hue,
+      saturation: layer.saturation,
+      gamma: layer.gamma,
+    };
+    // Convert the viewModel members into knockout observables.
+    Cesium.knockout.track(viewModel);
+
+    // Bind the viewModel to the DOM elements of the UI that call for it.
+    var toolbar = document.getElementById("toolbar");
+    Cesium.knockout.applyBindings(viewModel, toolbar);
+
+    // Make the active imagery layer a subscriber of the viewModel.
+    function subscribeLayerParameter(name) {
+      Cesium.knockout
+        .getObservable(viewModel, name)
+        .subscribe(function (newValue) {
+          if (viewer.imageryLayers.length > 0) {
+            layer[name] = newValue;
+          }
+        });
+    }
+    subscribeLayerParameter("brightness");
+    subscribeLayerParameter("contrast");
+    subscribeLayerParameter("hue");
+    subscribeLayerParameter("saturation");
+    subscribeLayerParameter("gamma");
+
+    // Make the viewModel react to base layer changes.
+    function updateViewModel() {
+      if (viewer.imageryLayers.length > 0) {
+        viewModel.brightness = layer.brightness;
+        viewModel.contrast = layer.contrast;
+        viewModel.hue = layer.hue;
+        viewModel.saturation = layer.saturation;
+        viewModel.gamma = layer.gamma;
+      }
+    }
+    viewer.imageryLayers.layerAdded.addEventListener(updateViewModel);
+    viewer.imageryLayers.layerRemoved.addEventListener(updateViewModel);
+    viewer.imageryLayers.layerMoved.addEventListener(updateViewModel);
+    updateViewModel();
+
+  </script>
+</body>
+
+</html>

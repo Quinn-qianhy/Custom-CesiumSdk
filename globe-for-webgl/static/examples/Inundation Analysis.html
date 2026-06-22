@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>淹没分析</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+  </div>
+  <div id="toolbar"></div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
+        url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+      }),
+    });
+    viewer.scene.globe.depthTestAgainstTerrain = true; //开启深度检测
+
+    var entity = {
+      polygon: {
+        hierarchy: Cesium.Cartesian3.fromDegreesArray(
+          [95.44490427, 30.1411277,
+            95.4040775, 30.14276793,
+            95.3779117, 30.15063232,
+            95.32816139, 30.13362061,
+            95.2981047, 30.1142160,
+            95.32270779, 30.08395149,
+            95.3549980, 30.06681677,
+            95.3833438, 30.0763545630,
+            95.4109649, 30.0841091,
+            95.445469394, 30.1270178,
+            95.44490427, 30.1411277
+          ]
+        ),
+        extrudedHeight: new Cesium.CallbackProperty(changeHeight,false),
+       
+        material: Cesium.Color.fromCssColorString('#007be6').withAlpha(0.5)
+      },
+    }
+    viewer.camera.flyTo({
+      destination: {
+        x: -531081.5312888594,
+        y: 5501026.62619179,
+        z: 3192390.321154517
+      },
+      orientation: {
+        heading: 4.10022267077445,
+        pitch: -0.5799737413164978,
+        roll: 6.2803361016041555
+      }
+    })
+    
+    var startHeight = 3100
+    var endHeight = 4000
+    var speed = 1 
+    function changeHeight(){  
+      const addHeight = speed / 2
+      if(startHeight >= endHeight) {
+        endHeight = startHeight
+        return endHeight
+      }
+      else if(startHeight < endHeight) {
+        startHeight = startHeight + addHeight
+        return startHeight
+      }  
+    }
+
+    function addEntity() {
+      viewer.entities.add(entity)
+    }
+    function removeEntity() {
+      viewer.entities.removeAll()
+    }
+    Sandcastle.addToolbarButton("开始演示", function () {
+      viewer.entities.removeAll()
+      addEntity()
+    })
+    Sandcastle.addToolbarButton("清除演示", function () {
+      removeEntity()
+    })
+  </script>
+</body>
+
+</html>

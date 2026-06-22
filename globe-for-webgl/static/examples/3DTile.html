@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>水面倒影</title>
+
+    <script src="/static/examples/Sandcastle-header.js"></script>
+    <script src="/static/Build/Cesium/Cesium.js"></script>
+    <script src="/static/defaultAccessToken.js"></script>
+    <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/static/examples/bucket.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      #toolbar {
+        left: 5px;
+        top: 5px;
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+      }
+
+      #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+
+    <div id="toolbar">
+      <div>frequency 频率</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="10"
+        max="100000"
+        step="10"
+        data-bind="value: frequency, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: frequency" step="10" />
+      <div>amplitude 振幅</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="5"
+        max="200"
+        step="10"
+        data-bind="value: amplitude, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: amplitude" step="10" />
+      <div>animationSpeed 水流速度</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="-10"
+        max="10"
+        step="0.00001"
+        data-bind="value: animationSpeed, valueUpdate: 'input'"
+      />
+      <input
+        type="number"
+        size="8"
+        data-bind="value: animationSpeed"
+        step="00001"
+      />
+      <div>R</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="0"
+        max="1"
+        step="0.01"
+        data-bind="value: x, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: x" step="0.1" />
+      <div>G</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="0"
+        max="1"
+        step="0.01"
+        data-bind="value: y, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: y" step="0.1" />
+      <div>B</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="0"
+        max="1"
+        step="0.01"
+        data-bind="value: z, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: z" step="0.01" />
+      <div>alpha 透明度</div>
+      <input
+        type="range"
+        style="width:300px"
+        min="0"
+        max="1"
+        step="0.1"
+        data-bind="value: alpha, valueUpdate: 'input'"
+      />
+      <input type="number" size="5" data-bind="value: alpha" step="0.1" />
+    </div>
+
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+          url:
+            "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+          show: true
+        }),
+        orderIndependentTranslucency: false,
+        contextOptions: {
+          requestWebgl2: true
+        }
+      });
+
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      var scene = viewer.scene;
+
+      viewer.camera.flyTo({
+        destination: {
+          x: -1473522.6725274334,
+          y: 5183541.929521867,
+          z: 3400550.4361372553
+        },
+        orientation: {
+          direction: {
+            x: 0.3252321453962703,
+            y: 0.30104986991881344,
+            z: -0.8964335041835534
+          },
+          up: {
+            x: -0.13632171709716187,
+            y: 0.952994932109957,
+            z: 0.27058649046177424
+          }
+        },
+        duration: 1
+      });
+      var tileset = new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(75343)
+      });
+      tileset.readyPromise
+        .then(function(tileset) {
+          viewer.scene.primitives.add(tileset);
+          var cartographic = Cesium.Cartographic.fromCartesian(
+            tileset.boundingSphere.center
+          );
+          var surface = Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            0.0
+          );
+          var offset = Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            -450
+          );
+          var translation = Cesium.Cartesian3.subtract(
+            offset,
+            surface,
+            new Cesium.Cartesian3()
+          );
+          tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+          viewer.zoomTo(
+            tileset,
+            new Cesium.HeadingPitchRange(
+              0.0,
+              -0.5,
+              tileset.boundingSphere.radius * 2.0
+            )
+          );
+        })
+      let water;
+      Cesium.GeoJsonDataSource.load(
+        "http://172.20.16.213:8888/geojson/huangpujiang.json"
+      ).then(source => {
+        let entities = source.entities.values;
+        for (let i = 0; i < entities.length; i++) {
+          const entity = entities[i];
+          let polygonHierarchy = entity.polygon.hierarchy._value;
+          console.log(polygonHierarchy);
+          var pos = [
+            {
+              longitudeString: 105.86843572709789,
+              latitudeString: 32.425938825213585,
+              heightString: -0.004229957258702529
+            },
+            {
+              longitudeString: 105.86839527516997,
+              latitudeString: 32.42594749910956,
+              heightString: -0.004215846804366292
+            },
+            {
+              longitudeString: 105.86835270247968,
+              latitudeString: 32.4259531224677,
+              heightString: -0.004201279218965211
+            },
+            {
+              longitudeString: 105.86829581483863,
+              latitudeString: 32.425951105116376,
+              heightString: -0.004149192524483531
+            },
+            {
+              longitudeString: 105.86825740153894,
+              latitudeString: 32.42594612618222,
+              heightString: -0.004201784090623497
+            },
+            {
+              longitudeString: 105.86821190029781,
+              latitudeString: 32.42592996205688,
+              heightString: -0.0041849047521323535
+            },
+            {
+              longitudeString: 105.86818032415101,
+              latitudeString: 32.425911614991676,
+              heightString: -0.004286499695174833
+            },
+            {
+              longitudeString: 105.86816669977671,
+              latitudeString: 32.42589718416787,
+              heightString: -0.004205367072679473
+            },
+            {
+              longitudeString: 105.86815463407468,
+              latitudeString: 32.4258779757127,
+              heightString: -0.0041606256670041605
+            },
+            {
+              longitudeString: 105.86814421273804,
+              latitudeString: 32.425853054243085,
+              heightString: -0.004134969347262216
+            },
+            {
+              longitudeString: 105.86813236915131,
+              latitudeString: 32.425832018831,
+              heightString: -0.0041561586244274855
+            },
+            {
+              longitudeString: 105.86811129291114,
+              latitudeString: 32.42581345509944,
+              heightString: -0.004116383304165897
+            },
+            {
+              longitudeString: 105.86807528546451,
+              latitudeString: 32.425798007865644,
+              heightString: -0.004147153941111959
+            },
+            {
+              longitudeString: 105.86803751603223,
+              latitudeString: 32.425790215999264,
+              heightString: -0.004152264512263121
+            },
+            {
+              longitudeString: 105.8679969848173,
+              latitudeString: 32.425788077439336,
+              heightString: -0.0041278644617714876
+            },
+            {
+              longitudeString: 105.86794934779489,
+              latitudeString: 32.425792330051195,
+              heightString: -0.004163317502554653
+            },
+            {
+              longitudeString: 105.86792437810966,
+              latitudeString: 32.4257929467037,
+              heightString: -0.004120913907501906
+            },
+            {
+              longitudeString: 105.8679066427677,
+              latitudeString: 32.42578910989919,
+              heightString: -0.004179178343955359
+            },
+            {
+              longitudeString: 105.86786384431846,
+              latitudeString: 32.42578685166335,
+              heightString: -0.0041415468369648215
+            },
+            {
+              longitudeString: 105.8678305775281,
+              latitudeString: 32.42579089973847,
+              heightString: -0.004194912744133368
+            },
+            {
+              longitudeString: 105.86777466010692,
+              latitudeString: 32.42578407987946,
+              heightString: -0.00412727085353191
+            },
+            {
+              longitudeString: 105.86772068631221,
+              latitudeString: 32.42576434678979,
+              heightString: -0.004536664339099857
+            },
+            {
+              longitudeString: 105.86769797896113,
+              latitudeString: 32.42574911153859,
+              heightString: -0.0045254407357525036
+            },
+            {
+              longitudeString: 105.86767973597583,
+              latitudeString: 32.42572660119917,
+              heightString: -0.004570456526796241
+            },
+            {
+              longitudeString: 105.86766759171306,
+              latitudeString: 32.42569266305378,
+              heightString: -0.0046165484071522146
+            },
+            {
+              longitudeString: 105.86765666112208,
+              latitudeString: 32.42566578005881,
+              heightString: -0.004552611917392763
+            },
+            {
+              longitudeString: 105.86764058133483,
+              latitudeString: 32.42563507305687,
+              heightString: -0.004506378052780579
+            },
+            {
+              longitudeString: 105.86762580217895,
+              latitudeString: 32.42560453432245,
+              heightString: -0.004526704203106137
+            },
+            {
+              longitudeString: 105.8676009698604,
+              latitudeString: 32.4255557273775,
+              heightString: -0.004546805500010793
+            },
+            {
+              longitudeString: 105.86757303901726,
+              latitudeString: 32.42553425653635,
+              heightString: -0.004540890972204576
+            },
+            {
+              longitudeString: 105.86754828494716,
+              latitudeString: 32.42551929416627,
+              heightString: -0.004457082421852242
+            },
+            {
+              longitudeString: 105.86751427387281,
+              latitudeString: 32.42551015490421,
+              heightString: -0.0045122967499420545
+            },
+            {
+              longitudeString: 105.86748327518475,
+              latitudeString: 32.42550851926311,
+              heightString: -0.004559491210897523
+            },
+            {
+              longitudeString: 105.8674500737655,
+              latitudeString: 32.425516211733196,
+              heightString: -0.004481344950726947
+            },
+            {
+              longitudeString: 105.8674227804139,
+              latitudeString: 32.42551477159527,
+              heightString: -0.00451112883025039
+            },
+            {
+              longitudeString: 105.86739264890629,
+              latitudeString: 32.42550478622832,
+              heightString: -0.004573255020498149
+            },
+            {
+              longitudeString: 105.86737075721163,
+              latitudeString: 32.42547640412301,
+              heightString: -0.004404860512283136
+            },
+            {
+              longitudeString: 105.8673578222942,
+              latitudeString: 32.42543848949615,
+              heightString: -0.004434104520336181
+            },
+            {
+              longitudeString: 105.86735961956664,
+              latitudeString: 32.42539912278946,
+              heightString: -0.004448126333335386
+            },
+            {
+              longitudeString: 105.86735894923486,
+              latitudeString: 32.42535980195621,
+              heightString: -0.004496627782461021
+            },
+            {
+              longitudeString: 105.86733529662386,
+              latitudeString: 32.4253276663458,
+              heightString: -0.004464123761439521
+            },
+            {
+              longitudeString: 105.86730947453653,
+              latitudeString: 32.42530474941226,
+              heightString: -0.004506497106366404
+            },
+            {
+              longitudeString: 105.86727229173852,
+              latitudeString: 32.42529561518787,
+              heightString: -0.004519959136117489
+            },
+            {
+              longitudeString: 105.86723099650044,
+              latitudeString: 32.42529376181233,
+              heightString: -0.0044593522366104124
+            },
+            {
+              longitudeString: 105.8672037792058,
+              latitudeString: 32.42530131744336,
+              heightString: -0.0037972644373224966
+            },
+            {
+              longitudeString: 105.86718524735308,
+              latitudeString: 32.42530396264128,
+              heightString: -0.0035616156113227543
+            },
+            {
+              longitudeString: 105.86716108700325,
+              latitudeString: 32.42529634879236,
+              heightString: -0.004044970737366234
+            },
+            {
+              longitudeString: 105.86714131195825,
+              latitudeString: 32.42528806762584,
+              heightString: -0.003988311829331064
+            },
+            {
+              longitudeString: 105.86711380882895,
+              latitudeString: 32.42526945569783,
+              heightString: -0.004005133060166948
+            },
+            {
+              longitudeString: 105.86708770281011,
+              latitudeString: 32.42526447096004,
+              heightString: -0.003970089988737787
+            },
+            {
+              longitudeString: 105.86703548859927,
+              latitudeString: 32.4252590115908,
+              heightString: -0.0039568146686847945
+            },
+            {
+              longitudeString: 105.86699636081542,
+              latitudeString: 32.42526325894466,
+              heightString: -0.003968409921560246
+            },
+            {
+              longitudeString: 105.86695908288817,
+              latitudeString: 32.425270318058864,
+              heightString: -0.003962764114656781
+            },
+            {
+              longitudeString: 105.86692212000989,
+              latitudeString: 32.42528464136223,
+              heightString: -0.004053522750538313
+            },
+            {
+              longitudeString: 105.86688075734764,
+              latitudeString: 32.42530965881885,
+              heightString: -0.004011428787131408
+            },
+            {
+              longitudeString: 105.86685277348893,
+              latitudeString: 32.42534003778446,
+              heightString: -0.0040463526124476495
+            },
+            {
+              longitudeString: 105.86682683148717,
+              latitudeString: 32.42537065704141,
+              heightString: -0.004016489891062407
+            },
+            {
+              longitudeString: 105.86680067080805,
+              latitudeString: 32.42539220689648,
+              heightString: -0.004003921038255917
+            },
+            {
+              longitudeString: 105.8667742381806,
+              latitudeString: 32.42540552340857,
+              heightString: -0.00408507736039259
+            },
+            {
+              longitudeString: 105.86676469098416,
+              latitudeString: 32.42541330701022,
+              heightString: -0.004054381906820614
+            },
+            {
+              longitudeString: 105.8667449335652,
+              latitudeString: 32.425404897518725,
+              heightString: -0.003998033662348836
+            },
+            {
+              longitudeString: 105.86672958599321,
+              latitudeString: 32.42540592879481,
+              heightString: -0.004001378105806911
+            },
+            {
+              longitudeString: 105.86671490678276,
+              latitudeString: 32.42541068015977,
+              heightString: -0.003994027813837563
+            },
+            {
+              longitudeString: 105.86669975291345,
+              latitudeString: 32.42542094431301,
+              heightString: -0.004024214003919335
+            },
+            {
+              longitudeString: 105.86669059798494,
+              latitudeString: 32.425434313185015,
+              heightString: -0.004020053871770071
+            },
+            {
+              longitudeString: 105.86664884568607,
+              latitudeString: 32.425435429369095,
+              heightString: -0.0026314104544368157
+            },
+            {
+              longitudeString: 105.86659259764885,
+              latitudeString: 32.42543752330762,
+              heightString: -0.0026426138433429617
+            },
+            {
+              longitudeString: 105.86655684327225,
+              latitudeString: 32.425436269867,
+              heightString: -0.002677600121230044
+            },
+            {
+              longitudeString: 105.86651812078026,
+              latitudeString: 32.42542789957771,
+              heightString: -0.0026003115201060777
+            },
+            {
+              longitudeString: 105.86647318717105,
+              latitudeString: 32.425415420973074,
+              heightString: -0.0026689320705964763
+            },
+            {
+              longitudeString: 105.86642788615985,
+              latitudeString: 32.42539412821734,
+              heightString: -0.0026644428114822737
+            },
+            {
+              longitudeString: 105.86634775428396,
+              latitudeString: 32.42533980552725,
+              heightString: -0.006819725920162612
+            },
+            {
+              longitudeString: 105.86631258198483,
+              latitudeString: 32.425290585781525,
+              heightString: -0.0067426537123218
+            },
+            {
+              longitudeString: 105.86628574821182,
+              latitudeString: 32.42523135491803,
+              heightString: -0.006752776820988398
+            },
+            {
+              longitudeString: 105.86627025716437,
+              latitudeString: 32.425186590236564,
+              heightString: -0.006648035376198604
+            },
+            {
+              longitudeString: 105.86626768531734,
+              latitudeString: 32.42514608255231,
+              heightString: -0.004267274106229196
+            },
+            {
+              longitudeString: 105.86627263174039,
+              latitudeString: 32.42510783809022,
+              heightString: -0.004301253453378984
+            },
+            {
+              longitudeString: 105.86628428568567,
+              latitudeString: 32.425060333079216,
+              heightString: -0.00425679541011376
+            },
+            {
+              longitudeString: 105.86630133908645,
+              latitudeString: 32.42501631339661,
+              heightString: -0.004268676980518082
+            },
+            {
+              longitudeString: 105.86632291924141,
+              latitudeString: 32.42498440780277,
+              heightString: -0.0042879507871394825
+            },
+            {
+              longitudeString: 105.86635517860147,
+              latitudeString: 32.4249483740892,
+              heightString: -0.004177788058604105
+            },
+            {
+              longitudeString: 105.86640109087006,
+              latitudeString: 32.42491227301681,
+              heightString: -0.004177218348763502
+            },
+            {
+              longitudeString: 105.86645548401187,
+              latitudeString: 32.42488158335105,
+              heightString: -0.0041976171912457205
+            },
+            {
+              longitudeString: 105.86652297800642,
+              latitudeString: 32.42484219877124,
+              heightString: -0.004170783936386975
+            },
+            {
+              longitudeString: 105.8665931478414,
+              latitudeString: 32.42479371836328,
+              heightString: -0.004178173690791389
+            },
+            {
+              longitudeString: 105.86665813535922,
+              latitudeString: 32.424748112712855,
+              heightString: -0.004143279665182678
+            },
+            {
+              longitudeString: 105.86669942699355,
+              latitudeString: 32.42471183809957,
+              heightString: -0.004205661809166941
+            },
+            {
+              longitudeString: 105.86678976262314,
+              latitudeString: 32.424632430493205,
+              heightString: -0.004199805966624634
+            },
+            {
+              longitudeString: 105.86683768328743,
+              latitudeString: 32.424581174601656,
+              heightString: -0.0041268229696198935
+            },
+            {
+              longitudeString: 105.86690438059777,
+              latitudeString: 32.424505629600304,
+              heightString: -0.004135972884634502
+            },
+            {
+              longitudeString: 105.86695065996336,
+              latitudeString: 32.42443822898257,
+              heightString: -0.00407486708615305
+            },
+            {
+              longitudeString: 105.86703035292233,
+              latitudeString: 32.42429847099128,
+              heightString: -0.007867594133058571
+            },
+            {
+              longitudeString: 105.86707227099966,
+              latitudeString: 32.424194001299256,
+              heightString: -0.003852334757463722
+            },
+            {
+              longitudeString: 105.86710887202736,
+              latitudeString: 32.424118246763165,
+              heightString: -0.0038493433383336505
+            },
+            {
+              longitudeString: 105.86714751773262,
+              latitudeString: 32.42402730231699,
+              heightString: -0.003806501004699186
+            },
+            {
+              longitudeString: 105.86716536747142,
+              latitudeString: 32.423996951674,
+              heightString: -0.0037947603249819375
+            },
+            {
+              longitudeString: 105.86717717559715,
+              latitudeString: 32.42397734938975,
+              heightString: -0.003849920181113251
+            },
+            {
+              longitudeString: 105.86719575240886,
+              latitudeString: 32.423960683363745,
+              heightString: -0.0037862070443260504
+            },
+            {
+              longitudeString: 105.86721428221844,
+              latitudeString: 32.42394405816899,
+              heightString: -0.0037566806087053423
+            },
+            {
+              longitudeString: 105.86723597359216,
+              latitudeString: 32.42392513785261,
+              heightString: -0.0037856430244155672
+            },
+            {
+              longitudeString: 105.86725479340926,
+              latitudeString: 32.423916119657626,
+              heightString: -0.003738370266026076
+            },
+            {
+              longitudeString: 105.86726805645671,
+              latitudeString: 32.42391348549238,
+              heightString: -0.0037254980087898034
+            },
+            {
+              longitudeString: 105.86727671834656,
+              latitudeString: 32.423918110074204,
+              heightString: -0.0037913443124215863
+            },
+            {
+              longitudeString: 105.8672849907008,
+              latitudeString: 32.42392772533755,
+              heightString: -0.003700835097978494
+            },
+            {
+              longitudeString: 105.86729007337665,
+              latitudeString: 32.42393969212167,
+              heightString: -0.0038286638694127887
+            },
+            {
+              longitudeString: 105.86729243841796,
+              latitudeString: 32.423960755705494,
+              heightString: -0.0038183552891005194
+            },
+            {
+              longitudeString: 105.8672924091275,
+              latitudeString: 32.42398680959697,
+              heightString: -0.0037578365243551605
+            },
+            {
+              longitudeString: 105.86728820718047,
+              latitudeString: 32.42400176032903,
+              heightString: -0.0037243811950842193
+            },
+            {
+              longitudeString: 105.86727842305334,
+              latitudeString: 32.42401053181529,
+              heightString: -0.0037901975291791353
+            },
+            {
+              longitudeString: 105.8672539152993,
+              latitudeString: 32.42402615652523,
+              heightString: -0.00377567852611636
+            },
+            {
+              longitudeString: 105.86723056743213,
+              latitudeString: 32.424039336055564,
+              heightString: -0.0038018276196533068
+            },
+            {
+              longitudeString: 105.86720566494824,
+              latitudeString: 32.42405841701388,
+              heightString: -0.0037146210276726137
+            },
+            {
+              longitudeString: 105.86716605038987,
+              latitudeString: 32.42410585342436,
+              heightString: -0.0037948471400629084
+            },
+            {
+              longitudeString: 105.86714499418791,
+              latitudeString: 32.42414857362746,
+              heightString: -0.003767108982295678
+            },
+            {
+              longitudeString: 105.86713219517404,
+              latitudeString: 32.424189394399434,
+              heightString: -0.0038095710917225517
+            },
+            {
+              longitudeString: 105.8671249727596,
+              latitudeString: 32.42422464625133,
+              heightString: -0.00381953346986999
+            },
+            {
+              longitudeString: 105.86712227591352,
+              latitudeString: 32.424255060589346,
+              heightString: -0.0037951294007092518
+            },
+            {
+              longitudeString: 105.86712431214569,
+              latitudeString: 32.42429024699918,
+              heightString: -0.0038140484281601428
+            },
+            {
+              longitudeString: 105.86713371439099,
+              latitudeString: 32.42432422444256,
+              heightString: -0.0038851198666262758
+            },
+            {
+              longitudeString: 105.86714331280798,
+              latitudeString: 32.42435659137946,
+              heightString: -0.0038860435156754013
+            },
+            {
+              longitudeString: 105.86717234538784,
+              latitudeString: 32.42440528123791,
+              heightString: -0.0038848074386133215
+            },
+            {
+              longitudeString: 105.86719636613638,
+              latitudeString: 32.424428897790385,
+              heightString: -0.0037949488602946613
+            },
+            {
+              longitudeString: 105.86724203360897,
+              latitudeString: 32.42445641912627,
+              heightString: -0.003838945448846221
+            },
+            {
+              longitudeString: 105.86730653928589,
+              latitudeString: 32.42447899472436,
+              heightString: -0.0053248525461792335
+            },
+            {
+              longitudeString: 105.86740873504485,
+              latitudeString: 32.42448182779111,
+              heightString: -0.0053290586761756175
+            },
+            {
+              longitudeString: 105.8674896989849,
+              latitudeString: 32.42448609972848,
+              heightString: -0.005338929061418765
+            },
+            {
+              longitudeString: 105.86756219325325,
+              latitudeString: 32.42448352944645,
+              heightString: -0.005391258046300776
+            },
+            {
+              longitudeString: 105.8676807750598,
+              latitudeString: 32.42446807049925,
+              heightString: -0.005237927031210945
+            },
+            {
+              longitudeString: 105.8677421927853,
+              latitudeString: 32.42443055401649,
+              heightString: -0.005305364245701898
+            },
+            {
+              longitudeString: 105.86777780909611,
+              latitudeString: 32.42437413009263,
+              heightString: -0.005271142563224947
+            },
+            {
+              longitudeString: 105.86779756498247,
+              latitudeString: 32.424287069326134,
+              heightString: -0.005244328215167396
+            },
+            {
+              longitudeString: 105.86778561294024,
+              latitudeString: 32.42416557972558,
+              heightString: -0.00524815866821998
+            },
+            {
+              longitudeString: 105.86771517303967,
+              latitudeString: 32.42406076381596,
+              heightString: -0.005265589218381252
+            },
+            {
+              longitudeString: 105.86764271952848,
+              latitudeString: 32.4239917044951,
+              heightString: -0.005179317249090559
+            },
+            {
+              longitudeString: 105.8675837621807,
+              latitudeString: 32.42397642306153,
+              heightString: -0.00524888918206249
+            },
+            {
+              longitudeString: 105.86754699675134,
+              latitudeString: 32.42395989715185,
+              heightString: -0.00530213984921605
+            },
+            {
+              longitudeString: 105.86751517548177,
+              latitudeString: 32.42395457571843,
+              heightString: -0.0051766917523520285
+            },
+            {
+              longitudeString: 105.86749546707152,
+              latitudeString: 32.423929748808405,
+              heightString: -0.004167491771575741
+            },
+            {
+              longitudeString: 105.86749681033382,
+              latitudeString: 32.423914967976295,
+              heightString: -0.004057089326106299
+            },
+            {
+              longitudeString: 105.86750069405221,
+              latitudeString: 32.42389837439117,
+              heightString: -0.003956586137020923
+            },
+            {
+              longitudeString: 105.86751475631779,
+              latitudeString: 32.423887277623386,
+              heightString: -0.004344922517690264
+            },
+            {
+              longitudeString: 105.86755610429461,
+              latitudeString: 32.42388945928169,
+              heightString: -0.004347466889830094
+            },
+            {
+              longitudeString: 105.86763175459954,
+              latitudeString: 32.42390726317577,
+              heightString: -0.0043722988822021604
+            },
+            {
+              longitudeString: 105.86769121012838,
+              latitudeString: 32.4239361119294,
+              heightString: -0.004383590213137062
+            },
+            {
+              longitudeString: 105.86778010857557,
+              latitudeString: 32.424004427744514,
+              heightString: -0.004337288542734994
+            },
+            {
+              longitudeString: 105.86782946508458,
+              latitudeString: 32.42406611198496,
+              heightString: -0.004346881390495363
+            },
+            {
+              longitudeString: 105.86786781756558,
+              latitudeString: 32.4241539776284,
+              heightString: -0.004471280762389517
+            },
+            {
+              longitudeString: 105.86787737043025,
+              latitudeString: 32.42424529573545,
+              heightString: -0.004378078472146385
+            },
+            {
+              longitudeString: 105.86786242024215,
+              latitudeString: 32.42433629965733,
+              heightString: -0.004420877591766598
+            },
+            {
+              longitudeString: 105.86784262381966,
+              latitudeString: 32.424395604498294,
+              heightString: -0.004532958032513091
+            },
+            {
+              longitudeString: 105.86783580797928,
+              latitudeString: 32.42444235818853,
+              heightString: -0.004430787466017738
+            },
+            {
+              longitudeString: 105.86782963214523,
+              latitudeString: 32.42453386965684,
+              heightString: -0.004498999796375434
+            },
+            {
+              longitudeString: 105.86782131859115,
+              latitudeString: 32.424549663609085,
+              heightString: -0.0019171763597512304
+            },
+            {
+              longitudeString: 105.86781522256854,
+              latitudeString: 32.42456599794895,
+              heightString: -0.0019180032061013284
+            },
+            {
+              longitudeString: 105.8678206213829,
+              latitudeString: 32.42459229435574,
+              heightString: -0.0019333748704479768
+            },
+            {
+              longitudeString: 105.86783826659021,
+              latitudeString: 32.4246096320812,
+              heightString: -0.0019194356003283564
+            },
+            {
+              longitudeString: 105.86785410795152,
+              latitudeString: 32.42462471670946,
+              heightString: -0.0019324676659586105
+            },
+            {
+              longitudeString: 105.8678955778914,
+              latitudeString: 32.424712222392756,
+              heightString: -0.002716568135490032
+            },
+            {
+              longitudeString: 105.86789235545153,
+              latitudeString: 32.42472495588302,
+              heightString: -0.0012885446204301252
+            },
+            {
+              longitudeString: 105.86789348542163,
+              latitudeString: 32.424747336533585,
+              heightString: -0.0012795426869371687
+            },
+            {
+              longitudeString: 105.86790903647773,
+              latitudeString: 32.424766031915986,
+              heightString: -0.0012922386730897654
+            },
+            {
+              longitudeString: 105.86793290247886,
+              latitudeString: 32.42478121685833,
+              heightString: -0.0013182668881385738
+            },
+            {
+              longitudeString: 105.86795879350251,
+              latitudeString: 32.42478725753568,
+              heightString: -0.0013030018662325402
+            },
+            {
+              longitudeString: 105.8679801671706,
+              latitudeString: 32.424813636820176,
+              heightString: -0.0015516557134983191
+            },
+            {
+              longitudeString: 105.86799263607965,
+              latitudeString: 32.4248273865358,
+              heightString: -0.0015664648180362878
+            },
+            {
+              longitudeString: 105.86801041964233,
+              latitudeString: 32.424840436693415,
+              heightString: -0.0015566137939228952
+            },
+            {
+              longitudeString: 105.8680313502943,
+              latitudeString: 32.42485544665215,
+              heightString: -0.0015593200903859245
+            },
+            {
+              longitudeString: 105.86803776601266,
+              latitudeString: 32.42488050957821,
+              heightString: -0.001413909733523642
+            },
+            {
+              longitudeString: 105.86805344833547,
+              latitudeString: 32.42489978733643,
+              heightString: -0.0013957732669575983
+            },
+            {
+              longitudeString: 105.86807174399486,
+              latitudeString: 32.424910023275174,
+              heightString: -0.001423750883172359
+            },
+            {
+              longitudeString: 105.86809657427841,
+              latitudeString: 32.42491339760945,
+              heightString: -0.0014208730533510356
+            },
+            {
+              longitudeString: 105.86811190634457,
+              latitudeString: 32.42491042324573,
+              heightString: -0.0014255597682613869
+            },
+            {
+              longitudeString: 105.86817066303993,
+              latitudeString: 32.42493548021856,
+              heightString: -0.0019685270915806284
+            },
+            {
+              longitudeString: 105.8682435253948,
+              latitudeString: 32.424973673904944,
+              heightString: -0.0019615798434564086
+            },
+            {
+              longitudeString: 105.86827981414676,
+              latitudeString: 32.42499466224397,
+              heightString: -0.001940741890889341
+            },
+            {
+              longitudeString: 105.8683190979884,
+              latitudeString: 32.42502564095766,
+              heightString: -0.001965210617906406
+            },
+            {
+              longitudeString: 105.86837635473398,
+              latitudeString: 32.42507831743232,
+              heightString: -0.001984750228226626
+            },
+            {
+              longitudeString: 105.8683852241819,
+              latitudeString: 32.42508788494916,
+              heightString: -0.0019777661883585464
+            },
+            {
+              longitudeString: 105.86837802027728,
+              latitudeString: 32.42509343141852,
+              heightString: -0.001966990644411869
+            },
+            {
+              longitudeString: 105.86836374107678,
+              latitudeString: 32.425094047035735,
+              heightString: -0.001967313908459382
+            },
+            {
+              longitudeString: 105.86835866641107,
+              latitudeString: 32.42509104175429,
+              heightString: -0.0019596319365575237
+            },
+            {
+              longitudeString: 105.86835007259971,
+              latitudeString: 32.42508557480038,
+              heightString: -0.001977531583699456
+            },
+            {
+              longitudeString: 105.86833789045039,
+              latitudeString: 32.425071292590275,
+              heightString: -0.001963477458341297
+            },
+            {
+              longitudeString: 105.86831774046742,
+              latitudeString: 32.425051669095204,
+              heightString: -0.0019839885224580247
+            },
+            {
+              longitudeString: 105.86829112290177,
+              latitudeString: 32.4250315092525,
+              heightString: -0.0019477240541551995
+            },
+            {
+              longitudeString: 105.86822457639138,
+              latitudeString: 32.425006380724156,
+              heightString: -0.001956649095061372
+            },
+            {
+              longitudeString: 105.86819126660936,
+              latitudeString: 32.42499972543529,
+              heightString: -0.0019088072880975397
+            },
+            {
+              longitudeString: 105.868159522536,
+              latitudeString: 32.42499894058796,
+              heightString: -0.00192069496790504
+            },
+            {
+              longitudeString: 105.86811191210963,
+              latitudeString: 32.425006234098596,
+              heightString: -0.0019500205611787506
+            },
+            {
+              longitudeString: 105.86807163981975,
+              latitudeString: 32.42502025730513,
+              heightString: -0.0019540453297559215
+            },
+            {
+              longitudeString: 105.86803518832266,
+              latitudeString: 32.42504127244428,
+              heightString: -0.0019338558979952625
+            },
+            {
+              longitudeString: 105.86800689522428,
+              latitudeString: 32.42506740237456,
+              heightString: -0.0019751328910725735
+            },
+            {
+              longitudeString: 105.86798685481702,
+              latitudeString: 32.42509829605465,
+              heightString: -0.0019394500338518492
+            },
+            {
+              longitudeString: 105.8679686924949,
+              latitudeString: 32.42513968200862,
+              heightString: -0.0019961833272608425
+            },
+            {
+              longitudeString: 105.86796491274977,
+              latitudeString: 32.425175195503435,
+              heightString: -0.001995732485789543
+            },
+            {
+              longitudeString: 105.86796920728428,
+              latitudeString: 32.425216647403836,
+              heightString: -0.0020142225778828323
+            },
+            {
+              longitudeString: 105.86798541963807,
+              latitudeString: 32.42526012503074,
+              heightString: -0.002029056146227797
+            },
+            {
+              longitudeString: 105.86800126971832,
+              latitudeString: 32.42528541125392,
+              heightString: -0.0017940706800690623
+            },
+            {
+              longitudeString: 105.86803865696434,
+              latitudeString: 32.42531479570675,
+              heightString: -0.0018179064853299917
+            },
+            {
+              longitudeString: 105.86806207916878,
+              latitudeString: 32.4253316771481,
+              heightString: -0.0018084881822038427
+            },
+            {
+              longitudeString: 105.86810671918924,
+              latitudeString: 32.42534933569836,
+              heightString: -0.001845892387086554
+            },
+            {
+              longitudeString: 105.86815038350987,
+              latitudeString: 32.425357032453825,
+              heightString: -0.0017923939498481149
+            },
+            {
+              longitudeString: 105.86819685989056,
+              latitudeString: 32.42535811950846,
+              heightString: -0.001814383824731192
+            },
+            {
+              longitudeString: 105.86823287443808,
+              latitudeString: 32.42535131210257,
+              heightString: -0.0018393014699933246
+            },
+            {
+              longitudeString: 105.86827631637193,
+              latitudeString: 32.42533872807458,
+              heightString: -0.0017894904853089704
+            },
+            {
+              longitudeString: 105.86830453002604,
+              latitudeString: 32.42532130246013,
+              heightString: -0.0018002223577508862
+            },
+            {
+              longitudeString: 105.86832698659624,
+              latitudeString: 32.425301639412744,
+              heightString: -0.0018060780716112948
+            },
+            {
+              longitudeString: 105.86835000120108,
+              latitudeString: 32.425277276132164,
+              heightString: -0.0017852989282125843
+            },
+            {
+              longitudeString: 105.86836530039638,
+              latitudeString: 32.425263554033435,
+              heightString: -0.001797045146936762
+            },
+            {
+              longitudeString: 105.86839255977334,
+              latitudeString: 32.42525614392316,
+              heightString: -0.0017958838804222885
+            },
+            {
+              longitudeString: 105.86841483598256,
+              latitudeString: 32.425254107384106,
+              heightString: -0.0017886501780710736
+            },
+            {
+              longitudeString: 105.86843170697233,
+              latitudeString: 32.425257807627204,
+              heightString: -0.001767366021396086
+            },
+            {
+              longitudeString: 105.86844701351671,
+              latitudeString: 32.42526665716607,
+              heightString: -0.0017867551099334756
+            },
+            {
+              longitudeString: 105.86846433817803,
+              latitudeString: 32.42527643956143,
+              heightString: -0.0017832558107760367
+            },
+            {
+              longitudeString: 105.86847281599415,
+              latitudeString: 32.4252878405761,
+              heightString: -0.001594395645870962
+            },
+            {
+              longitudeString: 105.86848218864093,
+              latitudeString: 32.425305408581835,
+              heightString: -0.0016032157416570505
+            },
+            {
+              longitudeString: 105.8684881799245,
+              latitudeString: 32.42533240434163,
+              heightString: -0.001620446259290833
+            },
+            {
+              longitudeString: 105.8684945124062,
+              latitudeString: 32.42536785893288,
+              heightString: -0.0016393688226913601
+            },
+            {
+              longitudeString: 105.86850295869574,
+              latitudeString: 32.425411078971166,
+              heightString: -0.0016428563241653825
+            },
+            {
+              longitudeString: 105.86850645225361,
+              latitudeString: 32.425441831093956,
+              heightString: -0.0016321025108967067
+            },
+            {
+              longitudeString: 105.86852776592629,
+              latitudeString: 32.42554477874107,
+              heightString: -0.004373847627804471
+            },
+            {
+              longitudeString: 105.86853977819852,
+              latitudeString: 32.42564059304947,
+              heightString: -0.0038434344273339015
+            },
+            {
+              longitudeString: 105.86854549102496,
+              latitudeString: 32.425723621598,
+              heightString: -0.0044821931749213645
+            },
+            {
+              longitudeString: 105.86855529223072,
+              latitudeString: 32.42582131317913,
+              heightString: -0.004410730567039855
+            },
+            {
+              longitudeString: 105.86854215846746,
+              latitudeString: 32.42587543189384,
+              heightString: -0.004479300883102718
+            },
+            {
+              longitudeString: 105.86848262584911,
+              latitudeString: 32.425923193494015,
+              heightString: -0.004439011259736704
+            },
+            {
+              longitudeString: 105.86843572709789,
+              latitudeString: 32.425938825213585,
+              heightString: -0.004229957258702529
+            }
+          ];
+          const positions = [];
+          for (var j = 0; j < pos.length; j++) {
+            var item = pos[j];
+            positions.push(
+              new Cesium.Cartesian3.fromDegrees(
+                item.longitudeString + 0.00017,
+                item.latitudeString + 0.00014
+              )
+            );
+          }
+          let polygonHierarchy1 = new Cesium.PolygonHierarchy(positions);
+          console.log(polygonHierarchy1);
+          //polygonHierarchy1 = polygonHierarchy;
+          let polygon = new Cesium.PolygonGeometry({
+            polygonHierarchy: polygonHierarchy1,
+            height: 30.5,
+            vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT
+          });
+
+          water = new Cesium.WaterReflect({
+            geometry: polygon,
+            scene: scene,
+            materialsOptions: {
+              reflector: true,
+              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), //水的颜色
+              frequency: 10000, // 控制波数的数字
+              animationSpeed: 0.5, // 水流速度
+              amplitude: 10, //控制水波振幅的数字
+              distortionScale: 8
+            }
+          });
+        }
+      });
+
+      var viewModel = {
+        reflector: true,
+        x: 0.0,
+        y: 0.75,
+        z: 0.77,
+        alpha: 1,
+        frequency: 10000.0,
+        animationSpeed: 0.5, // 水流速度
+        amplitude: 10,
+        distortionScale: 8
+      };
+      Cesium.knockout.track(viewModel);
+      var toolbar = document.getElementById("toolbar");
+      Cesium.knockout.applyBindings(viewModel, toolbar);
+      Cesium.knockout.getObservable(viewModel, "x").subscribe(function(_z) {
+        updatechange();
+      });
+      Cesium.knockout.getObservable(viewModel, "y").subscribe(function(_z) {
+        updatechange();
+      });
+      Cesium.knockout.getObservable(viewModel, "z").subscribe(function(_z) {
+        updatechange();
+      });
+      Cesium.knockout.getObservable(viewModel, "alpha").subscribe(function(_z) {
+        updatechange();
+      });
+
+      Cesium.knockout
+        .getObservable(viewModel, "frequency")
+        .subscribe(function(_z) {
+          water._primitive.appearance.material.uniforms.frequency =
+            viewModel.frequency;
+        });
+      Cesium.knockout
+        .getObservable(viewModel, "amplitude")
+        .subscribe(function(_z) {
+          water._primitive.appearance.material.uniforms.amplitude =
+            viewModel.amplitude;
+        });
+      Cesium.knockout
+        .getObservable(viewModel, "animationSpeed")
+        .subscribe(function(_z) {
+          water._primitive.appearance.material.uniforms.animationSpeed =
+            viewModel.animationSpeed;
+        });
+
+      function updatechange() {
+        water._primitive.appearance.material.uniforms.baseWaterColor = new Cesium.Color(
+          viewModel.x,
+          viewModel.y,
+          viewModel.z,
+          viewModel.alpha
+        );
+      }
+      Sandcastle.addToolbarButton("倒影", function() {
+        // viewer.scene._context.msaaEnable = true;
+        water._primitive.appearance.material.uniforms.reflector = !water
+          ._primitive.appearance.material.uniforms.reflector;
+      });
+      Sandcastle.addToolbarButton("msaa", function() {
+        console.log(viewer);
+        // viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
+        viewer.scene._useMSAA = !viewer.scene._useMSAA;
+      });
+    </script>
+  </body>
+</html>

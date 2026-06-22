@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>旋转棱锥</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      position: relative
+    }
+
+    #toolbar {
+      margin: 5px;
+      padding: 2px 5px;
+      position: absolute;
+      z-index: 9;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+    <div id="toolbar">
+        <div>高度</div>
+          <input type="range" min="100" max="600" step="10" data-bind="value: length, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: length">
+        <div>底面半径</div>
+          <input type="range" min="100" max="300" step="10" data-bind="value: topRadius, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: topRadius">
+        <div>旋转速度</div>
+          <input type="range" min="1" max="10" step="1" data-bind="value: speed, valueUpdate: 'input'">
+          <input type="text" size="1" data-bind="value: speed">
+    </div>
+</div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      navigation: false,
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+    });
+
+    var layer = viewer.imageryLayers.get(0)
+    layer.saturation = 0
+    layer.hue = 0.54
+    layer.brightness = 1.5
+
+    const viewModel = {
+      speed: 2,
+      length: 300.0,
+      topRadius: 150.0
+    }
+    Cesium.knockout.track(viewModel);
+    const toolbar = document.getElementById("toolbar");
+    Cesium.knockout.applyBindings(viewModel, toolbar);
+
+    Cesium.knockout
+      .getObservable(viewModel, "speed")
+      .subscribe(function (newspeed) {
+        viewModel.speed = Number(newspeed)
+      });
+    Cesium.knockout
+      .getObservable(viewModel, "topRadius")
+      .subscribe(function (topRadius) {
+        entity.cylinder.topRadius = Number(topRadius)
+      });
+    Cesium.knockout
+      .getObservable(viewModel, "length")
+      .subscribe(function (length) {
+        entity.cylinder.length = Number(length)
+      });
+
+    var position = Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335, 300);
+
+    var heading = 0; //偏航角（Y轴） 
+    var pitch = 0; //俯仰角（X轴）
+    var roll = 0; //翻滚角（Z轴）
+    function rotate() {
+      heading = heading + Cesium.Math.toRadians(viewModel.speed);
+      var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+      var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+      return orientation;
+    }
+    var entity = viewer.entities.add({
+      name: '旋转锥',
+      position: position,
+      orientation: new Cesium.CallbackProperty(rotate, false),
+      cylinder: {
+        length: viewModel.length,
+        topRadius: viewModel.topRadius,
+        bottomRadius: 0.0,
+        slices: 4,
+        material: Cesium.Color.fromRandom({
+          alpha: 1.0
+        })
+      },
+    });
+
+    viewer.zoomTo(entity)
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>景深效果</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar">
+    <table>
+      <tbody>
+        <tr>
+          <td>是否开启</td>
+          <td><input type="checkbox" data-bind="checked: show"></td>
+        </tr>
+        <tr>
+          <td>焦距</td>
+          <td>
+            <input type="range" min="0.0" max="500.0" step="1" data-bind="value: focalDistance, valueUpdate: 'input'">
+          </td>
+        </tr>
+        <tr>
+          <td>增量</td>
+          <td>
+            <input type="range" min="0.1" max="2" step="0.01" data-bind="value: delta, valueUpdate: 'input'">
+          </td>
+        </tr>
+        <tr>
+          <td>Sigma</td>
+          <td>
+            <input type="range" min="0.5" max="5" step="0.01" data-bind="value: sigma, valueUpdate: 'input'">
+          </td>
+        </tr>
+        <tr>
+          <td>步长</td>
+          <td>
+            <input type="range" min="0" max="7" step="0.01" data-bind="value: stepSize, valueUpdate: 'input'">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      navigation: false
+    })
+    viewer.scene.imageryLayers.get(0).alpha = 0
+    viewer.scene.globe.baseColor = Cesium.Color.DARKOLIVEGREEN
+    //初始定位位置
+    viewer.camera.flyTo({
+      destination: {
+        x: -1469200.109729519,
+        y: 5184992.517968472,
+        z: 3401307.075514329
+      },
+      orientation: {
+        direction: {
+          x: -0.1506058934247801,
+          y: -0.8486043414325113,
+          z: 0.5071375913572349
+        },
+        up: {
+          x: -0.3126414843742682,
+          y: 0.5275447698515602,
+          z: 0.7899062083883874
+        }
+      },
+      duration: 3
+    })
+
+    var tileset = new Cesium.Cesium3DTileset({
+      url: Cesium.IonResource.fromAssetId(75343),
+    });
+    tileset.readyPromise
+      .then(function (tileset) {
+        viewer.scene.primitives.add(tileset);
+      })
+    const viewModel = {
+      show: true,
+      focalDistance: 87,
+      delta: 1,
+      sigma: 3.78,
+      stepSize: 2.46,
+    };
+
+    Cesium.knockout.track(viewModel);
+    const toolbar = document.getElementById("toolbar");
+    Cesium.knockout.applyBindings(viewModel, toolbar);
+    for (const name in viewModel) {
+      if (viewModel.hasOwnProperty(name)) {
+        Cesium.knockout
+          .getObservable(viewModel, name)
+          .subscribe(updatePostProcess);
+      }
+    }
+
+
+    if (
+      !Cesium.PostProcessStageLibrary.isDepthOfFieldSupported(viewer.scene)
+    ) {
+      window.alert(
+        "此浏览器不支持深度字段后置处理."
+      );
+    }
+
+    const depthOfField = viewer.scene.postProcessStages.add(
+      Cesium.PostProcessStageLibrary.createDepthOfFieldStage()
+    );
+
+    function updatePostProcess() {
+      depthOfField.enabled = Boolean(viewModel.show);
+      depthOfField.uniforms.focalDistance = Number(viewModel.focalDistance);
+      depthOfField.uniforms.delta = Number(viewModel.delta);
+      depthOfField.uniforms.sigma = Number(viewModel.sigma);
+      depthOfField.uniforms.stepSize = Number(viewModel.stepSize);
+    }
+    updatePostProcess();
+    const target = Cesium.Cartesian3.fromDegrees(
+      initialLon + lonIncrement,
+      lat,
+      height + 7.5
+    );
+    const offset = new Cesium.Cartesian3(
+      -37.048378684557974,
+      -24.852967044804245,
+      4.352023653686047
+    );
+    viewer.scene.camera.lookAt(target, offset);
+
+  </script>
+</body>
+
+</html>

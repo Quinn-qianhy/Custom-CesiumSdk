@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>柱状统计示例</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      position: relative
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+
+  </div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      navigation: false,
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+    });
+    viewer.scene.globe.depthTestAgainstTerrain = false;
+    var stages = viewer.scene.postProcessStages;
+
+    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary
+      .createBrightnessStage());
+    viewer.scene.brightness.enabled = true;
+    viewer.scene.brightness.uniforms.brightness = 1.5;
+
+    const promise = Cesium.GeoJsonDataSource.load('http://172.20.16.213:8888/geojson/sichuan_region.json')
+    promise.then(function (dataSource) {
+        viewer.dataSources.add(dataSource);
+        const entities = dataSource.entities.values
+
+        for (let i = 0; i < entities.length; i++) {
+          var entity = entities[i]
+          var name = entity.name;
+          entity.polygon.material = new Cesium.PolyGradientMaterialProperty({
+            color: Cesium.Color.fromRandom(),
+            alphaPower: 2
+          });
+        }
+      })
+    viewer.zoomTo(promise);
+
+    var centers = [{
+        lon: 100.56,
+        lat: 30.70,
+        height: 20
+      }, {
+        lon: 102.66,
+        lat: 32.26,
+        height: 15
+      }, {
+        lon: 102.76,
+        lat: 30.06,
+        height: 10
+      }, {
+        lon: 103.60,
+        lat: 29.31,
+        height: 30
+      }, {
+        lon: 103.93,
+        lat: 30.05,
+        height: 40
+      }, {
+        lon: 104.07,
+        lat: 30.67,
+        height: 50
+      }, {
+        lon: 104.80,
+        lat: 31.82,
+        height: 45
+      }, {
+        lon: 105.79,
+        lat: 32.35,
+        height: 5
+      }, {
+        lon: 106.16,
+        lat: 31.16,
+        height: 25
+      }, {
+        lon: 105.54,
+        lat: 30.62,
+        height: 45
+      }, {
+        lon: 104.58,
+        lat: 31.07,
+        height: 40
+      }, {
+        lon: 107.04,
+        lat: 32.02,
+        height: 15
+      }, {
+        lon: 107.67,
+        lat: 31.37,
+        height: 35
+      }, {
+        lon: 105.18,
+        lat: 27.91,
+        height: 50
+      }, {
+        lon: 101.68,
+        lat: 26.80,
+        height: 40
+      }, {
+        lon: 104.66,
+        lat: 28.77,
+        height: 10
+      },
+
+    ]
+
+    for (let i = 0; i < centers.length; i++) {
+      console.log(centers[i].height);
+      let cylinderPos = Cesium.Cartesian3.fromDegrees(centers[i].lon, centers[i].lat, 0);
+       var entity = viewer.entities.add({
+        name: '(圆柱)cylinder',
+        position: cylinderPos,
+        cylinder: {
+          length: centers[i].height * 2000,
+          topRadius: 6000.0,
+          bottomRadius: 6000.0,
+          material: new Cesium.Color.fromRandom({alpha : 1.0}),
+          heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+        }
+      });
+    }
+    viewer.camera.flyTo({
+      destination: {
+        x: -1527142.4286484858,
+        y: 6381001.099390467,
+        z: 2426295.1876387927
+      },
+      orientation: {
+        heading: 6.262449316942144,
+        pitch: -0.604702418468626,
+        roll: 0.00002376702270989739
+      }
+    })
+  </script>
+</body>
+
+</html>

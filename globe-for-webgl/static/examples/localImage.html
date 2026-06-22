@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>单张图片加载</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar"></div>
+  <script type="text/javascript">
+    "use script";
+
+
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.SingleTileImageryProvider({
+        rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0),
+        url: '/static/examples/singlePicture/singleMap1.jpg'
+      })
+    })
+    viewer.scene.globe.depthTestAgainstTerrain = true
+
+    //添加本地影像
+    var localImage = new Cesium.SingleTileImageryProvider({
+      url: '/static/examples/singlePicture/南河片区.png',
+      rectangle: Cesium.Rectangle.fromDegrees(105.81524848937988, 32.41387367248535, 105.83889484405518,
+        32.43511676788330)
+    })
+    viewer.scene.imageryLayers.addImageryProvider(localImage)
+
+    //初始定位位置
+    viewer.camera.flyTo({
+      destination: {
+        x: -1470798.012489264,
+        y: 5188765.051426686,
+        z: 3399545.9620189117
+      },
+      duration: 2,
+      orientation: {
+        direction: {
+          x: 0.3569144202721545,
+          y: -0.9186676513942034,
+          z: 0.16929808883637898
+        },
+        up: {
+          x: 0.04953030505020897,
+          y: 0.199590907420236,
+          z: 0.9786267003085498
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

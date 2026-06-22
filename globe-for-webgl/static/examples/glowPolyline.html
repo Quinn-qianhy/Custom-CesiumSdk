@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>geojson数据光晕线</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      position: relative
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+  </div>
+  <script type="text/javascript">
+    "use script";
+
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      navigation: false,
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(3956),
+        requestVertexNormals: true,
+        requestMetadata: true,
+        requestWaterMask: true
+      }),
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+    });
+    //地图亮度设置
+    var stages = viewer.scene.postProcessStages;
+    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary
+      .createBrightnessStage());
+    viewer.scene.brightness.enabled = true;
+    viewer.scene.brightness.uniforms.brightness = 1;
+    viewer.scene.globe.depthTestAgainstTerrain = true
+
+    const promise = Cesium.GeoJsonDataSource.load('http://172.20.16.213:8888/geojson/config/chengdu-line2.json')
+    promise.then(function (dataSource) {
+      viewer.dataSources.add(dataSource);
+      const entities = dataSource.entities.values
+
+      for (var o = 0; o < entities.length; o++) {
+        var entity = entities[o];
+        entity.polyline.width = 40; //添加默认样式
+        entity.polyline.clampToGround.setValue(true)
+        entity.polyline.material = new Cesium.PolylineGlowMaterialProperty({
+          glowPower: .06, //一个数字属性，指定发光强度，占总线宽的百分比。
+          color: Cesium.Color.ORANGERED.withAlpha(.9),
+        })
+      }
+    })
+    viewer.zoomTo(promise);
+
+  </script>
+</body>
+
+</html>

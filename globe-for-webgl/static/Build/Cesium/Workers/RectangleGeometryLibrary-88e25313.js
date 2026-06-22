@@ -1,0 +1,25 @@
+/**
+ * @license
+ * Cesium - https://github.com/CesiumGS/cesium
+ * Version 1.95
+ *
+ * Copyright 2011-2022 Cesium Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Columbus View (Pat. Pend.)
+ *
+ * Portions licensed separately.
+ * See https://github.com/CesiumGS/cesium/blob/main/LICENSE.md for full licensing details.
+ */
+define(["exports","./Matrix2-b4a5c73a","./defaultValue-ac2201bb","./RuntimeError-d45af186","./Transforms-6044519c","./ComponentDatatype-b70c432c"],(function(t,n,a,o,e,r){"use strict";const s=Math.cos,i=Math.sin,c=Math.sqrt,g={computePosition:function(t,n,o,e,r,g,u){const h=n.radiiSquared,l=t.nwCorner,C=t.boundingRectangle;let S=l.latitude-t.granYCos*e+r*t.granXSin;const d=s(S),w=i(S),M=h.z*w;let m=l.longitude+e*t.granYSin+r*t.granXCos;const X=d*s(m),Y=d*i(m),p=h.x*X,f=h.y*Y,x=c(p*X+f*Y+M*w);if(g.x=p/x,g.y=f/x,g.z=M/x,o){const n=t.stNwCorner;a.defined(n)?(S=n.latitude-t.stGranYCos*e+r*t.stGranXSin,m=n.longitude+e*t.stGranYSin+r*t.stGranXCos,u.x=(m-t.stWest)*t.lonScalar,u.y=(S-t.stSouth)*t.latScalar):(u.x=(m-C.west)*t.lonScalar,u.y=(S-C.south)*t.latScalar)}}},u=new n.Matrix2;let h=new n.Cartesian3;const l=new n.Cartographic;let C=new n.Cartesian3;const S=new e.GeographicProjection;function d(t,a,o,e,r,s,i){const c=Math.cos(a),g=e*c,l=o*c,d=Math.sin(a),w=e*d,M=o*d;h=S.project(t,h),h=n.Cartesian3.subtract(h,C,h);const m=n.Matrix2.fromRotation(a,u);h=n.Matrix2.multiplyByVector(m,h,h),h=n.Cartesian3.add(h,C,h),s-=1,i-=1;const X=(t=S.unproject(h,t)).latitude,Y=X+s*M,p=X-g*i,f=X-g*i+s*M,x=Math.max(X,Y,p,f),R=Math.min(X,Y,p,f),G=t.longitude,y=G+s*l,b=G+i*w,O=G+i*w+s*l;return{north:x,south:R,east:Math.max(G,y,b,O),west:Math.min(G,y,b,O),granYCos:g,granYSin:w,granXCos:l,granXSin:M,nwCorner:t}}g.computeOptions=function(t,a,o,e,s,i,c){let g,u=t.east,h=t.west,w=t.north,M=t.south,m=!1,X=!1;w===r.CesiumMath.PI_OVER_TWO&&(m=!0),M===-r.CesiumMath.PI_OVER_TWO&&(X=!0);const Y=w-M;g=h>u?r.CesiumMath.TWO_PI-h+u:u-h;const p=Math.ceil(g/a)+1,f=Math.ceil(Y/a)+1,x=g/(p-1),R=Y/(f-1),G=n.Rectangle.northwest(t,i),y=n.Rectangle.center(t,l);0===o&&0===e||(y.longitude<G.longitude&&(y.longitude+=r.CesiumMath.TWO_PI),C=S.project(y,C));const b=R,O=x,P=n.Rectangle.clone(t,s),W={granYCos:b,granYSin:0,granXCos:O,granXSin:0,nwCorner:G,boundingRectangle:P,width:p,height:f,northCap:m,southCap:X};if(0!==o){const t=d(G,o,x,R,0,p,f);w=t.north,M=t.south,u=t.east,h=t.west,W.granYCos=t.granYCos,W.granYSin=t.granYSin,W.granXCos=t.granXCos,W.granXSin=t.granXSin,P.north=w,P.south=M,P.east=u,P.west=h}if(0!==e){o-=e;const t=n.Rectangle.northwest(P,c),a=d(t,o,x,R,0,p,f);W.stGranYCos=a.granYCos,W.stGranXCos=a.granXCos,W.stGranYSin=a.granYSin,W.stGranXSin=a.granXSin,W.stNwCorner=t,W.stWest=a.west,W.stSouth=a.south}return W},t.RectangleGeometryLibrary=g}));

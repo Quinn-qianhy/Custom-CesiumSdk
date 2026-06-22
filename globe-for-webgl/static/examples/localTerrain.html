@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>局部地形(本地自制地形)加载</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 4px;
+      border-radius: 4px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar"></div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+      }),
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: "http://172.20.16.213:8888/cesiumLocal_dem",
+        requestMetadata: true,
+        requestWaterMask: true
+
+      })
+    })
+
+    //初始地球色调
+    var layer = viewer.imageryLayers.get(0)
+    layer.saturation = 0.5
+    layer.hue = 0.56
+    layer.contrast = 1
+    layer.brightness = 1.1
+
+    viewer.camera.setView({
+      destination: {
+        x: -1202859.5630011102,
+        y: 5429580.372395073,
+        z: 3132316.163330201
+      },
+      orientation: {
+        direction: {
+          x: 0.4643618237372416,
+          y: -0.5559812938547164,
+          z: 0.689385884348569
+        },
+        up: {
+          x: -0.08748276900150279,
+          y: 0.7457973283495786,
+          z: 0.6604037478349595
+        }
+      },
+      duration: 1
+    })
+
+  </script>
+</body>
+
+</html>

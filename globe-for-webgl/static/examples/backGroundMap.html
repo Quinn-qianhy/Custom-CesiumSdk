@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>自定义背景图片</title>
+
+  <script src="/static/examples/Sandcastle-header.js"></script>
+  <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+  <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/static/examples/bucket.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    #toolbar {
+      right: 5px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer" style="background-image: url(/static/examples/background1.jpg)"></div>
+
+  <div id="toolbar"></div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      //允许透明
+      contextOptions: {
+        webgl: {
+          alpha: true,
+        }
+      },
+      orderIndependmentTranslucency: false,
+      skyAtmosphere: false,
+      scene3DOnly: true
+    })
+    viewer.scene.sun.show = false
+    viewer.scene.moon.show = false
+    viewer.scene.globe.depthTestAgainstTerrain = false
+    viewer.scene.skyBox.show = false
+    viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0)
+    
+    viewer.imageryLayers.addImageryProvider(
+      new Cesium.UrlTemplateImageryProvider({
+        url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
+      })
+    )
+    //初始定位位置
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 20000000.0), //四川省政府
+    })
+
+    selectPicture(1)
+    function selectPicture(numURL) {
+      var img1 = 'url(/static/examples/backgroundPicture/background1.jpg)'
+      var img2 = 'url(/static/examples/backgroundPicture/background2.jpg)'
+      var img3 = 'url(/static/examples/backgroundPicture/background3.jpg)'
+      var img4 = 'url(/static/examples/backgroundPicture/background4.jpg)'
+      switch (numURL) {
+        case 1:
+          document.getElementById('cesiumContainer').style.backgroundImage = img1
+          break;
+        case 2:
+          document.getElementById('cesiumContainer').style.backgroundImage = img2
+          break;
+        case 3:
+          document.getElementById('cesiumContainer').style.backgroundImage = img3
+          break;
+        case 4:
+          document.getElementById('cesiumContainer').style.backgroundImage = img4
+          break;
+      }
+    }
+
+    Sandcastle.addToolbarButton("背景1", function () {
+      selectPicture(1)
+    });
+    Sandcastle.addToolbarButton("背景2", function () {
+      selectPicture(2)
+    });
+    Sandcastle.addToolbarButton("背景3", function () {
+      selectPicture(3)
+    });
+    Sandcastle.addToolbarButton("背景4", function () {
+      selectPicture(4)
+    });
+
+  </script>
+</body>
+
+</html>

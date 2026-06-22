@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>绘制点线面</title>
+
+    <script src="/static/examples/Sandcastle-header.js"></script>
+    <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+    <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/static/examples/bucket.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      #toolbar {
+        left: 5px;
+        top: 5px;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+
+    <div id="toolbar"></div>
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer");
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      window.measureDistance = new Cesium.MeasureHandler(
+        viewer,
+        Cesium.MeasureMode.DISTANCE
+      );
+      window.measureArea = new Cesium.MeasureHandler(
+        viewer,
+        Cesium.MeasureMode.AREA
+      );
+
+      function deActivateAll() {
+        measureDistance.deactivate();
+        measureArea.deactivate();
+      }
+
+      function clearAll() {
+        measureDistance.clear();
+        measureArea.clear();
+      }
+
+      Sandcastle.addToolbarButton("距离", function() {
+        deActivateAll();
+        measureDistance.activate();
+      });
+      Sandcastle.addToolbarButton("面积", function() {
+        deActivateAll();
+        measureArea.activate();
+      });
+
+      Sandcastle.addToolbarButton("停止", function() {
+        deActivateAll();
+      });
+      Sandcastle.addToolbarButton("清除", function() {
+        clearAll();
+      });
+    </script>
+  </body>
+</html>

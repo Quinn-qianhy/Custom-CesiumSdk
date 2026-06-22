@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>绘制点线面</title>
+
+    <script src="/static/examples/Sandcastle-header.js"></script>
+    <script src="/static/Build/Cesium/Cesium.js"></script>
+<script src="/static/defaultAccessToken.js"> </script>
+    <link href="/static/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/static/examples/bucket.css" rel="stylesheet" />
+    <style>
+        html,body,#cesiumContainer{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        #toolbar{
+            left: 5px;
+            top: 5px;
+        }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+
+    <div id="toolbar"></div>
+    <script type="text/javascript">
+      "use script";
+
+        var viewer = new Cesium.Viewer("cesiumContainer");
+        viewer.scene.globe.depthTestAgainstTerrain = true
+
+        var drawCircle = new Cesium.DrawHandler(viewer, Cesium.DrawMode.CIRCLE);
+        var drawRectangle = new Cesium.DrawHandler(viewer, Cesium.DrawMode.RECTANGLE);
+        var drawLine = new Cesium.DrawHandler(viewer, Cesium.DrawMode.LINE);
+        var drawPolygon = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYGON);
+        var drawPolyline = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYLINE);
+        var drawPoint = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POINT);
+
+        function deActivateAll() {
+        drawCircle.deactivate();
+        drawRectangle.deactivate();
+        drawPolygon.deactivate();
+        drawPolyline.deactivate();
+        drawPoint.deactivate();
+        drawLine.deactivate();
+        }
+
+        function clearAll() {
+        drawCircle.clear();
+        drawRectangle.clear();
+        drawPolygon.clear();
+        drawPolyline.clear();
+        drawPoint.clear();
+        drawLine.clear();
+        }
+
+        Sandcastle.addToolbarButton("开始circle", function () {
+            deActivateAll();
+            drawCircle.activate();
+        });
+        Sandcastle.addToolbarButton("开始point", function () {
+            deActivateAll();
+            drawPoint.activate();
+        });
+        Sandcastle.addToolbarButton("开始rectangle", function () {
+            deActivateAll();
+            drawRectangle.activate();
+        });
+
+        Sandcastle.addToolbarButton("开始line", function () {
+            deActivateAll();
+            drawLine.activate();
+        });
+        Sandcastle.addToolbarButton("开始polygon", function () {
+            deActivateAll();
+            drawPolygon.activate();
+
+        });
+        Sandcastle.addToolbarButton("开始polyline", function () {
+            deActivateAll();
+            drawPolyline.activate();
+        });
+        Sandcastle.addToolbarButton("停止", function () {
+            deActivateAll();
+        });
+        Sandcastle.addToolbarButton("清除", function () {
+            clearAll();
+        });
+    </script>
+  </body>
+</html>
