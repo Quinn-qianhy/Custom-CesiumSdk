@@ -62,6 +62,6 @@ const { onMounted, GUI, getViewer, useExamplesStore } = useCommonImports()
 
 - **Cesium 定制 API**：`utils/customMaterial/*.ts` 与部分示例组件使用 `@ts-nocheck`（自编译包无完整类型）
 - **HTML 双 fetch**：已统一走 `loadHtmlExampleSource` 内存缓存
-- **HTML 示例工具栏**：`example-gui.js` 在右侧「参数」面板挂载 `lil-gui`（`#html-example-gui-mount`），独立打开 HTML 时回退为地图内浮层
+- **HTML 示例工具栏**：嵌入宿主时由父页面 `htmlExampleGuiBridge` 代理创建 `lil-gui`（避免 iframe window 与父页面 DOM 错位）；独立打开 HTML 时仍用页面内 `example-gui.js`
 - **DrawTool**：`entityPoint.vue` 使用静态方法 `DrawTool.startDraw / stopDrawing`
 - **菜单占位**：部分 url 仍指向 `globe-for-webgl` 静态 HTML

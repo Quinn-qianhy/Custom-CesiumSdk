@@ -1,8 +1,3 @@
-<template>
-  <div class="funGui" ref="currentComponent">
-  </div>
-</template>
-
 <script setup lang="ts">
 // @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
@@ -10,17 +5,17 @@ import { DrawTool } from '../../utils/draw'
 import EllipsoidTrailMaterial from '../../utils/customMaterial/ellipsoidTrailMaterial'
 import CustomMaterialLine from '../../utils/customMaterial/polylineFlow'
 import RadarScanCircleMaterial from '../../utils/customMaterial/RaderScanCircleMaterial'
-const { ref, onMounted, GUI, Cesium, useExamplesStore, getViewer } = useCommonImports()
+const { onMounted, GUI, Cesium, useExamplesStore, getViewer, getGuiMount } = useCommonImports()
 const store = useExamplesStore()
 console.log(Cesium,"Cesium")
-const currentComponent = ref(null)
 let viewer = null
 // let imageUrl = require("../assets/images/wallMaterial.png");
 onMounted(() => {
   viewer = getViewer()
-  if (!viewer) return
+  const mount = getGuiMount()
+  if (!viewer || !mount) return
   const gui = new GUI({
-    container: currentComponent.value,
+    container: mount,
     title: store.componentName
   })
   const globe = viewer.scene.globe

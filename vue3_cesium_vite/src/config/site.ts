@@ -32,7 +32,7 @@ const siteConfig: SiteConfig = {
   siteName: 'HY 3D API 示例中心',
   brandShort: 'HY 3D API',
   version: '0.0.0',
-  buildDate: '20250623',
+  buildDate: '20260623',
   author: 'qianhy',
   authorLabel: '开发者',
   email: '',

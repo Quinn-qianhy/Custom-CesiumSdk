@@ -105,7 +105,6 @@ watch(
 <style lang="scss" scoped>
 .activeCom {
   width: 100%;
-  min-height: 200px;
-  padding: 2px;
+  min-height: 0;
 }
 </style>

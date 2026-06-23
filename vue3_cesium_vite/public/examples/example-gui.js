@@ -1,10 +1,10 @@
 /**
- * HTML 示例统一 GUI：在宿主面板挂载 lil-gui，独立打开时回退到页面内浮层
+ * HTML 示例统一 GUI：在宿主左上角浮层挂载 lil-gui，独立打开时回退到页面内浮层
  */
 (function () {
   "use strict";
 
-  var MOUNT_ID = "html-example-gui-mount";
+  var MOUNT_ID = "example-gui-mount";
   var FALLBACK_ID = "example-gui-fallback";
   var DEFAULT_TOOLBAR_ID = "toolbar";
 
@@ -25,6 +25,21 @@
       return null;
     }
     return null;
+  }
+
+  function useHostDelegation() {
+    var host = getHost();
+    return !!(host && host.isDelegated);
+  }
+
+  function delegateToHost(method) {
+    return function () {
+      var host = getHost();
+      if (!host || typeof host[method] !== "function") {
+        return;
+      }
+      return host[method].apply(host, arguments);
+    };
   }
 
   function getPanelMount() {
@@ -141,10 +156,16 @@
 
   window.ExampleGui = {
     reset: function () {
+      if (useHostDelegation()) {
+        return delegateToHost("reset")();
+      }
       clearActive();
     },
 
     finishedLoading: function () {
+      if (useHostDelegation()) {
+        return delegateToHost("finishedLoading")();
+      }
       ExampleGui.reset();
       if (defaultAction) {
         defaultAction();
@@ -153,6 +174,9 @@
     },
 
     addButton: function (text, onclick, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addButton")(text, onclick, toolbarID);
+      }
       var gui = ensureGui();
       if (!gui) {
         addToolbarButtonFallback(text, onclick, toolbarID);
@@ -181,6 +205,9 @@
     },
 
     addToggleButton: function (text, checked, onchange, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addToggleButton")(text, checked, onchange, toolbarID);
+      }
       var gui = ensureGui();
       if (!gui) {
         var input = document.createElement("input");
@@ -216,6 +243,9 @@
     },
 
     addSlider: function (text, value, min, max, step, onchange, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addSlider")(text, value, min, max, step, onchange, toolbarID);
+      }
       var gui = ensureGui();
       if (!gui) {
         var input = document.createElement("input");
@@ -250,6 +280,9 @@
     },
 
     addMenu: function (options, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addMenu")(options, toolbarID);
+      }
       var gui = ensureGui();
       if (!gui) {
         var menu = document.createElement("select");
@@ -324,6 +357,9 @@
 
     /** 销毁当前 GUI 实例（路由切换时由宿主调用） */
     destroy: function () {
+      if (useHostDelegation()) {
+        return delegateToHost("destroy")();
+      }
       if (guiInstance && typeof guiInstance.destroy === "function") {
         guiInstance.destroy();
       }

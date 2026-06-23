@@ -1,20 +1,16 @@
-<template>
-  <div class="funGui" ref="currentComponent"></div>
-</template>
-
 <script setup lang="ts">
 // @ts-nocheck
 import { useCommonImports } from "../../hooks/useCommonImports";
-const { ref, onMounted, GUI, useExamplesStore, Cesium, getViewer } =
+const { onMounted, GUI, useExamplesStore, Cesium, getViewer, getGuiMount } =
   useCommonImports();
 const store = useExamplesStore();
 
-const currentComponent = ref(null);
 let viewer = null;
 
 onMounted(() => {
   viewer = getViewer();
-  if (!viewer) return;
+  const mount = getGuiMount();
+  if (!viewer || !mount) return;
   viewer.imageryLayers.removeAll();
 
   const layers = viewer.imageryLayers;
@@ -32,7 +28,7 @@ onMounted(() => {
   );
 
   const gui = new GUI({
-    container: currentComponent.value,
+    container: mount,
     title: store.componentName,
   });
 

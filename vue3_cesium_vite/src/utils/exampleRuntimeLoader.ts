@@ -4,6 +4,7 @@ import { loadModule } from 'vue3-sfc-loader'
 import GUI from 'lil-gui'
 import * as Cesium from 'cesium'
 import { useExamplesStore } from '@/stores/examplesStore'
+import { useCommonImports } from '@/hooks/useCommonImports'
 
 const rawModuleLoaders = import.meta.glob<string>('/src/**/*.{js,vue,scss,ts}', {
   query: '?raw',
@@ -89,7 +90,9 @@ const sharedModuleCache: Record<string, unknown> = {
   cesium: Cesium,
   '@/stores/examplesStore': { useExamplesStore },
   '../stores/examplesStore': { useExamplesStore },
-  '../../stores/examplesStore': { useExamplesStore }
+  '../../stores/examplesStore': { useExamplesStore },
+  '@/hooks/useCommonImports': { useCommonImports },
+  '../../hooks/useCommonImports': { useCommonImports }
 }
 
 /** 从编辑后的 SFC 源码动态加载示例组件 */

@@ -4,7 +4,7 @@ const MIN_PANEL_WIDTH = 280
 
 /** 示例页右侧可拖拽面板尺寸与折叠状态 */
 export function useResizableExamplePanel() {
-  const panelCollapsed = ref(false)
+  const panelCollapsed = ref(true)
   const panelWidth = ref(380)
   const isResizing = ref(false)
 

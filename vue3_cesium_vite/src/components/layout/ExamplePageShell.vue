@@ -4,7 +4,7 @@
       <span class="example-page__title">{{ examplesTitle }}</span>
       <div class="example-page__actions">
         <el-button size="small" text @click="togglePanel">
-          {{ panelCollapsed ? '展开面板' : '收起面板' }}
+          {{ panelCollapsed ? '展开源码' : '收起源码' }}
         </el-button>
       </div>
     </header>
@@ -22,6 +22,7 @@
       />
 
       <div class="example-page__map">
+        <slot name="gui" />
         <slot name="map" />
         <slot name="loading" />
       </div>
@@ -35,21 +36,15 @@
           class="example-page__resize-handle"
           role="separator"
           aria-orientation="vertical"
-          aria-label="调整面板宽度"
+          aria-label="调整源码面板宽度"
           @pointerdown="startResize"
         />
-        <el-tabs v-model="activeTab" class="example-tabs">
-          <el-tab-pane label="参数" name="params">
-            <div class="example-tabs__content">
-              <slot name="params" />
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="源码" name="code">
-            <div class="example-tabs__content">
-              <slot name="code" :active="activeTab === 'code'" />
-            </div>
-          </el-tab-pane>
-        </el-tabs>
+        <div class="example-page__code">
+          <!-- <div class="example-page__code-header">源码</div> -->
+          <div class="example-page__code-body">
+            <slot name="code" :active="!panelCollapsed" />
+          </div>
+        </div>
       </aside>
     </div>
   </div>
@@ -65,8 +60,6 @@ const props = withDefaults(
   }>(),
   {}
 )
-
-const activeTab = defineModel<string>('activeTab', { default: 'params' })
 
 const { examplesTitle } = useExamplePageTitle(props.titleParam)
 

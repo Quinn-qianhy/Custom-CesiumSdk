@@ -17,7 +17,7 @@ const menu = [
             "image": "/examples/sceneScreenshot.png",
             "type": "html",
             "url": "/examples/sceneScreenshot.html",
-            "status": "pending",
+            "status": "ok",
             "statusTags": [
               "cesium-api"
             ],
