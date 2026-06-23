@@ -52,11 +52,6 @@
       viewer.scene.skyBox.show = false;
       viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0);
 
-      //初始定位位置
-      viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 20000000.0), //四川省政府
-      });
-
       selectPicture(1);
       function selectPicture(numURL) {
         var img1 = "url(/examples/backgroundPicture/background1.jpg)";

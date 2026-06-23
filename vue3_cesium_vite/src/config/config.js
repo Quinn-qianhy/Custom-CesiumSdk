@@ -39,7 +39,7 @@ const menu = [
             "image": "/examples/skyboxPicture.png",
             "type": "html",
             "url": "/examples/mapRotation.html",
-            "status": "pending",
+            "status": "ok",
             "statusTags": [
               "server-data"
             ],
@@ -55,12 +55,7 @@ const menu = [
             "name": "测试用窗口",
             "image": "/examples/development.png",
             "type": "html",
-            "url": "/examples/text.html",
-            "status": "pending",
-            "statusTags": [
-              "server-data"
-            ],
-            "statusReason": "依赖第三方地图服务或 API Key"
+            "url": "/examples/text.html"
           }
         ]
       },
