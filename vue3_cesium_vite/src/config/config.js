@@ -72,7 +72,8 @@ const menu = [
             "name": "双屏联动",
             "image": "/examples/doubleView.png",
             "type": "html",
-            "url": "/examples/doubleView.html"
+            "url": "/examples/doubleView.html",
+            "status": "pending",
           },
           {
             "name": "卷帘对比",
@@ -123,7 +124,8 @@ const menu = [
             "name": "绕点飞行",
             "image": "/examples/RouteFlyManager.gif",
             "type": "html",
-            "url": "/examples/rotationPoint.html"
+            "url": "/examples/rotationPoint.html",
+            "status": "pending",
           },
           {
             "name": "限定视角范围",
@@ -146,7 +148,8 @@ const menu = [
             "name": "路径飞行",
             "image": "/examples/RouteFlyManager.gif",
             "type": "html",
-            "url": "/examples/RouteFlyManager.html"
+            "url": "/examples/RouteFlyManager.html",
+            "status": "pending",
           }
         ]
       }
@@ -174,7 +177,8 @@ const menu = [
             "name": "反色滤镜地图",
             "image": "/examples/mapColorFilter.png",
             "type": "html",
-            "url": "/examples/mapColorFilter.html"
+            "url": "/examples/mapColorFilter.html",
+            "status": "pending",
           },
           {
             "name": "高德地图",
