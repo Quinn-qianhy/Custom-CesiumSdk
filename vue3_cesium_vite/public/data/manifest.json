@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "environments": {
+    "development": {
+      "baseUrl": "http://localhost:8888"
+    },
+    "internal": {
+      "baseUrl": "http://172.20.16.213:8888"
+    }
+  },
+  "datasets": {
+    "geojson.sichuanRegion": {
+      "type": "geojson",
+      "local": "/data/geojson/sichuan_region.json",
+      "remote": "${baseUrl}/geojson/sichuan_region.json"
+    },
+    "tilesets.chengduBuilding": {
+      "type": "3dtiles",
+      "localOnly": true,
+      "remote": "${baseUrl}/3dtiles/chengdu_building/tileset.json",
+      "fallback": "https://earthsdk.com/v/last/Apps/assets/dayanta/tileset.json"
+    },
+    "terrain.localDem": {
+      "type": "terrain",
+      "localOnly": true,
+      "remote": "${baseUrl}/cesiumLocal_dem"
+    }
+  }
+}

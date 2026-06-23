@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>绘制点线面</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+</style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+<script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer");
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      window.measureDistance = new Cesium.MeasureHandler(
+        viewer,
+        Cesium.MeasureMode.DISTANCE
+      );
+      window.measureArea = new Cesium.MeasureHandler(
+        viewer,
+        Cesium.MeasureMode.AREA
+      );
+
+      function deActivateAll() {
+        measureDistance.deactivate();
+        measureArea.deactivate();
+      }
+
+      function clearAll() {
+        measureDistance.clear();
+        measureArea.clear();
+      }
+
+      ExampleGui.addToolbarButton("距离", function() {
+        deActivateAll();
+        measureDistance.activate();
+      });
+      ExampleGui.addToolbarButton("面积", function() {
+        deActivateAll();
+        measureArea.activate();
+      });
+
+      ExampleGui.addToolbarButton("停止", function() {
+        deActivateAll();
+      });
+      ExampleGui.addToolbarButton("清除", function() {
+        clearAll();
+      });
+    </script>
+  </body>
+</html>

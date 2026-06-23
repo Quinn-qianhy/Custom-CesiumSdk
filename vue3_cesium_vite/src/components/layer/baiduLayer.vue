@@ -2,9 +2,10 @@
   <div class="funGui" ref="currentComponent"></div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// @ts-nocheck
 import { useCommonImports } from "../../hooks/useCommonImports";
-const { ref, inject, onMounted, GUI, useExamplesStore, Cesium } =
+const { ref, onMounted, GUI, useExamplesStore, Cesium, getViewer } =
   useCommonImports();
 const store = useExamplesStore();
 
@@ -12,7 +13,8 @@ const currentComponent = ref(null);
 let viewer = null;
 
 onMounted(() => {
-  viewer = inject("$viewer");
+  viewer = getViewer();
+  if (!viewer) return;
   viewer.imageryLayers.removeAll();
 
   const layers = viewer.imageryLayers;

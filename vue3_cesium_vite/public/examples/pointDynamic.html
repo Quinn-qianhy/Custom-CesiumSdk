@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>div动态效果点</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+.point {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid hsla(0, 0%, 100%, 0.5);
+      cursor: pointer;
+      color: #0ff;
+      background: currentColor;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 2em currentColor, 0 0 0.5em currentColor;
+      position: absolute;
+    }
+
+    .point:before,
+    .point:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 50%;
+      top: 50%;
+      border-radius: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      border: 1px solid;
+      -webkit-animation: orisdom3d-animation-point-mapAni 1s ease infinite;
+      -moz-animation: orisdom3d-animation-point-mapAni 1s ease infinite;
+      -o-animation: orisdom3d-animation-point-mapAni 1s ease infinite;
+      -ms-animation: orisdom3d-animation-point-mapAni 1s ease infinite;
+      animation: orisdom3d-animation-point-mapAni 1s ease infinite;
+    }
+
+    .point,
+    .point:after,
+    .point:before {
+      margin: 0;
+      padding: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -o-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    @-webkit-keyframes orisdom3d-animation-point-mapAni {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        filter: alpha(opacity=1);
+      }
+
+      25% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+      }
+
+      50% {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+
+      75% {
+        width: 30px;
+        height: 30px;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+
+      to {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+      }
+    }
+
+    @-moz-keyframes orisdom3d-animation-point-mapAni {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        filter: alpha(opacity=1);
+      }
+
+      25% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+      }
+
+      50% {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+
+      75% {
+        width: 30px;
+        height: 30px;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+
+      to {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+      }
+    }
+
+    @-o-keyframes orisdom3d-animation-point-mapAni {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        filter: alpha(opacity=1);
+      }
+
+      25% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+      }
+
+      50% {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+
+      75% {
+        width: 30px;
+        height: 30px;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+
+      to {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+      }
+    }
+
+    @-ms-keyframes orisdom3d-animation-point-mapAni {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        filter: alpha(opacity=1);
+      }
+
+      25% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+      }
+
+      50% {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+
+      75% {
+        width: 30px;
+        height: 30px;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+
+      to {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+      }
+    }
+
+    @keyframes orisdom3d-animation-point-mapAni {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+        filter: alpha(opacity=1);
+      }
+
+      25% {
+        width: 12px;
+        height: 12px;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+      }
+
+      50% {
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+      }
+
+      75% {
+        width: 30px;
+        height: 30px;
+        opacity: 0.2;
+        filter: alpha(opacity=20);
+      }
+
+      to {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+      }
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<div id="htmlOverlay">
+  </div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      navigation: false
+    })
+    //地图亮度设置
+    var stages = viewer.scene.postProcessStages;
+    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary
+      .createBrightnessStage());
+    viewer.scene.brightness.enabled = true;
+    viewer.scene.brightness.uniforms.brightness = 1;
+    viewer.scene.globe.depthTestAgainstTerrain = true
+
+    viewer.imageryLayers.addImageryProvider(
+      new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+    )
+
+
+    //初始定位位置
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), //四川省政府
+    })
+
+    const htmlOverlay = document.getElementById("htmlOverlay");
+
+    function addPoint(lon, lat, color) {
+      const scratch = new Cesium.Cartesian2();
+      const point = document.createElement('div')
+      point.setAttribute('class', 'point')
+      viewer.scene.preRender.addEventListener(function () {
+        const position = Cesium.Cartesian3.fromDegrees(lon, lat);
+        const canvasPosition = viewer.scene.cartesianToCanvasCoordinates(
+          position,
+          scratch
+        );
+        if (Cesium.defined(canvasPosition)) {
+          point.style.top = `${canvasPosition.y}px`;
+          point.style.left = `${canvasPosition.x}px`;
+          point.style.color = color
+        }
+      });
+
+      htmlOverlay.appendChild(point)
+    }
+
+    function clearpoints() {
+      const htmlOverlay = document.getElementById("htmlOverlay")
+      const childs = htmlOverlay.childNodes
+      for (var i = childs.length - 1; i >= 0; i--) {
+        htmlOverlay.removeChild(childs[i]);
+      }
+    }
+
+    //根据差值随机生成值
+    function randomRange(myMin, myMax) {
+      return Math.random() * (myMax - myMin + 1) + myMin;
+    }
+
+    function addPoints(num) {
+      const colors = ['#0ff', '#b5a603', '#239233', 'red', '#8c4d34', '#32CD32']
+      for (let i = 0; i < num; i++) {
+        const lat = randomRange(104.33, 105.05) //根据经度差生成随机值
+        const lon = randomRange(30.51, 31.33) //根据纬度差生成随机值
+        const color = colors[Math.floor(Math.random() * colors.length)]
+        addPoint(lat, lon, color)
+      }
+      viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(104.83, 31.05, 1000000.0)
+    })
+    }
+
+    ExampleGui.addToolbarButton("添加单个点", function () {
+      addPoint(104.08, 30.65, '#ffff00')
+    })
+    ExampleGui.addToolbarButton("添加大量点", function () {
+      addPoints(100)
+    })
+    ExampleGui.addToolbarButton("清除", function () {
+      clearpoints()
+    })
+
+  </script>
+</body>
+
+</html>

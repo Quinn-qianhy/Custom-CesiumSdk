@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>地球旋转</title>
+<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="/examples/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  
+
+
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      }),
+      shouldAnimate: true
+    });
+
+    let prev = viewer.clock.currentTime;
+    var icrf = () => {
+      var position = viewer.camera.position
+      var {
+        height
+      } = viewer.scene.globe.ellipsoid.cartesianToCartographic(position)
+      const a = (465.2 / (6371 * 1000)) * (height + 6371 * 1000);
+      var currentTime = viewer.clock.currentTime
+      const interval = Cesium.JulianDate.toDate(currentTime) - Cesium.JulianDate.toDate(prev);
+      prev = currentTime;
+      viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, (Math.PI / (24 * 60 * 60)) * (interval * a / 100))
+    }
+    viewer.clock.onTick.addEventListener(icrf);
+   function start(){
+        viewer.clock.multiplier = Number(viewModel.multiplier)
+   }
+
+   var viewModel = {
+    multiplier: 1
+    }
+    Cesium.knockout.track(viewModel)
+
+    // ExampleGui 参数面板
+    ExampleGui.addSlider('速度', 1, 1, 20, 1, function(value) {
+      viewModel.multiplier = value;
+    });
+    ExampleGui.finishedLoading();Cesium.knockout.getObservable(viewModel, "multiplier")
+      .subscribe(start)
+
+  </script>
+</body>
+
+</html>

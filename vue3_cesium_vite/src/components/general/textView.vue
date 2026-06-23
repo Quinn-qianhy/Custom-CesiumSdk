@@ -3,20 +3,22 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
 import { DrawTool } from '../../utils/draw'
 import EllipsoidTrailMaterial from '../../utils/customMaterial/ellipsoidTrailMaterial'
 import CustomMaterialLine from '../../utils/customMaterial/polylineFlow'
 import RadarScanCircleMaterial from '../../utils/customMaterial/RaderScanCircleMaterial'
-const { ref, inject, onMounted, GUI, Cesium, useExamplesStore } = useCommonImports()
+const { ref, onMounted, GUI, Cesium, useExamplesStore, getViewer } = useCommonImports()
 const store = useExamplesStore()
 console.log(Cesium,"Cesium")
 const currentComponent = ref(null)
 let viewer = null
 // let imageUrl = require("../assets/images/wallMaterial.png");
 onMounted(() => {
-  viewer = inject('$viewer')
+  viewer = getViewer()
+  if (!viewer) return
   const gui = new GUI({
     container: currentComponent.value,
     title: store.componentName

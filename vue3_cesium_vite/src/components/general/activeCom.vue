@@ -1,39 +1,111 @@
 <template>
-  <div class="activeCom" v-if="store.componentName != ''">
-    <!-- 动态功能组件切换 -->
-    <component :is="currentComponent " />
+  <div class="activeCom" v-if="currentComponent">
+    <component :is="currentComponent" :key="componentKey" />
   </div>
 </template>
-<script setup>
-import { ref, onMounted, watch, defineAsyncComponent, computed, defineComponent } from 'vue';
-import { useExamplesStore } from '../../stores/examplesStore'
-import comNames from '../../config/comNames'
-// 动态功能组件切换
-let currentComponent = null; // 存放组件实例对象
+
+<script setup lang="ts">
+import { computed, shallowRef, watch, markRaw, type Component } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { useExamplesStore } from '@/stores/examplesStore'
+import { sceneManager, setScene } from '@/utils/sceneManager'
+import { loadExampleFromSource, clearRuntimeStyles } from '@/utils/exampleRuntimeLoader'
+
+const route = useRoute()
 const store = useExamplesStore()
-const currentComName = computed(() => {
-  // console.log(store.componentName, localStorage.getItem('componentName')); 
-  //新标签页打开时,store.componentName为空,localStorage.getItem('componentName')有值
-  return comNames.find((item) => item.id === localStorage.getItem('componentName'))
-})
+const { customSource, applyRevision } = storeToRefs(store)
 
-// 遍历所有示例组件
-const requireComponent = import.meta.globEager('../../components/**/*.vue');
-Object.entries(requireComponent).forEach(async ([key, val]) => {
-  // 匹配路径中的组件名称，忽略目录结构
-  const componentName = key.replace(/^.*\/(\w+)\.vue$/, '$1');
-  // console.log(componentName, currentComName.value.name, key, val.default);
-  if (componentName === currentComName.value.name) {
-    currentComponent = val.default
+const modules = import.meta.glob<{ default: Component }>([
+  '@/components/scene/*.vue',
+  '@/components/layer/*.vue',
+  '@/components/material/*.vue',
+  '@/components/draw/*.vue',
+  '@/components/general/textView.vue'
+])
+
+const modulePathById = new Map<string, string>()
+for (const path of Object.keys(modules)) {
+  const match = path.match(/\/([^/]+)\.vue$/)
+  if (match) {
+    modulePathById.set(match[1], path)
   }
-});
+}
 
+const componentId = computed(() => route.params.componentId as string)
+const currentComponent = shallowRef<Component | null>(null)
+
+const componentKey = computed(
+  () => `${componentId.value}-${applyRevision.value}`
+)
+
+const resetViewerState = () => {
+  const viewer = sceneManager.getViewer()
+  if (!viewer || viewer.isDestroyed()) {
+    return
+  }
+  viewer.entities.removeAll()
+  viewer.dataSources.removeAll()
+  setScene(viewer)
+  clearRuntimeStyles()
+}
+
+const loadDefaultComponent = async (id: string) => {
+  const modulePath = modulePathById.get(id)
+
+  if (!modulePath) {
+    console.warn(`未找到示例组件: ${id}`)
+    currentComponent.value = null
+    return
+  }
+
+  const mod = await modules[modulePath]()
+  currentComponent.value = markRaw(mod.default)
+}
+
+const loadComponent = async (id: string) => {
+  if (!id) {
+    currentComponent.value = null
+    return
+  }
+
+  resetViewerState()
+
+  if (customSource.value) {
+    try {
+      const component = await loadExampleFromSource(customSource.value, id)
+      currentComponent.value = markRaw(component)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      console.error(error)
+      ElMessage.error(`自定义代码加载失败: ${message}`)
+      store.resetCustomSource()
+      await loadDefaultComponent(id)
+    }
+    return
+  }
+
+  await loadDefaultComponent(id)
+}
+
+watch(
+  [componentId, applyRevision],
+  ([id], [prevId]) => {
+    if (prevId && id !== prevId) {
+      store.resetCustomSource()
+    }
+    store.componentName = id || ''
+    loadComponent(id)
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>
 .activeCom {
   width: 100%;
-  height: 100%;
+  min-height: 200px;
   padding: 2px;
 }
 </style>

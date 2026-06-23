@@ -3,18 +3,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
-import CustomMaterialLine from '../../utils/customMaterial/polylineFlow.js'
+import CustomMaterialLine from '../../utils/customMaterial/polylineFlow'
 
-const { ref, inject, onMounted, GUI, Cesium, useExamplesStore } = useCommonImports()
+const { ref, onMounted, GUI, Cesium, useExamplesStore, getViewer } = useCommonImports()
 const store = useExamplesStore()
 
 const currentComponent = ref(null)
 let viewer = null
 
 onMounted(() => {
-  viewer = inject('$viewer')
+  viewer = getViewer()
+  if (!viewer) return
   const gui = new GUI({
     container: currentComponent.value,
     title: store.componentName

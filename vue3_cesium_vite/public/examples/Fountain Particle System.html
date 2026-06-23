@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>喷泉粒子</title>
+<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="/examples/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      position: relative
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+<script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        navigation: false,
+        shouldAnimate: true,
+      })
+
+      function computeModelMatrix(entity, time) {
+        var position = Cesium.Property.getValueOrUndefined(entity.position, time, new Cesium.Cartesian3());
+        if (!Cesium.defined(position)) {
+          return undefined;
+        }
+
+        const emitterModelMatrix = new Cesium.Matrix4();
+        const translation = new Cesium.Cartesian3();
+        const rotation = new Cesium.Quaternion();
+        let hpr = new Cesium.HeadingPitchRoll();
+        const trs = new Cesium.TranslationRotationScale();
+
+        function computeEmitterModelMatrix() {
+          hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+          trs.translation = Cesium.Cartesian3.fromElements(
+            0.0,
+            0.0,
+            5.4,
+            translation
+          );
+          trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+          return Cesium.Matrix4.fromTranslationRotationScale(
+            trs,
+            emitterModelMatrix
+          );
+        }
+        return modelMatrix;
+      }
+
+      function computeEmitterModelMatrix() {
+        var hpr = Cesium.HeadingPitchRoll.fromDegrees(1.0, 1.0, 1.0, new Cesium.HeadingPitchRoll());
+        var trs = new Cesium.TranslationRotationScale();
+        trs.translation = Cesium.Cartesian3.fromElements(2.5, 4.0, 1.0, new Cesium.Cartesian3());
+        trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, new Cesium.Quaternion());
+        return Cesium.Matrix4.fromTranslationRotationScale(trs, new Cesium.Matrix4());
+      }
+
+      const viewModel = {
+        emissionRate: 40.0,
+        minimumSpeed: 9,
+        maximumSpeed: 9.5,
+        particleSize: 1.0,
+        minimumParticleLife: 6,
+        maximumParticleLife: 7,
+        gravity: -3.5,
+        startScale: 1.0,
+        endScale: 20.0,
+      };
+      Cesium.knockout.track(viewModel);
+    // ExampleGui 参数面板
+    ExampleGui.addSlider('emissionRate', 40.0, 0, 100, 1, function(value) {
+      viewModel.emissionRate = value;
+    });
+    ExampleGui.addSlider('minimumParticleLife', 6, 0, 100, 1, function(value) {
+      viewModel.minimumParticleLife = value;
+    });
+    ExampleGui.addSlider('maximumParticleLife', 7, 0, 100, 1, function(value) {
+      viewModel.maximumParticleLife = value;
+    });
+    ExampleGui.addSlider('minimumSpeed', 9, 0, 100, 1, function(value) {
+      viewModel.minimumSpeed = value;
+    });
+    ExampleGui.addSlider('maximumSpeed', 9.5, 0, 100, 1, function(value) {
+      viewModel.maximumSpeed = value;
+    });
+    ExampleGui.addSlider('startScale', 1.0, 0, 100, 1, function(value) {
+      viewModel.startScale = value;
+    });
+    ExampleGui.addSlider('endScale', 20.0, 0, 100, 1, function(value) {
+      viewModel.endScale = value;
+    });
+    ExampleGui.finishedLoading();
+const entityPosition = new Cesium.Cartesian3();
+      const entityOrientation = new Cesium.Quaternion();
+      const rotationMatrix = new Cesium.Matrix3();
+      const modelMatrix = new Cesium.Matrix4();
+
+      function computeModelMatrix(entity, time) {
+        return entity.computeModelMatrix(time, new Cesium.Matrix4());
+      }
+
+      const emitterModelMatrix = new Cesium.Matrix4();
+      const translation = new Cesium.Cartesian3();
+      const rotation = new Cesium.Quaternion();
+      let hpr = new Cesium.HeadingPitchRoll();
+      const trs = new Cesium.TranslationRotationScale();
+
+      function computeEmitterModelMatrix() {
+        hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+        trs.translation = Cesium.Cartesian3.fromElements(
+          0.0,
+          0.0,
+          5.4,
+          translation
+        );
+        trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+        return Cesium.Matrix4.fromTranslationRotationScale(
+          trs,
+          emitterModelMatrix
+        );
+      }
+
+      const pos2 = Cesium.Cartesian3.fromDegrees(
+        121.48960149965716,
+        31.2428359062178,
+        20
+      );
+      const entity = viewer.entities.add({
+        position: pos2,
+      });
+      
+      viewer.camera.setView({
+        destination: {
+          x: -2850929.1897931746, y: 4654412.652213738, z: 3288963.1104693376
+        },
+        orientation: {
+            heading : 1.4083154475775492, 
+            pitch : -0.4255405501795515,    
+            roll : 0.0000059739718007989495                       
+          }
+      })
+      var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
+        image: 'static/examples/sampleData/image/fountain.png',
+        scale: viewModel.scale,
+        startColor: new Cesium.Color(1, 1, 1, 0.6),
+        endColor: new Cesium.Color(0.8, 0.86, 1, 0.4),
+        minimumParticleLife: viewModel.minimumParticleLife,
+        maximumParticleLife: viewModel.maximumParticleLife,
+        minimumSpeed: viewModel.minimumSpeed,
+        maximumSpeed: viewModel.maximumSpeed,
+        imageSize: new Cesium.Cartesian2(
+          viewModel.particleSize,
+          viewModel.particleSize
+        ),
+        emissionRate: viewModel.emissionRate,
+        sizeInMeters: true,
+        lifetime: 16.0,
+        emitter: new Cesium.CircleEmitter(2.0),
+        emitterModelMatrix: computeEmitterModelMatrix(),
+        updateCallback: applyGravity,
+      }));
+
+      const gravityScratch = new Cesium.Cartesian3();
+
+      function applyGravity(p, dt) {
+        // We need to compute a local up vector for each particle in geocentric space.
+        const position = p.position;
+
+        Cesium.Cartesian3.normalize(position, gravityScratch);
+        Cesium.Cartesian3.multiplyByScalar(
+          gravityScratch,
+          viewModel.gravity * dt,
+          gravityScratch
+        );
+
+        p.velocity = Cesium.Cartesian3.add(
+          p.velocity,
+          gravityScratch,
+          p.velocity
+        );
+      }
+
+      viewer.scene.preUpdate.addEventListener(function (scene, time) {
+        particleSystem.modelMatrix = computeModelMatrix(entity, time);
+
+        // Account for any changes to the emitter model matrix.
+        particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
+      });
+
+      Cesium.knockout
+        .getObservable(viewModel, "emissionRate")
+        .subscribe(function (newValue) {
+          particleSystem.emissionRate = parseFloat(newValue);
+        });
+      const scene = viewer.scene;
+
+      Cesium.knockout
+        .getObservable(viewModel, "minimumParticleLife")
+        .subscribe(function (newValue) {
+          particleSystem.minimumParticleLife = parseFloat(newValue);
+        });
+
+      Cesium.knockout
+        .getObservable(viewModel, "maximumParticleLife")
+        .subscribe(function (newValue) {
+          particleSystem.maximumParticleLife = parseFloat(newValue);
+        });
+
+      Cesium.knockout
+        .getObservable(viewModel, "minimumSpeed")
+        .subscribe(function (newValue) {
+          particleSystem.minimumSpeed = parseFloat(newValue);
+        });
+
+      Cesium.knockout
+        .getObservable(viewModel, "maximumSpeed")
+        .subscribe(function (newValue) {
+          particleSystem.maximumSpeed = parseFloat(newValue);
+        });
+      Cesium.knockout
+        .getObservable(viewModel, "startScale")
+        .subscribe(function (newValue) {
+          particleSystem.startScale = parseFloat(newValue);
+        });
+
+        Cesium.knockout
+        .getObservable(viewModel, "endScale")
+        .subscribe(function (newValue) {
+          particleSystem.endScale = parseFloat(newValue);
+        });
+
+        Cesium.knockout
+          .getObservable(viewModel, "startScale")
+          .subscribe(function (newValue) {
+            particleSystem.startScale = parseFloat(newValue);
+          });
+
+        Cesium.knockout
+          .getObservable(viewModel, "endScale")
+          .subscribe(function (newValue) {
+            particleSystem.endScale = parseFloat(newValue);
+          });
+
+    </script>
+</body>
+
+</html>

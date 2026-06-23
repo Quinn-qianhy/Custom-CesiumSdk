@@ -1,0 +1,66 @@
+/* kiro 对齐：Header + (Sidebar + Main) + Footer */
+.app-shell {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--tech-bg-gradient);
+  background-size: 400% 400%;
+  animation: layoutGradient 15s ease infinite;
+  overflow: hidden;
+
+  @keyframes layoutGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  &__header {
+    flex-shrink: 0;
+    padding: 0;
+    height: var(--header-height) !important;
+    z-index: 100;
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+
+    &--full {
+      margin-left: 0 !important;
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    padding: 0;
+    height: var(--footer-height) !important;
+    z-index: 100;
+  }
+}
+
+@media (max-width: 992px) {
+  .app-shell__body {
+    position: relative;
+  }
+
+  .app-shell__main {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell {
+    animation: none;
+  }
+}

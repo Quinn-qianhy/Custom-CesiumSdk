@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>entity点</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+    })
+
+    viewer.scene.globe.depthTestAgainstTerrain = false
+
+     //初始定位位置
+     viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 5000000.0), //四川省政府
+    })
+
+    //entity方式自定义billboard
+    function addPoint(lat, lon) {
+      var entityPoint = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(lat, lon),
+        billboard: {
+          image: '/examples/clusterPicture/billBoardIcon.png',
+          show: true,
+          pixelOffset: new Cesium.Cartesian2(0, -20),
+        }
+      })
+    }
+
+    //根据差值随机生成值
+    function randomRange(myMin, myMax) {
+      return Math.random() * (myMax - myMin  + 1)  + myMin;
+    }
+    
+    //entity方式添加大量billboard点 
+    function addPoints(num) {
+      for (let i = 0; i < num; i++) {
+        const lat = randomRange(73.33,135.05)//根据经度差生成随机值
+        const lon = randomRange(10.51,53.33)//根据纬度差生成随机值
+        addPoint(lat, lon)
+      }
+    }
+
+
+
+
+    ExampleGui.addToolbarButton("添加单个点", function () {
+      addPoints(1)
+    })
+    ExampleGui.addToolbarButton("添加大量点", function () {
+      addPoints(1000)
+    })
+    ExampleGui.addToolbarButton("清除全部", function () {
+      viewer.entities.removeAll()
+    })
+
+
+   
+
+  </script>
+</body>
+
+</html>
