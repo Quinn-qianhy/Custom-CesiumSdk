@@ -1,0 +1,62 @@
+/* packages/widgets/Source/StatusBar/StatusBar.css */
+.cesium-statusbar-wrapper {
+  position: relative;
+}
+.cesium-statusbar-main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+  color: #e9e9e9;
+  background-color: #0006;
+  border-top: solid 1px #555;
+  padding: 0 10px;
+  font-size: 12px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 0.25s ease-out;
+}
+.cesium-statusbar-main:not(.cesium-statusbar-visible) {
+  opacity: 0;
+  pointer-events: none;
+}
+.cesium-statusbar-scale {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 4px;
+}
+.cesium-statusbar-scale-bar {
+  position: relative;
+  border: 2px solid #eee;
+  border-top: none;
+  height: 12px;
+  min-width: 100px;
+}
+.cesium-statusbar-scale-label {
+  margin-left: 8px;
+  color: #eee;
+  white-space: nowrap;
+}
+.cesium-statusbar-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.cesium-statusbar-info-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.cesium-statusbar-info-label {
+  color: #eee;
+  margin-right: 4px;
+}
+.cesium-statusbar-info-value {
+  color: #eee;
+  font-weight: 500;
+}

@@ -1,0 +1,346 @@
+/* packages/engine/Source/HyCustom/Righttool/rightTool.css */
+:root {
+  --righttool-accent: #68adfe;
+  --righttool-accent-soft: rgba(104, 173, 254, 0.14);
+  --righttool-accent-glow: rgba(104, 173, 254, 0.35);
+  --righttool-teal: #22d3ee;
+  --righttool-bg: rgba(15, 23, 42, 0.9);
+  --righttool-submenu-bg: rgba(17, 24, 39, 0.96);
+  --righttool-border: rgba(104, 173, 254, 0.22);
+  --righttool-border-subtle: rgba(255, 255, 255, 0.07);
+  --righttool-text: #f1f5f9;
+  --righttool-text-muted: #94a3b8;
+  --righttool-text-hover: #e0f2fe;
+  --righttool-menu-min-width: 188px;
+  --righttool-menu-radius: 8px;
+  --righttool-item-radius: 6px;
+  --righttool-item-height: 34px;
+  --righttool-icon-size: 15px;
+  --righttool-z-menu: 50;
+  --righttool-z-submenu: 51;
+  --righttool-z-panel: 60;
+  --righttool-transition: 180ms ease-out;
+  --righttool-shadow: 0 10px 38px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+.righttool-menu {
+  position: absolute;
+  z-index: var(--righttool-z-menu);
+  min-width: var(--righttool-menu-min-width);
+  padding: 6px;
+  border-radius: var(--righttool-menu-radius);
+  border: 1px solid var(--righttool-border);
+  background: var(--righttool-bg);
+  box-shadow: var(--righttool-shadow);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  color: var(--righttool-text);
+  pointer-events: auto;
+  display: none;
+  user-select: none;
+  overflow: visible;
+  font-family:
+    system-ui,
+    "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+  font-size: 13px;
+  line-height: 1;
+}
+.righttool-menu--visible {
+  display: block;
+  animation: righttool-menu-in var(--righttool-transition);
+}
+.righttool-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.righttool-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--righttool-item-height);
+  margin: 2px 0;
+  padding: 0 10px 0 8px;
+  border-radius: var(--righttool-item-radius);
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--righttool-text);
+  transition: background-color var(--righttool-transition), color var(--righttool-transition);
+}
+.righttool-menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background:
+    linear-gradient(
+      180deg,
+      var(--righttool-accent),
+      var(--righttool-teal));
+  opacity: 0;
+  transition: opacity var(--righttool-transition);
+}
+.righttool-menu-item:hover,
+.righttool-menu-item--active,
+.righttool-menu-item--has-submenu:hover {
+  background: var(--righttool-accent-soft);
+  color: var(--righttool-text-hover);
+}
+.righttool-menu-item:hover::before,
+.righttool-menu-item--active::before,
+.righttool-menu-item--has-submenu:hover::before {
+  opacity: 1;
+}
+.righttool-menu-item-icon {
+  flex-shrink: 0;
+  width: var(--righttool-icon-size);
+  height: var(--righttool-icon-size);
+  padding: 4px;
+  box-sizing: content-box;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  display: block;
+  opacity: 0.88;
+  transition: background-color var(--righttool-transition), opacity var(--righttool-transition);
+}
+.righttool-menu-item:hover .righttool-menu-item-icon {
+  background: rgba(104, 173, 254, 0.18);
+  opacity: 1;
+}
+.righttool-menu-item-label {
+  flex: 1;
+  font-weight: 450;
+  letter-spacing: 0.01em;
+}
+.righttool-menu-item-arrow {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  transition: opacity var(--righttool-transition), transform var(--righttool-transition);
+}
+.righttool-menu-item--has-submenu:hover .righttool-menu-item-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+.righttool-menu-item--has-submenu::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 12px;
+  height: 100%;
+  background: transparent;
+}
+.righttool-menu-item--has-submenu > .righttool-submenu {
+  display: none;
+  position: absolute;
+  left: calc(100% + 4px);
+  top: -4px;
+  z-index: var(--righttool-z-submenu);
+  min-width: var(--righttool-menu-min-width);
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: var(--righttool-menu-radius);
+  border: 1px solid var(--righttool-border);
+  background: var(--righttool-submenu-bg);
+  box-shadow: var(--righttool-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: auto;
+}
+.righttool-menu-item--has-submenu:hover > .righttool-submenu,
+.righttool-menu-item--has-submenu.righttool-menu-item--submenu-open > .righttool-submenu {
+  display: block;
+  animation: righttool-submenu-in var(--righttool-transition);
+}
+.righttool-menu-item--has-submenu > .righttool-submenu.righttool-submenu--flip {
+  left: auto;
+  right: calc(100% + 4px);
+}
+.righttool-panel {
+  position: absolute;
+  z-index: var(--righttool-z-panel);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 320px;
+  max-width: min(500px, calc(100% - 32px));
+  border-radius: 10px;
+  border: 1px solid var(--righttool-border);
+  background: var(--righttool-bg);
+  box-shadow: var(--righttool-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--righttool-text);
+  pointer-events: auto;
+  display: none;
+  overflow: hidden;
+}
+.righttool-panel::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--righttool-accent),
+      var(--righttool-teal));
+}
+.righttool-panel--visible {
+  display: block;
+  animation: righttool-panel-in 220ms ease-out;
+}
+.righttool-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 8px;
+}
+.righttool-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--righttool-text);
+}
+.righttool-panel-title::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--righttool-accent);
+  vertical-align: middle;
+  box-shadow: 0 0 6px var(--righttool-accent-glow);
+}
+.righttool-panel-close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--righttool-text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color var(--righttool-transition),
+    border-color var(--righttool-transition),
+    color var(--righttool-transition);
+}
+.righttool-panel-close:hover {
+  background: var(--righttool-accent-soft);
+  border-color: var(--righttool-border);
+  color: var(--righttool-text);
+}
+.righttool-panel-close:focus-visible {
+  outline: 2px solid var(--righttool-accent);
+  outline-offset: 2px;
+}
+.righttool-panel-divider {
+  height: 1px;
+  margin: 0 14px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--righttool-border-subtle) 20%,
+      var(--righttool-border-subtle) 80%,
+      transparent);
+}
+.righttool-panel-body {
+  padding: 12px 14px 14px;
+  max-height: min(480px, 60vh);
+  overflow: auto;
+}
+.righttool-panel-content {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--righttool-text-muted);
+  word-break: break-all;
+}
+.righttool-panel-content strong {
+  color: var(--righttool-accent);
+  font-weight: 600;
+}
+.righttool-panel-content ul {
+  margin: 8px 0;
+  padding: 8px 10px;
+  list-style: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--righttool-border-subtle);
+}
+.righttool-panel-content li {
+  font-family:
+    ui-monospace,
+    "Cascadia Code",
+    Consolas,
+    monospace;
+  font-size: 12px;
+  color: var(--righttool-text);
+}
+.righttool-panel-body::-webkit-scrollbar {
+  width: 5px;
+}
+.righttool-panel-body::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(104, 173, 254, 0.35);
+}
+.righttool-panel-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+@keyframes righttool-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes righttool-submenu-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes righttool-panel-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .righttool-menu--visible,
+  .righttool-panel--visible,
+  .righttool-menu-item--has-submenu:hover > .righttool-submenu,
+  .righttool-menu-item--has-submenu.righttool-menu-item--submenu-open > .righttool-submenu {
+    animation: none;
+  }
+  .righttool-menu-item,
+  .righttool-menu-item-icon,
+  .righttool-menu-item-arrow,
+  .righttool-panel-close {
+    transition: none;
+  }
+}

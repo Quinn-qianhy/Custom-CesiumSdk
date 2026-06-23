@@ -1,0 +1,367 @@
+/* packages/widgets/Source/BaseLayerPicker/BaseLayerPicker-modern.css */
+:root {
+  --blp-primary: #3b82f6;
+  --blp-primary-hover: #60a5fa;
+  --blp-accent: #06b6d4;
+  --blp-success: #10b981;
+  --blp-bg-dark: rgba(15, 23, 42, 0.92);
+  --blp-bg-darker: rgba(10, 15, 30, 0.95);
+  --blp-text-primary: #e2e8f0;
+  --blp-text-secondary: #94a3b8;
+  --blp-border: rgba(59, 130, 246, 0.3);
+  --blp-border-hover: rgba(59, 130, 246, 0.6);
+  --blp-glow: rgba(59, 130, 246, 0.4);
+  --blp-selected: #06b6d4;
+  --blp-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --blp-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --blp-font-family:
+    "SF Pro Display",
+    -apple-system,
+    "Segoe UI",
+    "Roboto",
+    sans-serif;
+}
+.cesium-baseLayerPicker-selected {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 6px;
+  transition: var(--blp-transition);
+}
+.cesium-baseLayerPicker-dropDown {
+  display: block;
+  position: absolute;
+  box-sizing: content-box;
+  top: auto;
+  right: 0;
+  width: 420px !important;
+  max-height: 520px !important;
+  margin-top: 8px;
+  background: var(--blp-bg-dark);
+  border: 1px solid var(--blp-border);
+  padding: 12px;
+  overflow: auto;
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    var(--blp-shadow),
+    0 0 0 1px var(--blp-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transform: translate(0, -15px) scale(0.98);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 0.25s,
+    opacity 0.25s ease-out,
+    transform 0.25s ease-out;
+  z-index: 1000;
+}
+.cesium-baseLayerPicker-dropDown-visible {
+  transform: translate(0, 0) scale(1);
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+.cesium-baseLayerPicker-sectionTitle {
+  display: block;
+  font-family: var(--blp-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--blp-text-primary);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(59, 130, 246, 0.15) 0%,
+      transparent 100%);
+  border-radius: 6px;
+  border-left: 3px solid var(--blp-primary);
+}
+.cesium-baseLayerPicker-category {
+  margin-bottom: 12px;
+}
+.cesium-baseLayerPicker-categoryTitle {
+  color: var(--blp-text-secondary);
+  font-family: var(--blp-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.cesium-baseLayerPicker-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid var(--blp-border);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.3);
+  transition: var(--blp-transition);
+}
+.cesium-baseLayerPicker-choices:hover {
+  border-color: var(--blp-border-hover);
+  background: rgba(15, 23, 42, 0.5);
+}
+.cesium-baseLayerPicker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  width: 72px;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: var(--blp-transition);
+}
+.cesium-baseLayerPicker-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+.cesium-baseLayerPicker-itemLabel {
+  display: block;
+  font-family: var(--blp-font-family);
+  font-size: 10px;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  color: var(--blp-text-primary);
+  cursor: pointer;
+  word-wrap: break-word;
+  margin-top: 6px;
+  line-height: 1.3;
+  transition: var(--blp-transition);
+}
+.cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemLabel,
+.cesium-baseLayerPicker-item:focus .cesium-baseLayerPicker-itemLabel {
+  color: #ffffff;
+  text-decoration: none;
+}
+.cesium-baseLayerPicker-itemIcon {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  background-size: 100% 100%;
+  border: 2px solid var(--blp-border);
+  border-radius: 10px;
+  color: var(--blp-text-primary);
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: var(--blp-transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-primary-hover);
+  box-shadow: 0 0 0 2px var(--blp-glow), 0 4px 16px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+.cesium-baseLayerPicker-selectedItem {
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 8px;
+}
+.cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemLabel {
+  color: var(--blp-selected);
+  font-weight: 500;
+}
+.cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemIcon {
+  border: 3px solid var(--blp-selected);
+  box-shadow:
+    0 0 0 2px rgba(6, 182, 212, 0.3),
+    0 0 16px var(--blp-selected),
+    0 4px 16px rgba(6, 182, 212, 0.4);
+}
+.cesium-baseLayerPicker-selectedItem:hover .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-accent);
+  box-shadow:
+    0 0 0 3px rgba(6, 182, 212, 0.4),
+    0 0 20px var(--blp-accent),
+    0 6px 20px rgba(6, 182, 212, 0.5);
+}
+.cesium-baseLayerPicker-dropDown::-webkit-scrollbar {
+  width: 8px;
+}
+.cesium-baseLayerPicker-dropDown::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+  border-radius: 4px;
+  margin: 4px;
+}
+.cesium-baseLayerPicker-dropDown::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--blp-primary) 0%,
+      var(--blp-accent) 100%);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.cesium-baseLayerPicker-dropDown::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      var(--blp-primary-hover) 0%,
+      var(--blp-accent) 100%);
+  background-clip: padding-box;
+}
+.cesium-baseLayerPicker-sectionTitle + .cesium-baseLayerPicker-section::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--blp-border) 50%,
+      transparent 100%);
+  margin: 8px 0;
+}
+@media (min-width: 1920px) {
+  .cesium-baseLayerPicker-dropDown {
+    width: 400px;
+    max-height: 600px;
+    padding: 16px;
+  }
+  .cesium-baseLayerPicker-sectionTitle {
+    font-size: 18px;
+  }
+  .cesium-baseLayerPicker-item {
+    width: 80px;
+  }
+  .cesium-baseLayerPicker-itemIcon {
+    width: 72px;
+    height: 72px;
+  }
+  .cesium-baseLayerPicker-itemLabel {
+    font-size: 11px;
+  }
+}
+@media (min-width: 2560px) {
+  .cesium-baseLayerPicker-dropDown {
+    width: 480px;
+    max-height: 700px;
+    padding: 20px;
+    border-radius: 16px;
+  }
+  .cesium-baseLayerPicker-sectionTitle {
+    font-size: 20px;
+    padding: 8px 12px;
+  }
+  .cesium-baseLayerPicker-item {
+    width: 90px;
+    padding: 8px;
+  }
+  .cesium-baseLayerPicker-itemIcon {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+  }
+  .cesium-baseLayerPicker-itemLabel {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .cesium-baseLayerPicker-choices {
+    padding: 12px;
+    gap: 10px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .cesium-baseLayerPicker-dropDown {
+    background: rgba(10, 15, 30, 0.95);
+  }
+}
+@media (prefers-contrast: high) {
+  .cesium-baseLayerPicker-itemIcon {
+    border-width: 3px;
+  }
+  .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemIcon {
+    border-width: 4px;
+  }
+  .cesium-baseLayerPicker-dropDown {
+    border-width: 2px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cesium-baseLayerPicker-dropDown,
+  .cesium-baseLayerPicker-item,
+  .cesium-baseLayerPicker-itemIcon,
+  .cesium-baseLayerPicker-itemLabel {
+    transition: none;
+  }
+  .cesium-baseLayerPicker-dropDown {
+    transform: translate(0, 0) scale(1);
+  }
+}
+@keyframes blp-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+.cesium-baseLayerPicker-item.loading .cesium-baseLayerPicker-itemIcon {
+  animation: blp-pulse 1.5s ease-in-out infinite;
+}
+.cesium-baseLayerPicker-item[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--blp-bg-darker);
+  color: var(--blp-text-primary);
+  font-family: var(--blp-font-family);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--blp-shadow);
+  border: 1px solid var(--blp-border);
+  z-index: 1001;
+  pointer-events: none;
+}
+.cesium-baseLayerPicker-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--blp-text-secondary);
+  font-family: var(--blp-font-family);
+  font-size: 14px;
+}
+.cesium-baseLayerPicker-search {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--blp-border);
+  border-radius: 8px;
+  color: var(--blp-text-primary);
+  font-family: var(--blp-font-family);
+  font-size: 14px;
+  outline: none;
+  transition: var(--blp-transition);
+}
+.cesium-baseLayerPicker-search::placeholder {
+  color: var(--blp-text-secondary);
+}
+.cesium-baseLayerPicker-search:focus {
+  border-color: var(--blp-primary);
+  box-shadow: 0 0 0 2px var(--blp-glow);
+}

@@ -15,14 +15,14 @@
   height: 100%;
 }
 .cesium-viewer-bottom {
-  display: none;
+  display: block;
   position: absolute;
   bottom: 0;
   left: 0;
   padding-right: 5px;
 }
 .cesium-viewer .cesium-widget-credits {
-  display: inline;
+  display: none;
   position: static;
   bottom: auto;
   left: auto;
@@ -35,7 +35,7 @@
   position: absolute;
   bottom: 0;
   left: 169px;
-  right: 29px;
+  right: 0;
   height: 27px;
   padding: 0;
   margin: 0;
@@ -104,4 +104,21 @@
   box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;
+}
+.cesium-viewer-navigationContainer {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  padding: 0;
+  pointer-events: auto;
+  z-index: 999;
+}
+.cesium-viewer-statusBarContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: auto;
+  z-index: 999;
 }

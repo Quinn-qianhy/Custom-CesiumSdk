@@ -1,0 +1,251 @@
+/* packages/widgets/Source/Navigation/Navigation.css */
+:root {
+  --navigation-compass-size: 95px;
+  --navigation-button-size: 30px;
+  --navigation-distance-legend-width: 125px;
+  --navigation-distance-legend-height: 30px;
+  --navigation-bg-color: rgba(47, 53, 60, 0.8);
+  --navigation-bg-hover: rgba(47, 53, 60, 0.9);
+  --navigation-hover-bg: rgba(255, 255, 255, 0.15);
+  --navigation-active-bg: rgba(255, 255, 255, 0.25);
+  --navigation-text-color: #ffffff;
+  --navigation-accent-color: #68adfe;
+  --navigation-ring-border: rgba(255, 255, 255, 0.2);
+  --navigation-gyro-fill: #cccccc;
+  --navigation-gyro-active-fill: #68adfe;
+  --navigation-outer-ring-fill: rgba(255, 255, 255, 0.5);
+  --navigation-rotation-marker-fill: #68adfe;
+}
+.cesium-navigation-widget {
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+.cesium-navigation-widget > * {
+  pointer-events: auto;
+}
+.cesium-navigation-controls-container {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.cesium-navigation-compass {
+  position: relative;
+  width: var(--navigation-compass-size);
+  height: var(--navigation-compass-size);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  flex-shrink: 0;
+}
+.cesium-navigation-compass-outer-ring-bg {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 12px solid var(--navigation-bg-color);
+  box-sizing: content-box;
+  pointer-events: none;
+}
+.cesium-navigation-compass-outer-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.1s ease-out;
+  pointer-events: none;
+}
+.cesium-navigation-compass-outer-ring svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cesium-navigation-compass-outer-ring svg path {
+  fill: var(--navigation-outer-ring-fill);
+}
+.cesium-navigation-compass-rotation-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  visibility: hidden;
+}
+.cesium-navigation-compass-rotation-marker svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cesium-navigation-compass-rotation-marker svg path {
+  fill: var(--navigation-rotation-marker-fill);
+}
+.cesium-navigation-compass-gyro-bg {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  background-color: var(--navigation-bg-color);
+  border: 1px solid var(--navigation-ring-border);
+  box-sizing: content-box;
+  transition: background-color 0.2s;
+  pointer-events: none;
+}
+.cesium-navigation-compass-gyro-bg:hover {
+  background-color: var(--navigation-bg-hover);
+}
+.cesium-navigation-compass-gyro {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.cesium-navigation-compass-gyro svg {
+  width: 40px;
+  height: 40px;
+}
+.cesium-navigation-compass-gyro svg path {
+  fill: var(--navigation-gyro-fill);
+  transition: fill 0.2s;
+}
+.cesium-navigation-compass-gyro-active svg path {
+  fill: var(--navigation-gyro-active-fill);
+}
+.cesium-navigation-zoom-controls {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: var(--navigation-bg-color);
+  border-radius: 4px;
+  margin: 0;
+  padding: 2px;
+  width: calc(var(--navigation-button-size) + 2px);
+  border: 1px solid var(--navigation-ring-border);
+  pointer-events: auto;
+  overflow: hidden;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(var(--navigation-button-size) - 2px);
+  border: none;
+  background: transparent;
+  color: var(--navigation-text-color);
+  cursor: pointer;
+  border-radius: 0;
+  transition: background-color 0.2s;
+  padding: 0;
+  pointer-events: auto;
+  outline: none;
+  box-sizing: border-box;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-zoom-in {
+  border-radius: 2px 2px 0 0;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-zoom-out {
+  border-radius: 0 0 2px 2px;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-reset {
+  border-radius: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  height: calc(var(--navigation-button-size) - 6px);
+}
+.cesium-navigation-zoom-controls .cesium-navigation-button:hover {
+  background-color: var(--navigation-hover-bg);
+}
+.cesium-navigation-zoom-controls .cesium-navigation-button:active {
+  background-color: var(--navigation-active-bg);
+}
+.cesium-navigation-zoom-controls .cesium-navigation-button:focus-visible {
+  box-shadow: 0 0 0 2px var(--navigation-accent-color);
+}
+.cesium-navigation-zoom-controls .cesium-navigation-button svg {
+  display: block;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-zoom-in svg {
+  width: 18px;
+  height: 18px;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-zoom-out svg {
+  width: 18px;
+  height: 18px;
+}
+.cesium-navigation-zoom-controls .cesium-navigation-reset svg {
+  width: 14px;
+  height: 14px;
+}
+.cesium-navigation-distance-legend {
+  pointer-events: none;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  height: auto;
+  min-height: 30px;
+  width: auto;
+  min-width: 80px;
+  max-width: 150px;
+  background-color: var(--navigation-bg-color);
+  border-radius: 4px;
+  border: 1px solid var(--navigation-ring-border);
+  box-sizing: border-box;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cesium-navigation-distance-legend-label {
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.2;
+  color: var(--navigation-text-color);
+  text-align: center;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+.cesium-navigation-distance-legend-scale-bar {
+  border-left: 1px solid var(--navigation-text-color);
+  border-right: 1px solid var(--navigation-text-color);
+  border-bottom: 1px solid var(--navigation-text-color);
+  height: 6px;
+  min-width: 20px;
+  box-sizing: content-box;
+  pointer-events: none;
+}
+@media screen and (max-width: 700px), screen and (max-height: 420px) {
+  .cesium-navigation-compass,
+  .cesium-navigation-zoom-controls,
+  .cesium-navigation-distance-legend {
+    display: none;
+  }
+}
+@media print {
+  .cesium-navigation-compass,
+  .cesium-navigation-zoom-controls,
+  .cesium-navigation-distance-legend {
+    display: none;
+  }
+}

@@ -1,0 +1,143 @@
+/* packages/widgets/Source/BaseLayerPicker/lighter-modern.css */
+:root {
+  --blp-light-primary: #2563eb;
+  --blp-light-primary-hover: #3b82f6;
+  --blp-light-accent: #0891b2;
+  --blp-light-success: #059669;
+  --blp-light-bg: rgba(255, 255, 255, 0.95);
+  --blp-light-bg-solid: rgba(248, 250, 252, 0.98);
+  --blp-light-text-primary: #1e293b;
+  --blp-light-text-secondary: #64748b;
+  --blp-light-border: rgba(148, 163, 184, 0.4);
+  --blp-light-border-hover: rgba(59, 130, 246, 0.5);
+  --blp-light-glow: rgba(59, 130, 246, 0.2);
+  --blp-light-selected: #0891b2;
+  --blp-light-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --blp-light-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --blp-light-font-family:
+    "SF Pro Display",
+    -apple-system,
+    "Segoe UI",
+    "Roboto",
+    sans-serif;
+}
+.cesium-lighter .cesium-baseLayerPicker-dropDown {
+  background: var(--blp-light-bg);
+  border-color: var(--blp-light-border);
+  box-shadow:
+    var(--blp-light-shadow),
+    0 0 0 1px var(--blp-light-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.cesium-lighter .cesium-baseLayerPicker-sectionTitle {
+  color: var(--blp-light-text-primary);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(37, 99, 235, 0.1) 0%,
+      transparent 100%);
+  border-left-color: var(--blp-light-primary);
+}
+.cesium-lighter .cesium-baseLayerPicker-categoryTitle {
+  color: var(--blp-light-text-secondary);
+}
+.cesium-lighter .cesium-baseLayerPicker-choices {
+  border-color: var(--blp-light-border);
+  background: rgba(248, 250, 252, 0.5);
+}
+.cesium-lighter .cesium-baseLayerPicker-choices:hover {
+  border-color: var(--blp-light-border-hover);
+  background: rgba(248, 250, 252, 0.8);
+}
+.cesium-lighter .cesium-baseLayerPicker-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
+.cesium-lighter .cesium-baseLayerPicker-itemLabel {
+  color: var(--blp-light-text-primary);
+}
+.cesium-lighter .cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemLabel,
+.cesium-lighter .cesium-baseLayerPicker-item:focus .cesium-baseLayerPicker-itemLabel {
+  color: var(--blp-light-primary);
+}
+.cesium-lighter .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-light-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.cesium-lighter .cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-light-primary-hover);
+  box-shadow: 0 0 0 2px var(--blp-light-glow), 0 4px 16px rgba(37, 99, 235, 0.15);
+}
+.cesium-lighter .cesium-baseLayerPicker-selectedItem {
+  background: rgba(8, 145, 178, 0.08);
+}
+.cesium-lighter .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemLabel {
+  color: var(--blp-light-selected);
+}
+.cesium-lighter .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-light-selected);
+  box-shadow:
+    0 0 0 2px rgba(8, 145, 178, 0.2),
+    0 0 12px rgba(8, 145, 178, 0.3),
+    0 4px 16px rgba(8, 145, 178, 0.2);
+}
+.cesium-lighter .cesium-baseLayerPicker-selectedItem:hover .cesium-baseLayerPicker-itemIcon {
+  border-color: var(--blp-light-accent);
+  box-shadow:
+    0 0 0 3px rgba(8, 145, 178, 0.3),
+    0 0 16px rgba(8, 145, 178, 0.4),
+    0 6px 20px rgba(8, 145, 178, 0.25);
+}
+.cesium-lighter .cesium-baseLayerPicker-dropDown::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+.cesium-lighter .cesium-baseLayerPicker-dropDown::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--blp-light-primary) 0%,
+      var(--blp-light-accent) 100%);
+}
+@media (min-width: 1920px) {
+  .cesium-lighter .cesium-baseLayerPicker-sectionTitle {
+    font-size: 18px;
+  }
+}
+@media (min-width: 2560px) {
+  .cesium-lighter .cesium-baseLayerPicker-sectionTitle {
+    font-size: 20px;
+  }
+}
+@media (prefers-contrast: high) {
+  .cesium-lighter .cesium-baseLayerPicker-itemIcon {
+    border-width: 3px;
+    border-color: var(--blp-light-text-primary);
+  }
+  .cesium-lighter .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemIcon {
+    border-width: 4px;
+    border-color: var(--blp-light-primary);
+  }
+  .cesium-lighter .cesium-baseLayerPicker-dropDown {
+    border-width: 2px;
+    border-color: var(--blp-light-text-primary);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cesium-lighter .cesium-baseLayerPicker-dropDown,
+  .cesium-lighter .cesium-baseLayerPicker-item,
+  .cesium-lighter .cesium-baseLayerPicker-itemIcon,
+  .cesium-lighter .cesium-baseLayerPicker-itemLabel {
+    transition: none;
+  }
+}
+.cesium-lighter .cesium-baseLayerPicker-search {
+  background: rgba(248, 250, 252, 0.8);
+  border-color: var(--blp-light-border);
+  color: var(--blp-light-text-primary);
+}
+.cesium-lighter .cesium-baseLayerPicker-search::placeholder {
+  color: var(--blp-light-text-secondary);
+}
+.cesium-lighter .cesium-baseLayerPicker-search:focus {
+  border-color: var(--blp-light-primary);
+  box-shadow: 0 0 0 2px var(--blp-light-glow);
+}

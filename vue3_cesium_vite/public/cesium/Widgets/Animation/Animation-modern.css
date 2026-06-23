@@ -1,0 +1,206 @@
+/* packages/widgets/Source/Animation/Animation-modern.css */
+:root {
+  --anim-primary: var(--blp-primary, #3b82f6);
+  --anim-primary-hover: var(--blp-primary-hover, #60a5fa);
+  --anim-accent: var(--blp-accent, #06b6d4);
+  --anim-success: var(--blp-success, #10b981);
+  --anim-bg-dark: var(--blp-bg-dark, rgba(15, 23, 42, 0.92));
+  --anim-bg-darker: var(--blp-bg-darker, rgba(10, 15, 30, 0.95));
+  --anim-text-primary: var(--blp-text-primary, #e2e8f0);
+  --anim-text-secondary: var(--blp-text-secondary, #94a3b8);
+  --anim-border: var(--blp-border, rgba(59, 130, 246, 0.3));
+  --anim-border-hover: var(--blp-border-hover, rgba(59, 130, 246, 0.6));
+  --anim-transition: var( --blp-transition, all 0.3s cubic-bezier(0.4, 0, 0.2, 1) );
+  --anim-font-family: var( --blp-font-family, "SF Pro Display", -apple-system, "Segoe UI", "Roboto", sans-serif );
+}
+.cesium-animation-theme {
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  z-index: -100;
+}
+.cesium-animation-themeNormal {
+  color: #1e293b;
+}
+.cesium-animation-themeHover {
+  color: #60a5fa;
+}
+.cesium-animation-themeSelect {
+  color: #06b6d4;
+}
+.cesium-animation-themeDisabled {
+  color: #475569;
+}
+.cesium-animation-themeKnob {
+  color: #0f172a;
+}
+.cesium-animation-themePointer {
+  color: #06b6d4;
+}
+.cesium-animation-themeSwoosh {
+  color: #3b82f6;
+}
+.cesium-animation-themeSwooshHover {
+  color: #60a5fa;
+}
+.cesium-animation-svgText {
+  fill: var(--anim-text-primary);
+  font-family: var(--anim-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  text-anchor: middle;
+  letter-spacing: 0.4px;
+}
+.cesium-animation-blank {
+  fill: #000;
+  fill-opacity: 0.01;
+  stroke: none;
+}
+.cesium-animation-rectButton {
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition:
+    stroke 0.2s ease,
+    fill-opacity 0.2s ease,
+    opacity 0.2s ease;
+}
+.cesium-animation-rectButton .cesium-animation-buttonGlow {
+  fill: var(--anim-primary);
+  stroke: none;
+  display: none;
+  opacity: 0.22;
+  transition: opacity 0.2s ease;
+}
+.cesium-animation-rectButton:hover .cesium-animation-buttonGlow {
+  display: block;
+  opacity: 0.4;
+}
+.cesium-animation-rectButton .cesium-animation-buttonPath {
+  fill: var(--anim-text-primary);
+  transition: fill 0.2s ease;
+}
+.cesium-animation-rectButton:hover .cesium-animation-buttonPath {
+  fill: #ffffff;
+}
+.cesium-animation-rectButton .cesium-animation-buttonMain {
+  stroke: var(--anim-border);
+  stroke-width: 1;
+  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+.cesium-animation-rectButton:hover .cesium-animation-buttonMain {
+  stroke: var(--anim-border-hover);
+  stroke-width: 1.25;
+}
+.cesium-animation-rectButton:active .cesium-animation-buttonMain {
+  fill: rgba(59, 130, 246, 0.28);
+}
+.cesium-animation-buttonDisabled {
+  cursor: not-allowed;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 0.55;
+}
+.cesium-animation-buttonDisabled .cesium-animation-buttonMain {
+  stroke: rgba(71, 85, 105, 0.55);
+}
+.cesium-animation-buttonDisabled .cesium-animation-buttonPath {
+  fill: var(--anim-text-secondary);
+}
+.cesium-animation-buttonDisabled .cesium-animation-buttonGlow {
+  display: none;
+}
+.cesium-animation-buttonToggled .cesium-animation-buttonGlow {
+  display: block;
+  fill: var(--anim-success);
+  opacity: 0.45;
+}
+.cesium-animation-buttonToggled .cesium-animation-buttonMain {
+  stroke: var(--anim-success);
+  stroke-width: 1.35;
+}
+.cesium-animation-buttonToggled .cesium-animation-buttonPath {
+  fill: #ffffff;
+}
+.cesium-animation-buttonToggled:hover .cesium-animation-buttonGlow {
+  fill: #34d399;
+  opacity: 0.55;
+}
+.cesium-animation-buttonToggled:hover .cesium-animation-buttonMain {
+  stroke: #34d399;
+}
+.cesium-animation-shuttleRingG {
+  cursor: pointer;
+}
+.cesium-animation-shuttleRingBack {
+  fill: var(--anim-bg-dark);
+  stroke: var(--anim-border);
+  stroke-width: 1.2;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+.cesium-animation-shuttleRingSwoosh line {
+  stroke: var(--anim-primary);
+  stroke-width: 2;
+  stroke-opacity: 0.28;
+  stroke-linecap: round;
+}
+.cesium-animation-shuttleRingPointer {
+  stroke: var(--anim-accent);
+  stroke-width: 0.35;
+  stroke-opacity: 0.65;
+  paint-order: stroke fill;
+}
+.cesium-animation-shuttleRingPausePointer {
+  stroke: var(--anim-text-secondary);
+  stroke-width: 0.35;
+  stroke-opacity: 0.55;
+  paint-order: stroke fill;
+}
+.cesium-animation-knobOuter {
+  cursor: pointer;
+  stroke: var(--anim-border);
+  stroke-width: 1.35;
+  transition: stroke 0.2s ease;
+}
+.cesium-animation-knobOuter:hover {
+  stroke: var(--anim-border-hover);
+}
+.cesium-animation-knobInner {
+  cursor: pointer;
+}
+.cesium-viewer-animationContainer {
+  filter: none;
+}
+@media (min-width: 1920px) {
+  .cesium-animation-svgText {
+    font-size: 16px;
+  }
+}
+@media (min-width: 2560px) {
+  .cesium-animation-svgText {
+    font-size: 18px;
+  }
+}
+@media (max-width: 1366px) {
+  .cesium-animation-svgText {
+    font-size: 13px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .cesium-animation-shuttleRingBack {
+    fill: var(--anim-bg-darker);
+    stroke: var(--anim-border-hover);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cesium-animation-rectButton,
+  .cesium-animation-svgText,
+  .cesium-animation-shuttleRingBack,
+  .cesium-animation-knobOuter {
+    transition: none;
+  }
+}

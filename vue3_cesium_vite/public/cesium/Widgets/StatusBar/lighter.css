@@ -1,0 +1,24 @@
+/* packages/widgets/Source/StatusBar/lighter.css */
+.cesium-lighter .cesium-statusbar-wrapper {
+}
+.cesium-lighter .cesium-statusbar-main {
+  background:
+    linear-gradient(
+      to bottom,
+      #f5f5f5 0%,
+      #eeeeee 100%);
+  border-top: solid 1px #ccc;
+  color: #333;
+}
+.cesium-lighter .cesium-statusbar-scale-bar {
+  border-color: #333;
+}
+.cesium-lighter .cesium-statusbar-scale-label {
+  color: #333;
+}
+.cesium-lighter .cesium-statusbar-info-label {
+  color: #666;
+}
+.cesium-lighter .cesium-statusbar-info-value {
+  color: #000;
+}

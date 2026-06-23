@@ -6,7 +6,7 @@
           <el-icon><MapLocation /></el-icon>
         </div>
         <div v-show="!isSidebarCollapsed" class="app-sidebar__title">
-          <span class="app-sidebar__title-main">CesiumJS</span>
+          <span class="app-sidebar__title-main">{{ currentEngine.label }}</span>
           <span class="app-sidebar__title-sub">示例中心</span>
         </div>
       </div>
@@ -103,7 +103,7 @@ import {
 const emit = defineEmits(['navigate'])
 
 const engineStore = useEngineStore()
-const { menuData, currentEngineId } = storeToRefs(engineStore)
+const { menuData, currentEngineId, currentEngine } = storeToRefs(engineStore)
 
 const isSidebarCollapsed = ref(false)
 const treeRef = ref<InstanceType<typeof import('element-plus')['ElTree']> | null>(null)
