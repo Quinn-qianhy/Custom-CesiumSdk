@@ -33,15 +33,16 @@
 <script type="text/javascript">
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-      }),
-      terrainProvider: new Cesium.CesiumTerrainProvider({
-        url: "http://172.20.16.213:8888/cesiumLocal_dem",
-        requestMetadata: true,
-        requestWaterMask: true
-
       })
+        ),
+      terrain: new Cesium.Terrain(
+          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestMetadata: true,
+        requestWaterMask: true })
+        )
     })
 
     //初始地球色调

@@ -14,10 +14,7 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useExamplesStore } from '@/stores/examplesStore'
-import {
-  clearHtmlExampleSourceCache,
-  loadHtmlExampleSource
-} from '@/utils/exampleSource'
+import { clearHtmlExampleSourceCache, loadHtmlExampleSource } from '@/utils/exampleSource'
 import { getHtmlExampleFetchPath } from '@/utils/exampleResolver'
 import { prepareHtmlExampleDoc } from '@/utils/prepareHtmlExampleDoc'
 

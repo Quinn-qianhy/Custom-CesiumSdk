@@ -28,9 +28,11 @@
 <script type="text/javascript">
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
+      terrain: new Cesium.Terrain(
+          new Cesium.ArcGISTiledElevationTerrainProvider({
         url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
-      }),
+      })
+        ),
     });
     viewer.scene.globe.depthTestAgainstTerrain = true; //开启深度检测
 

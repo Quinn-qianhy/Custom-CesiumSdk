@@ -23,13 +23,21 @@
     <script type="text/javascript">
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
-        // terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
-        //   url: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
-        //   token: "KED1aF_I4UzXOHy3BnhwyBHU4l5oY6rO6walkmHoYqGp4XyIWUd5YZUC1ZrLAzvV40pR6gBXQayh0eFA8m6vPg.."
-        // })
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false,
+            },
+          ),
+        ),
+        terrain: new Cesium.Terrain(
+          Cesium.CesiumTerrainProvider.fromUrl(
+            "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
+          ),
+        )
       });
-
-      viewer.scene.globe.depthTestAgainstTerrain = false;
 
       //初始定位位置
       viewer.camera.setView({

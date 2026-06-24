@@ -7237,7 +7237,7 @@
 
     const viewer = new Cesium.Viewer("cesiumContainer", {
         baseLayerPicker: false,
-      terrainProvider: Cesium.createWorldTerrain(),
+      terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
       shouldAnimate: true,
     });
 

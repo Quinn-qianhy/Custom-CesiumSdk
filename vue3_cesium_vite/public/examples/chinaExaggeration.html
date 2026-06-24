@@ -22,11 +22,18 @@
     <div id="cesiumContainer"></div>
     <script type="text/javascript">
       "use script";
-      var viewer = new Cesium.Viewer("cesiumContainer", {
-        // terrainProvider: Cesium.CesiumTerrainProvider.fromIonAssetId(3956, {
-        //   requestVertexNormals: true,
-        // }),
+      const viewer = new Cesium.Viewer("cesiumContainer",{
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.UrlTemplateImageryProvider({
+            url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+          }),
+        )
       });
+      viewer.scene.setTerrain(
+        new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
+      );
+
       viewer.camera.setView({
         destination: {
           x: -1202859.5630011102,

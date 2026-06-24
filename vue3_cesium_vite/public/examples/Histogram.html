@@ -27,10 +27,13 @@
   <script type="text/javascript">
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         //ARCGIS蓝色底图
         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
       })
+        )
     });
     viewer.scene.globe.depthTestAgainstTerrain = false;
     var stages = viewer.scene.postProcessStages;
@@ -40,7 +43,7 @@
     viewer.scene.brightness.enabled = true;
     viewer.scene.brightness.uniforms.brightness = 1.5;
 
-    const promise = Cesium.GeoJsonDataSource.load('http://172.20.16.213:8888/geojson/sichuan_region.json')
+    const promise = Cesium.GeoJsonDataSource.load('/data/geojson/' + encodeURIComponent('中国(省级).geojson'))
     promise.then(function (dataSource) {
         viewer.dataSources.add(dataSource);
         const entities = dataSource.entities.values

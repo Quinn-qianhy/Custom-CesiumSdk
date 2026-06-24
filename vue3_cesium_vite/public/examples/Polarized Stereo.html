@@ -48,7 +48,7 @@
             ),
           );
         })
-        .otherwise(function (error) {
+        .catch(function (error) {
           console.log(error);
         });
       viewer.camera.moveEnd.addEventListener(function () {

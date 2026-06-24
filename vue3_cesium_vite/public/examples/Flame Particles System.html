@@ -28,9 +28,12 @@
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true,
-        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
         })
+        )
       })
       // 加载飞机模型
       var entity = viewer.entities.add({

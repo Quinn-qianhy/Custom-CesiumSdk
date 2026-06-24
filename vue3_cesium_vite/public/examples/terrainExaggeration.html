@@ -1,82 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>地形夸张</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>地形夸张</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
     <script src="/examples/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-    }
-</style>
-</head>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
 
-<body class="dark">
-  <div id="cesiumContainer"></div>
-<script type="text/javascript">
-    "use script";
-    
-    
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
-        url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer',
-      }),
-      terrainExaggeration:3
-    })
-    viewer.scene.globe.depthTestAgainstTerrain = true
-    var globe = viewer.scene.globe
-    viewer.imageryLayers.addImageryProvider(
-      new Cesium.UrlTemplateImageryProvider({
-        url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
-      })
-    )
-    var viewModel = {
-      exaggeration: globe.terrainExaggeration
-    }
-   
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
 
-    Cesium.knockout.track(viewModel)
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.UrlTemplateImageryProvider({
+            url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+          }),
+        )
+      });
+      viewer.scene.setTerrain(
+        new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain")),
+      );
+      viewer.scene.verticalExaggeration = 3;
+      viewer.scene.verticalExaggerationRelativeHeight = 0.0; // 默认相对椭球面
 
-    // ExampleGui 参数面板
-    ExampleGui.addSlider('地形夸张', viewModel.exaggeration || 3, 1, 10, 0.5, function(value) {
-      viewModel.exaggeration = Number(value);
-    });
-    ExampleGui.finishedLoading();
-    Cesium.knockout.getObservable(viewModel, 'exaggeration').subscribe(function (newValue) {
-      viewModel.exaggeration  = Number(newValue)
-      globe.terrainExaggeration = viewModel.exaggeration
-    })
+      var scene = viewer.scene;
+      var viewModel = {
+        verticalExaggeration: scene.verticalExaggeration,
+      };
 
+      Cesium.knockout.track(viewModel);
 
+      // ExampleGui 参数面板
+      ExampleGui.addSlider(
+        "地形夸张",
+        viewModel.verticalExaggeration || 3,
+        1,
+        10,
+        0.5,
+        function (value) {
+          viewModel.verticalExaggeration = Number(value);
+          scene.verticalExaggeration = viewModel.verticalExaggeration;
+        },
+      );
+      ExampleGui.finishedLoading();
+      Cesium.knockout
+        .getObservable(viewModel, "verticalExaggeration")
+        .subscribe(function (newValue) {
+          viewModel.verticalExaggeration = Number(newValue);
+          scene.verticalExaggeration = viewModel.verticalExaggeration;
+        });
 
-
-    //初始定位位置
-    viewer.camera.setView({
-      destination: {
-        x: -1135832.2500233247,
-        y: 5482646.852955472,
-        z: 3124157.6677550175
-      },
-      orientation: {
-        heading: 0.9231787775159015,
-        pitch: -0.409062086563442,
-        roll: 0.002490493263910487
-      },
-      duration: 1
-    })
-
-  </script>
-</body>
-
+      //初始定位位置
+      viewer.camera.setView({
+        destination: {
+          x: -1135832.2500233247,
+          y: 5482646.852955472,
+          z: 3124157.6677550175,
+        },
+        orientation: {
+          heading: 0.9231787775159015,
+          pitch: -0.409062086563442,
+          roll: 0.002490493263910487,
+        },
+        duration: 1,
+      });
+    </script>
+  </body>
 </html>

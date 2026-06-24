@@ -48,7 +48,11 @@ function slopeArraw(points) {
   }
   //通过单个position获取的高程
   function getHeightByPosition(position) {
-    const promise = new Cesium.sampleTerrain(viewer.terrainProvider, 13, [position]).then(res => {
+    const promise = new Cesium.sampleTerrain(
+      viewer.terrainProvider || viewer.scene.terrainProvider,
+      13,
+      [position],
+    ).then(function (res) {
       return res[0].height
     })
     return promise

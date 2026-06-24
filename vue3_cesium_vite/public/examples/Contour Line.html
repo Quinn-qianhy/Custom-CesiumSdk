@@ -28,10 +28,9 @@
   <script type="text/javascript">
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: new Cesium.CesiumTerrainProvider({
-        url: "http://172.20.16.213:8888/cesiumLocal_dem",
-        requestVertexNormals: true, //Needed to visualize slope
-      }),
+      terrain: new Cesium.Terrain(
+          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true, //Needed to visualize slope })
+        ),
     });
 
     viewer.camera.setView({

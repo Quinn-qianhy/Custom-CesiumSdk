@@ -13,19 +13,22 @@
     <link href="/examples/example-gui.css" rel="stylesheet" />
   <style>
     html,
-    body,
-    #leftMap {
+    body {
       width: 100%;
       height: 100%;
       margin: 0;
-      float: left;
+      overflow: hidden;
     }
 
+    body {
+      display: flex;
+    }
+
+    #leftMap,
     #rightMap {
-      width: 100%;
+      width: 50%;
       height: 100%;
       margin: 0;
-      float: right;
     }
 </style>
 </head>
@@ -35,21 +38,22 @@
   <div id="rightMap"></div>
 <script type="text/javascript">
     "use script";
-    var frames = window.parent.window.document.getElementById('page')
-    frames.contentWindow.document.getElementById('leftMap').style.width = '50%'
-    frames.contentWindow.document.getElementById('rightMap').style.width = '50%'
-
-
     var viewerL = new Cesium.Viewer("leftMap", {
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-      }),
+      })
+        ),
     })
 
     var viewerR = new Cesium.Viewer("rightMap", {
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-      }),
+      })
+        ),
     })
 
 

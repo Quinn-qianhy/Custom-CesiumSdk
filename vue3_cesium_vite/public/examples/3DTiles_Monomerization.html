@@ -30,7 +30,7 @@
 <script type="text/javascript">
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: Cesium.createWorldTerrain()
+      terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1))
     })
     //初始定位位置
     viewer.camera.setView({

@@ -37,11 +37,14 @@
 <script type="text/javascript">
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
-        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
           url:
             "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
           show: true
         })
+        )
       });
 
       viewer.scene.globe.depthTestAgainstTerrain = false;
@@ -49,7 +52,7 @@
       var tileset = viewer.scene.primitives.add(
         new Cesium.Cesium3DTileset({
           url:
-            "http://172.20.16.213:8888/3dtiles/chengdu_building/tileset.json",
+            Cesium.IonResource.fromAssetId(75343),
           maximumScreenSpaceError: 4
         })
       );
@@ -90,7 +93,7 @@
         });
       }
       var promise = Cesium.GeoJsonDataSource.load(
-        "http://172.20.16.213:8888/geojson/chengdu_road.geojson"
+        '/data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
       );
       promise
         .then(function(dataSource) {
@@ -118,7 +121,7 @@
             );
           }
         })
-        .otherwise(function(error) {
+        .catch(function(error) {
           //Display any errrors encountered while loading.
           window.alert(error);
         });

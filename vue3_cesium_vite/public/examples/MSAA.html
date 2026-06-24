@@ -26,10 +26,13 @@
 <script type="text/javascript">
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
-        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
           url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
           show: true
-        }),
+        })
+        ),
         orderIndependentTranslucency: false,
         contextOptions: {
           requestWebgl2: true
@@ -77,13 +80,13 @@
           Cesium.Matrix4.multiply(mat, rotationZ, mat);
           tileset._root.transform = mat;
         })
-        .otherwise(function(error) {
+        .catch(function(error) {
           console.log(error);
         });
       // http://180.167.213.122:18000/model/nanpudaqiao/
       let water;
       Cesium.GeoJsonDataSource.load(
-        "http://172.20.16.213:8888/geojson/huangpujiang.json"
+        '/data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
       ).then(source => {
         let entities = source.entities.values;
         for (let i = 0; i < entities.length; i++) {

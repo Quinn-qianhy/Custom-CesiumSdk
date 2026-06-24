@@ -34,9 +34,12 @@
     "use script";
 
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      }),
+      })
+        ),
     });
     var tileslimitHeight;
     const viewModel = {
@@ -186,7 +189,7 @@ Cesium.knockout
           viewer.flyTo(tileset);
           return tileset;
         })
-        .otherwise(function (error) {
+        .catch(function (error) {
           console.log(error);
         });
     }

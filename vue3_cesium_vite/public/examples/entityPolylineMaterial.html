@@ -28,11 +28,14 @@
 <script type="text/javascript">
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
-        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
           //ARCGIS蓝色底图
           url:
             "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
         })
+        )
       });
 
       viewer.scene.globe.depthTestAgainstTerrain = false;

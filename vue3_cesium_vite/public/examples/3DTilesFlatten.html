@@ -30,7 +30,7 @@
       "use script";
 
       const viewer = new Cesium.Viewer("cesiumContainer", {
-        terrainProvider: Cesium.createWorldTerrain(),
+        terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
         contextOptions: {
             requestWebgl2: true
         }
