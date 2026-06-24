@@ -26,66 +26,65 @@
   <body class="dark">
     <div
       id="cesiumContainer"
-      style="background-image: url(/examples/background1.jpg)"
+      style="background-image: url(/examples/backgroundPicture/background1.jpg)"
     ></div>
     <script type="text/javascript">
-      "use script";
-      var viewer = new Cesium.Viewer("cesiumContainer", {
+      'use script'
+      var viewer = new Cesium.Viewer('cesiumContainer', {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
           Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
             Cesium.ArcGisBaseMapType.SATELLITE,
             {
-              enablePickFeatures: false,
-            },
-          ),
-        ), // 初始化使用 ArcGIS 卫星图
-      });
-      viewer.scene.sun.show = false;
-      viewer.scene.moon.show = false;
-      viewer.scene.globe.depthTestAgainstTerrain = false;
-      viewer.scene.skyBox.show = false;
-      viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0);
+              enablePickFeatures: false
+            }
+          )
+        ),
+        contextOptions: {
+          webgl: {
+            alpha: true
+          }
+        },
+        orderIndependentTranslucency: false,
+        skyAtmosphere: false,
+        scene3DOnly: true
+      })
+      viewer.scene.sun.show = false
+      viewer.scene.moon.show = false
+      viewer.scene.globe.depthTestAgainstTerrain = false
+      viewer.scene.skyBox.show = false
+      viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0)
 
-      selectPicture(1);
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 20000000.0)
+      })
+
+      var backgroundImages = [
+        'url(/examples/backgroundPicture/background1.jpg)',
+        'url(/examples/backgroundPicture/background2.jpg)',
+        'url(/examples/backgroundPicture/background3.jpg)',
+        'url(/examples/backgroundPicture/background4.jpg)'
+      ]
+
       function selectPicture(numURL) {
-        var img1 = "url(/examples/backgroundPicture/background1.jpg)";
-        var img2 = "url(/examples/backgroundPicture/background2.jpg)";
-        var img3 = "url(/examples/backgroundPicture/background3.jpg)";
-        var img4 = "url(/examples/backgroundPicture/background4.jpg)";
-        debugger;
-        switch (numURL) {
-          case 1:
-            document.getElementById("cesiumContainer").style.backgroundImage =
-              img1;
-            break;
-          case 2:
-            document.getElementById("cesiumContainer").style.backgroundImage =
-              img2;
-            break;
-          case 3:
-            document.getElementById("cesiumContainer").style.backgroundImage =
-              img3;
-            break;
-          case 4:
-            document.getElementById("cesiumContainer").style.backgroundImage =
-              img4;
-            break;
-        }
+        document.getElementById('cesiumContainer').style.backgroundImage =
+          backgroundImages[numURL - 1]
       }
 
-      ExampleGui.addToolbarButton("背景1", function () {
-        selectPicture(1);
-      });
-      ExampleGui.addToolbarButton("背景2", function () {
-        selectPicture(2);
-      });
-      ExampleGui.addToolbarButton("背景3", function () {
-        selectPicture(3);
-      });
-      ExampleGui.addToolbarButton("背景4", function () {
-        selectPicture(4);
-      });
+      selectPicture(1)
+
+      ExampleGui.addToolbarButton('背景1', function () {
+        selectPicture(1)
+      })
+      ExampleGui.addToolbarButton('背景2', function () {
+        selectPicture(2)
+      })
+      ExampleGui.addToolbarButton('背景3', function () {
+        selectPicture(3)
+      })
+      ExampleGui.addToolbarButton('背景4', function () {
+        selectPicture(4)
+      })
     </script>
   </body>
 </html>

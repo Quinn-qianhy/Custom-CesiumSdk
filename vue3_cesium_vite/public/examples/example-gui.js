@@ -14,6 +14,8 @@
   var toggleCounter = 0;
   var sliderCounter = 0;
   var menuCounter = 0;
+  var textInputCounter = 0;
+  var numberInputCounter = 0;
   var activeControl = null;
 
   function getHost() {
@@ -242,6 +244,106 @@
       notifyControlsReady();
     },
 
+    addTextInput: function (text, object, property, onchange, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addTextInput")(text, object, property, onchange, toolbarID);
+      }
+      var gui = ensureGui();
+      if (!gui) {
+        var textWrap = document.createElement("div");
+        textWrap.className = "example-gui-text";
+
+        var textLabel = document.createElement("label");
+        textLabel.textContent = text + " ";
+
+        var textInput = document.createElement("input");
+        textInput.type = "text";
+        textInput.value = object[property] != null ? String(object[property]) : "";
+        textInput.oninput = function () {
+          object[property] = textInput.value;
+          if (typeof onchange === "function") {
+            onchange(textInput.value);
+          }
+        };
+
+        textLabel.appendChild(textInput);
+        textWrap.appendChild(textLabel);
+        getToolbar(toolbarID).appendChild(textWrap);
+        notifyControlsReady();
+        return;
+      }
+
+      textInputCounter += 1;
+      var textKey = property || "__text" + textInputCounter;
+      if (!(textKey in object)) {
+        object[textKey] = "";
+      }
+      var textController = gui.add(object, textKey).name(text);
+      if (typeof onchange === "function") {
+        textController.onChange(onchange);
+      }
+      notifyControlsReady();
+    },
+
+    addNumberInput: function (text, object, property, min, max, step, onchange, toolbarID) {
+      if (useHostDelegation()) {
+        return delegateToHost("addNumberInput")(
+          text,
+          object,
+          property,
+          min,
+          max,
+          step,
+          onchange,
+          toolbarID,
+        );
+      }
+      var numberGui = ensureGui();
+      if (!numberGui) {
+        var numberWrap = document.createElement("div");
+        numberWrap.className = "example-gui-number";
+
+        var numberLabel = document.createElement("label");
+        numberLabel.textContent = text + " ";
+
+        var numberInput = document.createElement("input");
+        numberInput.type = "number";
+        if (min != null) {
+          numberInput.min = String(min);
+        }
+        if (max != null) {
+          numberInput.max = String(max);
+        }
+        if (step != null) {
+          numberInput.step = String(step);
+        }
+        numberInput.value = object[property] != null ? String(object[property]) : "0";
+        numberInput.oninput = function () {
+          object[property] = Number(numberInput.value);
+          if (typeof onchange === "function") {
+            onchange(Number(numberInput.value));
+          }
+        };
+
+        numberLabel.appendChild(numberInput);
+        numberWrap.appendChild(numberLabel);
+        getToolbar(toolbarID).appendChild(numberWrap);
+        notifyControlsReady();
+        return;
+      }
+
+      numberInputCounter += 1;
+      var numberKey = property || "__number" + numberInputCounter;
+      if (!(numberKey in object)) {
+        object[numberKey] = 0;
+      }
+      var numberController = numberGui.add(object, numberKey, min, max, step).name(text);
+      if (typeof onchange === "function") {
+        numberController.onChange(onchange);
+      }
+      notifyControlsReady();
+    },
+
     addSlider: function (text, value, min, max, step, onchange, toolbarID) {
       if (useHostDelegation()) {
         return delegateToHost("addSlider")(text, value, min, max, step, onchange, toolbarID);
@@ -369,6 +471,8 @@
       toggleCounter = 0;
       sliderCounter = 0;
       menuCounter = 0;
+      textInputCounter = 0;
+      numberInputCounter = 0;
       clearActive();
     },
   };

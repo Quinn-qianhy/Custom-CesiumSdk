@@ -11,15 +11,13 @@
         <span class="home-scene__stats-item home-scene__stats-item--pending">
           待修复 <strong>{{ stats.pending }}</strong>
         </span>
-        <el-tag size="small" type="warning" effect="plain">需服务器数据 {{ stats.serverData }}</el-tag>
+        <el-tag size="small" type="warning" effect="plain"
+          >需服务器数据 {{ stats.serverData }}</el-tag
+        >
         <el-tag size="small" type="danger" effect="plain">Cesium API {{ stats.cesiumApi }}</el-tag>
       </div>
 
-      <section
-        v-for="(item, index) in menuWithMeta"
-        :key="index"
-        class="home-scene__section"
-      >
+      <section v-for="(item, index) in menuWithMeta" :key="index" class="home-scene__section">
         <el-divider
           :id="item.subMenu"
           content-position="left"
@@ -28,11 +26,7 @@
           {{ item.subMenu }}
         </el-divider>
 
-        <div
-          v-for="_item in item.menuItem"
-          :key="_item.menuItemName"
-          class="home-scene__group"
-        >
+        <div v-for="_item in item.menuItem" :key="_item.menuItemName" class="home-scene__group">
           <el-divider
             v-if="_item.menuItemName"
             content-position="left"
@@ -48,21 +42,22 @@
               v-for="entry in _item.pages"
               :key="entry.page.name"
               class="home-scene__card glow-effect"
-              :class="{ 'home-scene__card--pending': entry.page.status === 'pending' }"
+              :class="{ 'home-scene__card--pending': entry.statusMeta?.isPending }"
               tabindex="0"
               role="button"
               @click="openPage(entry.page)"
               @keydown.enter="openPage(entry.page)"
             >
               <div class="home-scene__card-media">
-              <img
-                :src="resolveExampleImageUrl(entry.page.image)"
-                class="home-scene__card-image"
-                :alt="entry.page.name"
-                loading="lazy"
-              />
+                <img
+                  :src="resolveExampleImageUrl(entry.page.image)"
+                  class="home-scene__card-image"
+                  :alt="entry.page.name"
+                  loading="lazy"
+                />
                 <div v-if="entry.statusMeta" class="home-scene__card-badges">
                   <el-tooltip
+                    v-if="entry.statusMeta.isPending"
                     :content="entry.statusMeta.reason"
                     placement="top"
                   >
@@ -72,11 +67,18 @@
                     v-for="label in entry.statusMeta.labels"
                     :key="label"
                     size="small"
-                    :type="label.includes('服务器') ? 'warning' : 'danger'"
+                    :type="getStatusTagType(label)"
                     effect="plain"
                   >
                     {{ label }}
                   </el-tag>
+                  <el-tooltip
+                    v-if="entry.statusMeta.hasHint"
+                    :content="entry.statusMeta.hint || '查看示例使用说明'"
+                    placement="top"
+                  >
+                    <el-tag size="small" type="success" effect="dark">示例说明</el-tag>
+                  </el-tooltip>
                 </div>
               </div>
               <div class="home-scene__card-name">
@@ -100,7 +102,7 @@ import {
   resolveExampleType,
   resolveHtmlExampleRouteParam
 } from '@/utils/exampleResolver'
-import { getPageStatusMeta, countExampleStats } from '@/utils/exampleStatusMeta'
+import { countExampleStats, getPageStatusMeta, getStatusTagType } from '@/utils/exampleStatusMeta'
 import { resolveExampleImageUrl } from '@/utils/exampleImage'
 
 const router = useRouter()
@@ -141,13 +143,20 @@ const stats = computed(() => countExampleStats(menuData.value))
 
 const buildHtmlQuery = (page: ExamplePage) => {
   const query: Record<string, string> = { title: page.name }
+
   if (page.status === 'pending') {
     query.status = 'pending'
     query.statusReason = page.statusReason || ''
-    if (page.statusTags?.length) {
-      query.statusTags = page.statusTags.join(',')
-    }
   }
+
+  if (page.statusTags?.length) {
+    query.statusTags = page.statusTags.join(',')
+  }
+
+  if (page.statusHint?.trim()) {
+    query.statusHint = page.statusHint.trim()
+  }
+
   return query
 }
 

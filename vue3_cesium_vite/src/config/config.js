@@ -16,28 +16,19 @@ const menu = [
             name: '场景出图（导出图片）',
             image: '/examples/sceneScreenshot.png',
             type: 'html',
-            url: '/examples/sceneScreenshot.html',
-            status: 'ok',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/sceneScreenshot.html'
           },
           {
             name: '自定义空间背景图',
             image: '/examples/backgroundPicture.png',
             type: 'html',
-            url: '/examples/backGroundMap.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            url: '/examples/backGroundMap.html'
           },
           {
             name: '自定义天空盒',
             image: '/examples/skyboxPicture.png',
             type: 'html',
-            url: '/examples/mapRotation.html',
-            status: 'ok',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            url: '/examples/mapRotation.html'
           },
           {
             name: '动态天空盒',
@@ -63,11 +54,10 @@ const menu = [
             url: '/examples/adjustmentColor.html'
           },
           {
-            name: '双屏联动',
+            name: '多屏联动',
             image: '/examples/doubleView.png',
             type: 'html',
-            url: '/examples/doubleView.html',
-            status: 'pending'
+            url: '/examples/doubleView.html'
           },
           {
             name: '卷帘对比',
@@ -79,10 +69,7 @@ const menu = [
             name: '地表透明',
             image: '/examples/Transparent.gif',
             type: 'html',
-            url: '/examples/Transparent.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖本地/内网服务器数据'
+            url: '/examples/Transparent.html'
           },
           {
             name: '二三维视图切换',
@@ -112,7 +99,9 @@ const menu = [
             image: '/examples/RouteFlyManager.gif',
             type: 'html',
             url: '/examples/rotationPoint.html',
-            status: 'pending'
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '限定视角范围',
@@ -126,15 +115,17 @@ const menu = [
             type: 'html',
             url: '/examples/viewRecord.html',
             status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '路径飞行',
             image: '/examples/RouteFlyManager.gif',
             type: 'html',
             url: '/examples/RouteFlyManager.html',
-            status: 'pending'
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           }
         ]
       }
@@ -152,19 +143,7 @@ const menu = [
             type: 'html',
             url: '/examples/baiduMap.html'
           },
-          {
-            name: 'OSM地图',
-            image: '/examples/OsmMap.png',
-            type: 'html',
-            url: '/examples/OsmMap.html'
-          },
-          {
-            name: '反色滤镜地图',
-            image: '/examples/mapColorFilter.png',
-            type: 'html',
-            url: '/examples/mapColorFilter.html',
-            status: 'pending'
-          },
+
           {
             name: '高德地图',
             image: '/examples/gaodeMap.png',
@@ -176,6 +155,23 @@ const menu = [
             image: '/examples/arcMapOnline.png',
             type: 'html',
             url: '/examples/arcMapOnline.html'
+          },
+          {
+            name: 'OSM地图',
+            image: '/examples/OsmMap.png',
+            type: 'html',
+            url: '/examples/OsmMap.html',
+            statusTags: ['hint'],
+            statusHint: 'OSM 服务 需要配置代理服务'
+          },
+          {
+            name: '反色滤镜地图',
+            image: '/examples/mapColorFilter.png',
+            type: 'html',
+            url: '/examples/mapColorFilter.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           }
         ]
       },
@@ -183,10 +179,30 @@ const menu = [
         menuItemName: '三维地形',
         pages: [
           {
-            name: 'cesium地形',
+            name: 'CesiumIon地形',
             image: '/examples/chinaExaggeration.png',
             type: 'html',
             url: '/examples/chinaExaggeration.html'
+          },
+          {
+            name: 'ARCGIS地形',
+            image: '/examples/arcgisTerrain.png',
+            type: 'html',
+            url: '/examples/arcGisTerrain.html',
+            statusTags: ['hint'],
+            statusHint: '使用 ArcGIS 地形服务, 不能随时加载成功'
+          },
+          {
+            name: 'SuperMap超图在线地形',
+            image: '/examples/SuperMapOnlineTerrain.png',
+            type: 'html',
+            url: '/examples/SuperMapOnlineTerrain.html'
+          },
+          {
+            name: 'Mars3D在线地形',
+            image: '/examples/Mars3DOnlineTerrain.png',
+            type: 'html',
+            url: '/examples/Mars3DOnlineTerrain.html'
           },
           {
             name: '局部地形（本地）',
@@ -196,12 +212,6 @@ const menu = [
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
-          },
-          {
-            name: 'ARCGIS地形',
-            image: '/examples/arcgisTerrain.png',
-            type: 'html',
-            url: '/examples/arcGisTerrain.html'
           },
           {
             name: '地形夸张',
@@ -231,18 +241,24 @@ const menu = [
             image: '/examples/geoserverWMS.png',
             type: 'html',
             url: '/examples/geoserverWMS.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖本地/内网服务器数据'
+            statusTags: ['hint'],
+            statusHint: '请在左上角面板填写 WMS 服务地址与图层名称，点击「加载 WMS」'
+          },
+          {
+            name: 'geoserver WMTS服务',
+            image: '/examples/geoserverWMTS.png',
+            type: 'html',
+            url: '/examples/geoserverWMTS.html',
+            statusTags: ['hint'],
+            statusHint: '请在左上角面板填写 WMTS 服务地址与图层名称，点击「加载 WMTS」'
           },
           {
             name: 'TMS服务',
             image: '/examples/3DTile_buildingMaterial.png',
             type: 'html',
-            url: '/examples/3DTile_buildingMaterial.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            url: '/examples/geoserverTMS.html',
+            statusTags: ['hint'],
+            statusHint: '请在左上角面板填写 TMS 服务地址，点击「加载 TMS」'
           }
         ]
       }
@@ -265,6 +281,12 @@ const menu = [
             image: '/examples/Polarized Stereo.png',
             type: 'html',
             url: '/examples/Polarized Stereo.html'
+          },
+          {
+            name: '时间控制器',
+            image: '/examples/timeController.png',
+            type: 'html',
+            url: '/examples/timeController.html'
           }
         ]
       },
@@ -281,7 +303,16 @@ const menu = [
             name: '鹰眼控件',
             image: '/examples/eagleEyeMap.png',
             type: 'html',
-            url: '/examples/eagleEyeMap.html'
+            url: '/examples/eagleEyeMap.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
+          },
+          {
+            name: '状态栏控件',
+            image: '/examples/statusBar.png',
+            type: 'html',
+            url: '/examples/statusBar.html'
           },
           {
             name: '经纬度拾取',
@@ -289,8 +320,8 @@ const menu = [
             type: 'html',
             url: '/examples/coordinateDisplay.html',
             status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           }
         ]
       }
@@ -814,9 +845,8 @@ const menu = [
             image: '/examples/3DTile_buildingMaterial.png',
             type: 'html',
             url: '/examples/3DTile_buildingMaterial.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖第三方地图服务或 API Key'
+            statusTags: ['hint'],
+            statusHint: '使用 Cesium Ion 资产的建筑白模'
           },
           {
             name: '管道流向动态展示',

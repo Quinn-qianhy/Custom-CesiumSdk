@@ -59,6 +59,33 @@ body {
   vertical-align: middle;
 }
 
+.example-gui-text,
+.example-gui-number {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.example-gui-text label,
+.example-gui-number label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  color: #eee;
+  font-size: 9pt;
+}
+
+.example-gui-text input,
+.example-gui-number input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #111;
+  color: #eee;
+}
+
 .infoPanel {
   background: rgba(42, 42, 42, 0.8);
   padding: 4px;

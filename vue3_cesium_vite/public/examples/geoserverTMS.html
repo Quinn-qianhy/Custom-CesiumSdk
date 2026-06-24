@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>TMS图层加载</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false,
+            },
+          ),
+        ),
+      });
+
+      var tmsImageryLayer = null;
+
+      var tmsParams = {
+        url: "http://172.20.16.213:8889/geoserver/gwc/service/tms/1.0.0/GlWebTest:四川行政区划@EPSG:4326@png",
+        fileExtension: "png",
+        maximumLevel: 18,
+        west: 97.34742382600007,
+        south: 26.049271889000067,
+        east: 108.54240955500006,
+        north: 34.31470399700004,
+      };
+
+      function applyBaseLayerStyle(layer) {
+        layer.saturation = 0;
+        layer.hue = 0.56;
+        layer.contrast = 1.74;
+        layer.brightness = 1.1;
+      }
+
+      var baseLayer = viewer.imageryLayers.get(0);
+      if (baseLayer) {
+        applyBaseLayerStyle(baseLayer);
+      } else {
+        viewer.imageryLayers.layerAdded.addEventListener(function (layer, index) {
+          if (index === 0) {
+            applyBaseLayerStyle(layer);
+          }
+        });
+      }
+
+      function removeTmsLayer() {
+        if (tmsImageryLayer) {
+          viewer.imageryLayers.remove(tmsImageryLayer, true);
+          tmsImageryLayer = null;
+        }
+      }
+
+      function loadTmsLayer() {
+        var url = String(tmsParams.url || "").trim();
+        if (!url) {
+          window.alert("请填写 TMS 服务地址");
+          return;
+        }
+
+        removeTmsLayer();
+
+        var providerOptions = {
+          fileExtension: String(tmsParams.fileExtension || "png").trim() || "png",
+        };
+
+        var maximumLevel = Number(tmsParams.maximumLevel);
+        if (!isNaN(maximumLevel) && maximumLevel >= 0) {
+          providerOptions.maximumLevel = Math.floor(maximumLevel);
+        }
+
+        var west = Number(tmsParams.west);
+        var south = Number(tmsParams.south);
+        var east = Number(tmsParams.east);
+        var north = Number(tmsParams.north);
+        if (
+          !isNaN(west) &&
+          !isNaN(south) &&
+          !isNaN(east) &&
+          !isNaN(north)
+        ) {
+          providerOptions.rectangle = Cesium.Rectangle.fromDegrees(
+            west,
+            south,
+            east,
+            north,
+          );
+        }
+
+        Cesium.TileMapServiceImageryProvider.fromUrl(url, providerOptions)
+          .then(function (provider) {
+            tmsImageryLayer = viewer.imageryLayers.addImageryProvider(provider);
+
+            if (providerOptions.rectangle) {
+              viewer.camera.flyTo({
+                destination: providerOptions.rectangle,
+                duration: 1.5,
+              });
+            }
+          })
+          .catch(function (error) {
+            window.alert("TMS 加载失败：" + (error.message || error));
+          });
+      }
+
+      ExampleGui.addTextInput("服务地址 url", tmsParams, "url");
+      ExampleGui.addTextInput("扩展名 fileExtension", tmsParams, "fileExtension");
+      ExampleGui.addNumberInput(
+        "最大级别 maximumLevel",
+        tmsParams,
+        "maximumLevel",
+        0,
+        30,
+        1,
+      );
+      ExampleGui.addNumberInput(
+        "西边界 west",
+        tmsParams,
+        "west",
+        -180,
+        180,
+        0.000001,
+      );
+      ExampleGui.addNumberInput(
+        "南边界 south",
+        tmsParams,
+        "south",
+        -90,
+        90,
+        0.000001,
+      );
+      ExampleGui.addNumberInput(
+        "东边界 east",
+        tmsParams,
+        "east",
+        -180,
+        180,
+        0.000001,
+      );
+      ExampleGui.addNumberInput(
+        "北边界 north",
+        tmsParams,
+        "north",
+        -90,
+        90,
+        0.000001,
+      );
+      ExampleGui.addToolbarButton("加载 TMS", loadTmsLayer);
+      ExampleGui.addToolbarButton("移除 TMS", removeTmsLayer);
+      ExampleGui.finishedLoading();
+
+      viewer.camera.setView({
+        destination: {
+          x: -1695124.7670598922,
+          y: 8380581.440100933,
+          z: 2496803.1463128375,
+        },
+        orientation: {
+          direction: {
+            x: 0.12744846786918324,
+            y: -0.9620171493693785,
+            z: 0.24141228708790413,
+          },
+          up: {
+            x: -0.1580487465736309,
+            y: 0.2205891875651592,
+            z: 0.9624764953160401,
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

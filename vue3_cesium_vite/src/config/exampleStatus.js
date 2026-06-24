@@ -222,6 +222,20 @@ export const EXAMPLE_STATUS = {
     ],
     "reason": "依赖本地/内网服务器数据"
   },
+  "geoserverWMTS.html": {
+    "status": "pending",
+    "tags": [
+      "server-data"
+    ],
+    "reason": "依赖本地/内网服务器数据"
+  },
+  "geoserverTMS.html": {
+    "status": "pending",
+    "tags": [
+      "server-data"
+    ],
+    "reason": "依赖本地/内网服务器数据"
+  },
   "globeClip.html": {
     "status": "ok",
     "tags": [],

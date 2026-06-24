@@ -33,6 +33,23 @@ export interface HtmlExampleGuiHost {
     onchange: (value: number) => void,
     toolbarID?: string
   ) => void
+  addTextInput: (
+    text: string,
+    object: Record<string, string>,
+    property: string,
+    onchange?: (value: string) => void,
+    toolbarID?: string
+  ) => void
+  addNumberInput: (
+    text: string,
+    object: Record<string, number>,
+    property: string,
+    min: number,
+    max: number,
+    step: number,
+    onchange?: (value: number) => void,
+    toolbarID?: string
+  ) => void
   addMenu: (options: HtmlExampleMenuOption[], toolbarID?: string) => void
   addToolbarMenu: (options: HtmlExampleMenuOption[], toolbarID?: string) => void
   addDefaultMenu: (options: HtmlExampleMenuOption[], toolbarID?: string) => void

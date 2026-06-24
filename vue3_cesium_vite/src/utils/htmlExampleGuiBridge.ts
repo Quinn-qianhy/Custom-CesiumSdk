@@ -12,6 +12,8 @@ export function createHtmlExampleGuiBridge(deps: {
   let buttonCounter = 0
   let toggleCounter = 0
   let sliderCounter = 0
+  let textInputCounter = 0
+  let numberInputCounter = 0
   let menuCounter = 0
 
   const ensureGui = (): GUI | null => {
@@ -111,6 +113,40 @@ export function createHtmlExampleGuiBridge(deps: {
       notifyReady()
     },
 
+    addTextInput: (text, object, property, onchange) => {
+      const gui = ensureGui()
+      if (!gui) {
+        return
+      }
+      textInputCounter += 1
+      const key = property || `__text${textInputCounter}`
+      if (!(key in object)) {
+        object[key] = ''
+      }
+      const controller = gui.add(object, key).name(text)
+      if (onchange) {
+        controller.onChange((value) => onchange(String(value)))
+      }
+      notifyReady()
+    },
+
+    addNumberInput: (text, object, property, min, max, step, onchange) => {
+      const gui = ensureGui()
+      if (!gui) {
+        return
+      }
+      numberInputCounter += 1
+      const key = property || `__number${numberInputCounter}`
+      if (!(key in object)) {
+        object[key] = 0
+      }
+      const controller = gui.add(object, key, min, max, step).name(text)
+      if (onchange) {
+        controller.onChange((value) => onchange(Number(value)))
+      }
+      notifyReady()
+    },
+
     addMenu: (options) => {
       const gui = ensureGui()
       if (!gui) {
@@ -159,6 +195,8 @@ export function createHtmlExampleGuiBridge(deps: {
       buttonCounter = 0
       toggleCounter = 0
       sliderCounter = 0
+      textInputCounter = 0
+      numberInputCounter = 0
       menuCounter = 0
     }
   }

@@ -10,6 +10,15 @@
         :title="pendingAlertTitle"
         :description="pendingAlertDescription"
       />
+      <el-alert
+        v-if="exampleHint"
+        class="example-page__alert"
+        type="info"
+        :closable="false"
+        show-icon
+        title="示例说明"
+        :description="exampleHint"
+      />
     </template>
 
     <template #map>
@@ -35,7 +44,7 @@ import ExampleGuiOverlay from '@/components/layout/ExampleGuiOverlay.vue'
 import HtmlExampleFrame from '@/components/HtmlExampleFrame.vue'
 import GlobalLoading from '@/components/layout/GlobalLoading.vue'
 import CodePanel from './CodePanel.vue'
-import { STATUS_TAG_LABELS } from '@/utils/exampleStatusMeta'
+import { resolveStatusTagLabels } from '@/utils/exampleStatusMeta'
 import { createHtmlExampleGuiBridge } from '@/utils/htmlExampleGuiBridge'
 import type { HtmlExampleGuiHost } from '@/types/htmlExampleGui'
 
@@ -60,10 +69,11 @@ const guiForceVisible = computed<boolean | null>(() => {
 const isPendingExample = computed(() => route.query.status === 'pending')
 
 const pendingAlertTitle = computed(() => {
-  const tags = String(route.query.statusTags ?? '')
-    .split(',')
-    .filter(Boolean)
-    .map((tag) => STATUS_TAG_LABELS[tag] ?? tag)
+  const tags = resolveStatusTagLabels(
+    String(route.query.statusTags ?? '')
+      .split(',')
+      .filter(Boolean)
+  )
 
   if (tags.length) {
     return `此示例标记为待修复：${tags.join('、')}`
@@ -71,6 +81,8 @@ const pendingAlertTitle = computed(() => {
 
   return '此示例标记为待修复'
 })
+
+const exampleHint = computed(() => String(route.query.statusHint ?? '').trim())
 
 const pendingAlertDescription = computed(
   () =>
