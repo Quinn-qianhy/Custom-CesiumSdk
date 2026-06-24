@@ -184,12 +184,7 @@ const menu = [
             "name": "高德地图",
             "image": "/examples/gaodeMap.png",
             "type": "html",
-            "url": "/examples/gaodeMap.html",
-            "status": "pending",
-            "statusTags": [
-              "server-data"
-            ],
-            "statusReason": "依赖第三方地图服务或 API Key"
+            "url": "/examples/gaodeMap.html"
           },
           {
             "name": "ArcGis Online地图",
@@ -412,12 +407,7 @@ const menu = [
             "name": "Primitive大量点",
             "image": "/examples/pointsPrimitive.png",
             "type": "html",
-            "url": "/examples/pointPrimitive.html",
-            "status": "pending",
-            "statusTags": [
-              "server-data"
-            ],
-            "statusReason": "依赖第三方地图服务或 API Key"
+            "url": "/examples/pointPrimitive.html"
           },
           {
             "name": "旋转棱锥",

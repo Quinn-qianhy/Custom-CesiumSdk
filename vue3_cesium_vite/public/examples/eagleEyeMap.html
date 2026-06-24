@@ -1,48 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>鹰眼控件</title>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
 
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>鹰眼控件</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      position: relative
-    }
+      #map {
+        width: 300px;
+        height: 300px;
+        right: 0;
+        z-index: 9;
+        bottom: 0;
+        position: absolute;
+        border: 2px solid blue;
+      }
+    </style>
+  </head>
 
-    #map {
-      width: 300px;
-      height: 300px;
-      right: 0;
-      z-index: 9;
-      bottom: 0;
-      position: absolute;
-      border: 2px solid blue;
-    }
-
-  </style>
-</head>
-
-<body class="dark">
-  <div id="cesiumContainer">
-    <div id="map"></div>
-  </div>
-  <script type="text/javascript">
-    "use script";
-    //主视图
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      navigation: false,
-      eagleEyeMap: true
-    })
-
-  </script>
-</body>
-
+  <body class="dark">
+    <div id="cesiumContainer">
+      <div id="map"></div>
+    </div>
+    <script type="text/javascript">
+      "use script";
+      //主视图
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.UrlTemplateImageryProvider({
+            url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+          }),
+        ),
+      });
+    </script>
+  </body>
 </html>

@@ -267,9 +267,7 @@
   </div>
   <script type="text/javascript">
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      navigation: false
-    })
+    var viewer = new Cesium.Viewer("cesiumContainer")
     //地图亮度设置
     var stages = viewer.scene.postProcessStages;
     viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary

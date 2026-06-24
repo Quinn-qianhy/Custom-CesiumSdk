@@ -1,62 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>ARCGIS地形</title>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
 
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>ARCGIS地形</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-    }
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        // terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
+        //   url: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
+        //   token: "KED1aF_I4UzXOHy3BnhwyBHU4l5oY6rO6walkmHoYqGp4XyIWUd5YZUC1ZrLAzvV40pR6gBXQayh0eFA8m6vPg.."
+        // })
+      });
 
-    #toolbar {
-      left: 5px;
-      top: 5px;
-    }
+      viewer.scene.globe.depthTestAgainstTerrain = false;
 
-  </style>
-</head>
-
-<body class="dark">
-  <div id="cesiumContainer"></div>
-<script type="text/javascript">
-    "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
-        url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
-      }),
-      imageryProvider: new Cesium.UrlTemplateImageryProvider({
-        url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
-      })
-    })
-
-    viewer.scene.globe.depthTestAgainstTerrain = false
-
-
-    //初始定位位置
-    viewer.camera.setView({
-      destination: {
-        x: -1244121.9426581487,
-        y: 5085439.458440664,
-        z: 3654926.4730463736
-      },
-      orientation: {
-        heading: 4.788047581496534,
-        pitch: -0.4322797689024851,
-        roll: 6.27971882399201
-      },
-      duration: 1
-    })
-
-  </script>
-</body>
-
+      //初始定位位置
+      viewer.camera.setView({
+        destination: {
+          x: -1244121.9426581487,
+          y: 5085439.458440664,
+          z: 3654926.4730463736,
+        },
+        orientation: {
+          heading: 4.788047581496534,
+          pitch: -0.4322797689024851,
+          roll: 6.27971882399201,
+        },
+        duration: 1,
+      });
+    </script>
+  </body>
 </html>

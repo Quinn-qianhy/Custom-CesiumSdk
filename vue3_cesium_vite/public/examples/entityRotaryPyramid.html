@@ -1,109 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>旋转棱锥</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>旋转棱锥</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
     <script src="/examples/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      position: relative
-    }
-</style>
-</head>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+    </style>
+  </head>
 
-<body class="dark">
-  <div id="cesiumContainer">
-    
-
-</div>
-  <script type="text/javascript">
-    "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      navigation: false,
-      imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-        //ARCGIS蓝色底图
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-      })
-    });
-
-    var layer = viewer.imageryLayers.get(0)
-    layer.saturation = 0
-    layer.hue = 0.54
-    layer.brightness = 1.5
-
-    const viewModel = {
-      speed: 2,
-      length: 300.0,
-      topRadius: 150.0
-    }
-    Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
-    ExampleGui.addSlider('高度', 300.0, 100, 600, 10, function(value) {
-      viewModel.length = value;
-    });
-    ExampleGui.addSlider('底面半径', 150.0, 100, 300, 10, function(value) {
-      viewModel.topRadius = value;
-    });
-    ExampleGui.addSlider('旋转速度', 2, 1, 10, 1, function(value) {
-      viewModel.speed = value;
-    });
-    ExampleGui.finishedLoading();
-Cesium.knockout
-      .getObservable(viewModel, "speed")
-      .subscribe(function (newspeed) {
-        viewModel.speed = Number(newspeed)
-      });
-    Cesium.knockout
-      .getObservable(viewModel, "topRadius")
-      .subscribe(function (topRadius) {
-        entity.cylinder.topRadius = Number(topRadius)
-      });
-    Cesium.knockout
-      .getObservable(viewModel, "length")
-      .subscribe(function (length) {
-        entity.cylinder.length = Number(length)
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.UrlTemplateImageryProvider({
+            url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+          }),
+        )
       });
 
-    var position = Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335, 300);
+      var layer = viewer.imageryLayers.get(0);
+      layer.saturation = 0;
+      layer.hue = 0.54;
+      layer.brightness = 1.5;
 
-    var heading = 0; //偏航角（Y轴） 
-    var pitch = 0; //俯仰角（X轴）
-    var roll = 0; //翻滚角（Z轴）
-    function rotate() {
-      heading = heading + Cesium.Math.toRadians(viewModel.speed);
-      var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-      var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
-      return orientation;
-    }
-    var entity = viewer.entities.add({
-      name: '旋转锥',
-      position: position,
-      orientation: new Cesium.CallbackProperty(rotate, false),
-      cylinder: {
-        length: viewModel.length,
-        topRadius: viewModel.topRadius,
-        bottomRadius: 0.0,
-        slices: 4,
-        material: Cesium.Color.fromRandom({
-          alpha: 1.0
-        })
-      },
-    });
+      const viewModel = {
+        speed: 2,
+        length: 300.0,
+        topRadius: 150.0,
+      };
+      Cesium.knockout.track(viewModel);
+      // ExampleGui 参数面板
+      ExampleGui.addSlider("高度", 300.0, 100, 600, 10, function (value) {
+        viewModel.length = value;
+      });
+      ExampleGui.addSlider("底面半径", 150.0, 100, 300, 10, function (value) {
+        viewModel.topRadius = value;
+      });
+      ExampleGui.addSlider("旋转速度", 2, 1, 10, 1, function (value) {
+        viewModel.speed = value;
+      });
+      ExampleGui.finishedLoading();
+      Cesium.knockout
+        .getObservable(viewModel, "speed")
+        .subscribe(function (newspeed) {
+          viewModel.speed = Number(newspeed);
+        });
+      Cesium.knockout
+        .getObservable(viewModel, "topRadius")
+        .subscribe(function (topRadius) {
+          entity.cylinder.topRadius = Number(topRadius);
+        });
+      Cesium.knockout
+        .getObservable(viewModel, "length")
+        .subscribe(function (length) {
+          entity.cylinder.length = Number(length);
+        });
 
-    viewer.zoomTo(entity)
+      var position = Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335, 300);
 
-  </script>
-</body>
+      var heading = 0; //偏航角（Y轴）
+      var pitch = 0; //俯仰角（X轴）
+      var roll = 0; //翻滚角（Z轴）
+      function rotate() {
+        heading = heading + Cesium.Math.toRadians(viewModel.speed);
+        var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+        var orientation = Cesium.Transforms.headingPitchRollQuaternion(
+          position,
+          hpr,
+        );
+        return orientation;
+      }
+      var entity = viewer.entities.add({
+        name: "旋转锥",
+        position: position,
+        orientation: new Cesium.CallbackProperty(rotate, false),
+        cylinder: {
+          length: viewModel.length,
+          topRadius: viewModel.topRadius,
+          bottomRadius: 0.0,
+          slices: 4,
+          material: Cesium.Color.fromRandom({
+            alpha: 1.0,
+          }),
+        },
+      });
 
+      viewer.zoomTo(entity);
+    </script>
+  </body>
 </html>

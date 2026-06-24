@@ -26,9 +26,7 @@
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      navigation: false
-    })
+    var viewer = new Cesium.Viewer("cesiumContainer")
     viewer.scene.globe.baseColor = Cesium.Color.DARKOLIVEGREEN
     if (viewer.scene.imageryLayers.length > 0) {
       viewer.scene.imageryLayers.get(0).alpha = 0.35
