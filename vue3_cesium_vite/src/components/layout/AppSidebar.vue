@@ -3,7 +3,9 @@
     <header class="app-sidebar__header">
       <div class="app-sidebar__brand">
         <div class="app-sidebar__logo" aria-hidden="true">
-          <el-icon><MapLocation /></el-icon>
+          <el-icon>
+            <MapLocation />
+          </el-icon>
         </div>
         <div v-show="!isSidebarCollapsed" class="app-sidebar__title">
           <span class="app-sidebar__title-main">{{ currentEngine.label }}</span>
@@ -34,7 +36,9 @@
           @input="handleSearch"
         >
           <template #prefix>
-            <el-icon><Search /></el-icon>
+            <el-icon>
+              <Search />
+            </el-icon>
           </template>
         </el-input>
       </div>
@@ -66,10 +70,7 @@
               >
                 {{ node.label }}
               </span>
-              <span
-                v-if="node.level === 1 && !isSidebarCollapsed"
-                class="app-sidebar__node-count"
-              >
+              <span v-if="node.level === 1 && !isSidebarCollapsed" class="app-sidebar__node-count">
                 {{ calculateChildrenCount(data.children) }}
               </span>
             </div>
@@ -106,12 +107,12 @@ const engineStore = useEngineStore()
 const { menuData, currentEngineId, currentEngine } = storeToRefs(engineStore)
 
 const isSidebarCollapsed = ref(false)
-const treeRef = ref<InstanceType<typeof import('element-plus')['ElTree']> | null>(null)
+const treeRef = ref<InstanceType<(typeof import('element-plus'))['ElTree']> | null>(null)
 const searchKeyword = ref('')
 
 const iconMap: Record<string, ReturnType<typeof markRaw>> = {
   场景控制: markRaw(Location),
-  '地图与地形服务': markRaw(Grid),
+  地图与地形服务: markRaw(Grid),
   图层加载: markRaw(Grid),
   交互控制: markRaw(Pointer),
   绘制与加载: markRaw(Edit),
