@@ -171,11 +171,9 @@ export const EXAMPLE_STATUS = {
     "reason": ""
   },
   "entityPolylineMaterial.html": {
-    "status": "pending",
-    "tags": [
-      "cesium-api"
-    ],
-    "reason": "使用定制 Cesium API 或扩展插件"
+    "status": "ok",
+    "tags": [],
+    "reason": ""
   },
   "entityRotaryPyramid.html": {
     "status": "ok",
@@ -183,11 +181,9 @@ export const EXAMPLE_STATUS = {
     "reason": ""
   },
   "entityWall.html": {
-    "status": "pending",
-    "tags": [
-      "cesium-api"
-    ],
-    "reason": "使用定制 Cesium API 或扩展插件"
+    "status": "ok",
+    "tags": [],
+    "reason": ""
   },
   "Flame Particles System.html": {
     "status": "pending",

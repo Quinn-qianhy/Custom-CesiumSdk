@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>实体线材质加载</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
     <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
     <link href="/examples/example-gui.css" rel="stylesheet" />
     <style>
       html,
@@ -25,202 +28,217 @@
 
   <body class="dark">
     <div id="cesiumContainer"></div>
-<script type="text/javascript">
-      "use script";
-      var viewer = new Cesium.Viewer("cesiumContainer", {
+    <script type="text/javascript">
+      'use script'
+
+      var viewer = new Cesium.Viewer('cesiumContainer', {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-          //ARCGIS蓝色底图
-          url:
-            "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-        })
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
         )
-      });
+      })
 
-      viewer.scene.globe.depthTestAgainstTerrain = false;
+      viewer.scene.globe.depthTestAgainstTerrain = false
 
-      var redLine = viewer.entities.add({
-        name: "Red line on terrain",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.03295520287969,
-            30.701755327449018,
-            104.11020303098933,
-            30.699298233275737
-          ]),
-          width: 5,
-          material: Cesium.Color.RED,
+      var materialLines = []
+      var selectedMaterialIndex = 0
+
+      var materialCatalog = [
+        {
+          name: '红色贴地线',
+          createMaterial: function () {
+            return Cesium.Color.RED
+          },
+          arcType: Cesium.ArcType.GEODESIC,
           clampToGround: true
+        },
+        {
+          name: '蓝色发光线',
+          createMaterial: function () {
+            return new Cesium.PolylineGlowMaterialProperty({
+              glowPower: 0.2,
+              color: Cesium.Color.CORNFLOWERBLUE
+            })
+          }
+        },
+        {
+          name: '绿色箭头流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.fromCssColorString('#a6d96a'),
+              repeat: 4.0,
+              image: '/examples/material/arrow_1.png',
+              speed: 20
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '青色箭头流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.AQUA,
+              image: '/examples/material/arrow2.png',
+              repeat: 20,
+              speed: 30
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '绿色线条流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.fromCssColorString('#66bd63'),
+              image: '/examples/material/line.png',
+              repeat: 2.0,
+              speed: 25
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '绿色箭头线流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.fromCssColorString('#1a9850'),
+              image: '/examples/material/lineAarrow.png',
+              speed: 20,
+              repeat: 5
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '黄绿纹理流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.CHARTREUSE,
+              image: '/examples/material/lineClr.png',
+              speed: 25
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '纯纹理流动',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              image: '/examples/material/lineClr2.png',
+              speed: 10
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '半透明数据流',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: new Cesium.Color(89 / 255, 249 / 255, 255 / 255, 0.8),
+              image: '/examples/material/LineDataTrans.png',
+              speed: 8
+            })
+          },
+          arcType: Cesium.ArcType.NONE
+        },
+        {
+          name: '链路脉冲',
+          createMaterial: function () {
+            return new Cesium.PolylineFlowMaterialProperty({
+              color: Cesium.Color.fromCssColorString('#00ff00'),
+              image: '/examples/material/LinkPulse.png',
+              speed: 3
+            })
+          },
+          arcType: Cesium.ArcType.NONE
         }
-      });
-      var glowingLine = viewer.entities.add({
-        name: "Glowing blue line on the surface",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.0332281742513,
-            30.69907491652907,
-            104.10923153655882,
-            30.697056684251017
-          ]),
-          width: 10,
-          material: new Cesium.PolylineGlowMaterialProperty({
-            glowPower: 0.2,
-            color: Cesium.Color.CORNFLOWERBLUE
-          })
-        }
-      });
-      var dashedLine = viewer.entities.add({
-        name: "Blue dashed line",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.03307699060909,
-            30.695733283181116,
-            104.10879937525253,
-            30.69321987716073
-          ]),
-          width: 10,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.fromCssColorString("#a6d96a"),
-            repeat: new Cesium.Cartesian2(4.0, 1.0),
-            image: "/examples/material/arrow_1.png",
-            speed: 20
-          })
-        }
-      });
+      ]
 
-      var purpleArrow = viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.03316625221242,
-            30.690255252944123,
-            104.10722510021458,
-            30.687616485473797
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.AQUA,
-            image: "/examples/material/arrow2.png",
-            repeat: new Cesium.Cartesian2(20, 1),
-            speed: 30
-          })
-        }
-      });
+      var DEFAULT_LINE_WIDTH = 22
+      var GROUND_LINE_WIDTH = 14
 
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.03288445032665,
-            30.685026097859662,
-            104.10673852007864,
-            30.6819749108634
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.fromCssColorString("#66bd63"),
-            image: "/examples/material/line.png",
-            repeat: new Cesium.Cartesian2(2.0, 1.0),
-            speed: 25
-          })
-        }
-      });
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.03268954190479,
-            30.679092170903008,
-            104.10616455851273,
-            30.67549571590221
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.fromCssColorString("#1a9850"),
-            image: "/examples/material/lineAarrow.png",
-            speed: 20,
-            repeat: new Cesium.Cartesian2(5, 1)
-          })
-        }
-      });
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.01624576864165,
-            30.669490900159023,
-            104.12041824936227,
-            30.66614347818527
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.CHARTREUSE,
-            image: "/examples/material/lineClr.png",
-            speed: 25
-          })
-        }
-      });
+      function getLinePositions(index) {
+        var lat = 30.702 - index * 0.015
+        return Cesium.Cartesian3.fromDegreesArray([
+          104.033, lat,
+          104.109, lat - 0.002
+        ])
+      }
 
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.01655501133256,
-            30.65731216344814,
-            104.1214388934745,
-            30.65486882894573
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            image: "/examples/material/lineClr2.png",
-            speed: 10
-          })
+      function addMaterialLine(catalogItem, index) {
+        var polylineOptions = {
+          positions: getLinePositions(index),
+          width: catalogItem.clampToGround ? GROUND_LINE_WIDTH : DEFAULT_LINE_WIDTH,
+          material: catalogItem.createMaterial()
         }
-      });
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.014171853155,
-            30.64625827520461,
-            104.12756399586742,
-            30.6449849632324
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: new Cesium.Color(89 / 255, 249 / 255, 255 / 255, 0.8),
-            image: "/examples/material/LineDataTrans.png",
-            speed: 8
-          })
-        }
-      });
-      viewer.entities.add({
-        name: "Purple straight arrow at height",
-        polyline: {
-          positions: Cesium.Cartesian3.fromDegreesArray([
-            104.02971505424267,
-            30.638295340730842,
-            104.10961408351449,
-            30.633233446477604
-          ]),
-          width: 10,
-          arcType: Cesium.ArcType.NONE,
-          material: new Cesium.PolylineFlowMaterialProperty({
-            color: Cesium.Color.fromCssColorString("#00ff00"),
-            image: "/examples/material/LinkPulse.png",
-            speed: 3
-          })
-        }
-      });
 
-      viewer.zoomTo(viewer.entities);
+        if (catalogItem.arcType !== undefined) {
+          polylineOptions.arcType = catalogItem.arcType
+        }
+        if (catalogItem.clampToGround) {
+          polylineOptions.clampToGround = true
+        }
+
+        var entity = viewer.entities.add({
+          name: catalogItem.name,
+          polyline: polylineOptions
+        })
+        materialLines.push(entity)
+        return entity
+      }
+
+      function loadAllMaterialLines() {
+        for (var i = 0; i < materialCatalog.length; i++) {
+          addMaterialLine(materialCatalog[i], i)
+        }
+      }
+
+      function removeLastMaterialLine() {
+        var last = materialLines.pop()
+        if (last) {
+          viewer.entities.remove(last)
+        }
+      }
+
+      function clearMaterialLines() {
+        while (materialLines.length > 0) {
+          removeLastMaterialLine()
+        }
+      }
+
+      loadAllMaterialLines()
+
+      ExampleGui.addToolbarMenu(
+        materialCatalog.map(function (item, index) {
+          return {
+            text: item.name,
+            onselect: function () {
+              selectedMaterialIndex = index
+            }
+          }
+        })
+      )
+
+      ExampleGui.addToolbarButton('添加线材质', function () {
+        addMaterialLine(
+          materialCatalog[selectedMaterialIndex],
+          materialLines.length
+        )
+      })
+
+      ExampleGui.addToolbarButton('删除最后一条', function () {
+        removeLastMaterialLine()
+      })
+
+      ExampleGui.addToolbarButton('清除全部', function () {
+        clearMaterialLines()
+      })
+
+      ExampleGui.finishedLoading()
+
+      viewer.zoomTo(viewer.entities)
     </script>
   </body>
 </html>

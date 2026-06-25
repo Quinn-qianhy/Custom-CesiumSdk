@@ -119,9 +119,9 @@
 
       var scene = viewer.scene
       var compareLayer = viewer.imageryLayers.addImageryProvider(
-        new Cesium.UrlTemplateImageryProvider({
-          url: 'https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'
-        })
+        new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
       )
       compareLayer.splitDirection = Cesium.SplitDirection.LEFT
       compareLayer.show = false

@@ -301,12 +301,9 @@ const menu = [
           },
           {
             name: '鹰眼控件',
-            image: '/examples/eagleEyeMap.png',
+            image: '/examples/OverviewMap.png',
             type: 'html',
-            url: '/examples/eagleEyeMap.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/OverviewMap.html'
           },
           {
             name: '状态栏控件',
@@ -360,10 +357,7 @@ const menu = [
             name: '实体线材质',
             image: '/examples/entityPolylineMaterial.png',
             type: 'html',
-            url: '/examples/entityPolylineMaterial.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/entityPolylineMaterial.html'
           },
           {
             name: '加载实体面',
@@ -456,10 +450,7 @@ const menu = [
             name: '动态墙对象',
             image: '/examples/entityWall.gif',
             type: 'html',
-            url: '/examples/entityWall.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/entityWall.html'
           },
           {
             name: '绘制反选遮罩',
@@ -516,8 +507,8 @@ const menu = [
             type: 'html',
             url: '/examples/HeightLimitAnalysis.html',
             status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖本地/内网服务器数据'
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '通视分析',
@@ -532,7 +523,10 @@ const menu = [
             name: '天际线分析',
             image: '/examples/Skyline Analysis.png',
             type: 'html',
-            url: '/examples/Skyline Analysis.html'
+            url: '/examples/Skyline Analysis.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '可视域分析',
@@ -553,19 +547,28 @@ const menu = [
             name: '地形开挖(凸多边形)',
             image: '/examples/globeClip.png',
             type: 'html',
-            url: '/examples/globeClip.html'
+            url: '/examples/globeClip.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '地形开挖(任意多边形)',
             image: '/examples/globeClipArbitrarily.png',
             type: 'html',
-            url: '/examples/globeClipArbitrarily.html'
+            url: '/examples/globeClipArbitrarily.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '淹没分析',
             image: '/examples/Inundation Analysis.gif',
             type: 'html',
-            url: '/examples/Inundation Analysis.html'
+            url: '/examples/Inundation Analysis.html',
+            status: 'pending',
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '坡度坡向分析',
@@ -658,10 +661,7 @@ const menu = [
             name: '火焰粒子',
             image: '/examples/Flame Particles System.gif',
             type: 'html',
-            url: '/examples/Flame Particles System.html',
-            status: 'pending',
-            statusTags: ['server-data'],
-            statusReason: '依赖本地/内网服务器数据'
+            url: '/examples/Flame Particles System.html'
           },
           {
             name: '喷泉粒子',

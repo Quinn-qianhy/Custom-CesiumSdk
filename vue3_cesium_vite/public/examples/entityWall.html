@@ -32,7 +32,16 @@
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer")
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    })
+    viewer.scene.globe.depthTestAgainstTerrain = false
+
     viewer.entities.add({
       name: "方形墙体",
       wall: {
@@ -48,7 +57,7 @@
           color: Cesium.Color.CHARTREUSE,
           repeat: new Cesium.Cartesian2(1, 3),
           axisY: true,
-          speed: 10 // 速度，建议取值范围1-100
+          speed: 10
         })
       }
     });
@@ -67,7 +76,7 @@
           image: "/examples/material/arrow2.png",
           color: Cesium.Color.fromCssColorString("#ffff00"),
           repeat: new Cesium.Cartesian2(30, 1),
-          speed: 10 // 速度，建议取值范围1-100
+          speed: 10
         })
       }
     })
@@ -94,7 +103,7 @@
           color: Cesium.Color.fromCssColorString("#ff0000"),
           repeat: new Cesium.Cartesian2(1, 1),
           axisY: true,
-          speed: 10 // 速度，建议取值范围1-100
+          speed: 10
         })
       }
     })
@@ -112,8 +121,6 @@
         })
       }
     })
-
-
 
     viewer.zoomTo(viewer.entities);
 

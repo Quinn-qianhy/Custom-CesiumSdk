@@ -1,108 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>波纹圆示例</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>波纹圆示例</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
     <script src="/examples/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      position: relative
-    }
-
-</style>
-</head>
-
-<body class="dark">
-  <div id="cesiumContainer">
-    
-
-  </div>
-  <script type="text/javascript">
-    "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      baseLayerPicker: false,
-        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-      })
-        )
-    });
-    viewer.scene.globe.depthTestAgainstTerrain = false;
-    var stages = viewer.scene.postProcessStages;
-    viewer.scene.brightness = viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary
-      .createBrightnessStage());
-    viewer.scene.brightness.enabled = true;
-    viewer.scene.brightness.uniforms.brightness = 1.5;
-    viewer.scene.globe.depthTestAgainstTerrain = true;
-    const entity = viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335),
-      ellipse: {
-        semiMajorAxis: 1000.0,
-        semiMinorAxis: 1000.0,
-        material: new Cesium.RippleCircleMaterialProperty({
-          color: new Cesium.Color(1, 0.9725, 0.0745, 0.5), // 颜色
-          gradient: 0.5,
-          duration: 2500
-        }),
-        height: 10,
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        position: relative;
       }
-    })
-    const viewModel = {
-      gradient: 0.5,
-      duration: 2500,
-      count: 2
-    }
-    Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
-    ExampleGui.addSlider('渐变曲率', 0.5, 0.1, 1, 0.1, function(value) {
-      viewModel.gradient = value;
-    });
-    ExampleGui.addSlider('波浪数量', 2, 1, 10, 1, function(value) {
-      viewModel.count = value;
-    });
-    ExampleGui.addSlider('持续时间', 2500, 500, 5000, 500, function(value) {
-      viewModel.duration = value;
-    });
-    ExampleGui.finishedLoading();
-Cesium.knockout
-      .getObservable(viewModel, "gradient")
-      .subscribe(function (gradient) {
-        entity.ellipse.material.gradient = gradient
-        if (isNaN(gradient)) {
-          return;
-        }
-      });
-    Cesium.knockout
-      .getObservable(viewModel, "count")
-      .subscribe(function (count) {
-        entity.ellipse.material.count = count
-        if (isNaN(count)) {
-          return;
-        }
-      });
-    Cesium.knockout
-      .getObservable(viewModel, "duration")
-      .subscribe(function (duration) {
-        entity.ellipse.material.duration = duration
-        if (isNaN(duration)) {
-          return;
-        }
-      });
-    viewer.zoomTo(entity)
-    
+    </style>
+  </head>
 
-  </script>
-</body>
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      'use script'
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE
+          })
+        )
+      })
+      viewer.scene.globe.depthTestAgainstTerrain = true
 
+      const waveMaterial = new Cesium.CircleWaveMaterialProperty({
+        color: new Cesium.Color(1, 0.9725, 0.0745, 0.5),
+        globalAlpha: 0.5
+      })
+
+      const entity = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335),
+        ellipse: {
+          semiMajorAxis: 1000.0,
+          semiMinorAxis: 1000.0,
+          material: waveMaterial,
+          height: 10,
+          heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+        }
+      })
+
+      ExampleGui.addSlider('透明度', 0.5, 0.1, 1, 0.1, function (value) {
+        waveMaterial.globalAlpha = value
+      })
+      ExampleGui.finishedLoading()
+
+      viewer.zoomTo(entity)
+    </script>
+  </body>
 </html>

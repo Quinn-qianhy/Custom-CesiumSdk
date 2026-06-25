@@ -26,28 +26,29 @@
 
 </head>
 
-<body>
+<body class="dark">
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer")
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    })
     viewer.scene.globe.depthTestAgainstTerrain = false
-    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1; // 相机的高度的最小值
-    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 5000000; // 相机高度的最大值
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1
+    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 5000000
 
-    viewer.imageryLayers.addImageryProvider(
-      new Cesium.ArcGisMapServerImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-      })
-    )
-    //获取四川省边界线GEOJSON
-    fetch('/examples/siChuanPolygon.json')
+    fetch('/data/geojson/siChuanPolygon.json')
       .then(response => response.json())
       .then(res => {
         var features = res.features;
         var geo = []
         for (var k = 0; k < features.length; k++) {
-          const geometries = this.getGoordGeometry(features[k].geometry)
+          const geometries = getGoordGeometry(features[k].geometry)
           for (var i = 0; i < geometries.length; i++) {
             geo.push(geometries[i])
           }
@@ -72,7 +73,8 @@
             material: Cesium.Color.fromCssColorString('#000e3bcc'),
           },
         })
-        var positions = maskLayer.polygon.hierarchy._value.holes[0].positions
+        var hierarchy = maskLayer.polygon.hierarchy.getValue(Cesium.JulianDate.now())
+        var positions = hierarchy.holes[0].positions
         viewer.entities.add({
             name: 'boderLine',
             polyline: {
@@ -84,7 +86,6 @@
         })
       })
 
-    //获取GEOJSON数据坐标数组
     function getGoordGeometry(geometry) {
       const res = [];
       const coordinates = geometry.coordinates;
@@ -99,9 +100,9 @@
       }
       return res;
     }
-    //初始定位位置
+
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 3000000.0), //四川省政府
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 3000000.0),
     })
 
   </script>

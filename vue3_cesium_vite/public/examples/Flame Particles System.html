@@ -4,10 +4,10 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>火焰粒子</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
+  <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+  <script src="/examples/example-gui.js"></script>
+  <script src="/cesium/Cesium.js"></script>
+  <script src="/defaultAccessToken.js"> </script>
   <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
   <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
   <link href="/examples/example-gui.css" rel="stylesheet" />
@@ -19,40 +19,40 @@
       height: 100%;
       position: relative
     }
-</style>
+  </style>
 </head>
 
 <body class="dark">
   <div id="cesiumContainer">
-<script type="text/javascript">
+    <script type="text/javascript">
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true,
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-        })
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          }),
         )
       })
       // 加载飞机模型
       var entity = viewer.entities.add({
         model: {
-          uri: 'static/examples/sampleData/models/Cesium_Air.glb',
+          uri: '/examples/sampleData/models/Cesium_Air.glb',
           minimumPixelSize: 64
         },
         position: Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335, 200.0)
       });
-      
+
       viewer.camera.setView({
         destination: {
           x: -1334378.4133470405, y: 5326842.898674873, z: 3233859.8677836377
         },
         orientation: {
-            heading : 6.241154409820325, 
-            pitch : -0.7553926008863594,    
-            roll : 0.000015066316128020674                       
-          }
+          heading: 6.241154409820325,
+          pitch: -0.7553926008863594,
+          roll: 0.000015066316128020674
+        }
       })
       function computeModelMatrix(entity, time) {
         var position = Cesium.Property.getValueOrUndefined(entity.position, time, new Cesium.Cartesian3());
@@ -86,28 +86,28 @@
         maximumParticleLife: 1.2,
       };
       Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
-    ExampleGui.addSlider('emissionRate', 10.0, 0, 100, 1, function(value) {
-      viewModel.emissionRate = value;
-    });
-    ExampleGui.addSlider('particleSize', 25.0, 0, 100, 1, function(value) {
-      viewModel.particleSize = value;
-    });
-    ExampleGui.addSlider('minimumParticleLife', 1.2, 0, 100, 1, function(value) {
-      viewModel.minimumParticleLife = value;
-    });
-    ExampleGui.addSlider('maximumParticleLife', 1.2, 0, 100, 1, function(value) {
-      viewModel.maximumParticleLife = value;
-    });
-    ExampleGui.addSlider('minimumSpeed', 1.0, 0, 100, 1, function(value) {
-      viewModel.minimumSpeed = value;
-    });
-    ExampleGui.addSlider('maximumSpeed', 4.0, 0, 100, 1, function(value) {
-      viewModel.maximumSpeed = value;
-    });
-    ExampleGui.finishedLoading();
-var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
-        image: 'static/examples/sampleData/image/fire.png',
+      // ExampleGui 参数面板
+      ExampleGui.addSlider('emissionRate', 10.0, 0, 100, 1, function (value) {
+        viewModel.emissionRate = value;
+      });
+      ExampleGui.addSlider('particleSize', 25.0, 0, 100, 1, function (value) {
+        viewModel.particleSize = value;
+      });
+      ExampleGui.addSlider('minimumParticleLife', 1.2, 0, 100, 1, function (value) {
+        viewModel.minimumParticleLife = value;
+      });
+      ExampleGui.addSlider('maximumParticleLife', 1.2, 0, 100, 1, function (value) {
+        viewModel.maximumParticleLife = value;
+      });
+      ExampleGui.addSlider('minimumSpeed', 1.0, 0, 100, 1, function (value) {
+        viewModel.minimumSpeed = value;
+      });
+      ExampleGui.addSlider('maximumSpeed', 4.0, 0, 100, 1, function (value) {
+        viewModel.maximumSpeed = value;
+      });
+      ExampleGui.finishedLoading();
+      var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
+        image: '/examples/sampleData/image/fire.png',
         scale: viewModel.scale,
         minimumParticleLife: viewModel.minimumParticleLife,
         maximumParticleLife: viewModel.maximumParticleLife,
@@ -139,29 +139,29 @@ var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
           particleSystem.maximumImageSize.y = particleSize;
         });
 
-        Cesium.knockout
-          .getObservable(viewModel, "minimumParticleLife")
-          .subscribe(function (newValue) {
-            particleSystem.minimumParticleLife = parseFloat(newValue);
-          });
+      Cesium.knockout
+        .getObservable(viewModel, "minimumParticleLife")
+        .subscribe(function (newValue) {
+          particleSystem.minimumParticleLife = parseFloat(newValue);
+        });
 
-        Cesium.knockout
-          .getObservable(viewModel, "maximumParticleLife")
-          .subscribe(function (newValue) {
-            particleSystem.maximumParticleLife = parseFloat(newValue);
-          });
+      Cesium.knockout
+        .getObservable(viewModel, "maximumParticleLife")
+        .subscribe(function (newValue) {
+          particleSystem.maximumParticleLife = parseFloat(newValue);
+        });
 
-        Cesium.knockout
-          .getObservable(viewModel, "minimumSpeed")
-          .subscribe(function (newValue) {
-            particleSystem.minimumSpeed = parseFloat(newValue);
-          });
+      Cesium.knockout
+        .getObservable(viewModel, "minimumSpeed")
+        .subscribe(function (newValue) {
+          particleSystem.minimumSpeed = parseFloat(newValue);
+        });
 
-        Cesium.knockout
-          .getObservable(viewModel, "maximumSpeed")
-          .subscribe(function (newValue) {
-            particleSystem.maximumSpeed = parseFloat(newValue);
-          });
+      Cesium.knockout
+        .getObservable(viewModel, "maximumSpeed")
+        .subscribe(function (newValue) {
+          particleSystem.maximumSpeed = parseFloat(newValue);
+        });
 
     </script>
 </body>
