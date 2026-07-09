@@ -18,11 +18,6 @@
         height: 100%;
         margin: 0;
       }
-
-      #toolbar {
-        left: 5px;
-        top: 5px;
-      }
     </style>
   </head>
 
@@ -170,7 +165,8 @@
       function addMaterialLine(catalogItem, index) {
         var polylineOptions = {
           positions: getLinePositions(index),
-          width: catalogItem.clampToGround ? GROUND_LINE_WIDTH : DEFAULT_LINE_WIDTH,
+          // width: catalogItem.clampToGround ? GROUND_LINE_WIDTH : DEFAULT_LINE_WIDTH,
+          width: 10,
           material: catalogItem.createMaterial()
         }
 
