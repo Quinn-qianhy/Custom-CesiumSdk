@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
-    <title>绘制点线面</title>
+    <title>量算</title>
     <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
     <script src="/examples/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
     <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
     <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
     <link href="/examples/example-gui.css" rel="stylesheet" />
@@ -18,50 +18,76 @@
         height: 100%;
         margin: 0;
       }
-</style>
+    </style>
   </head>
 
   <body class="dark">
     <div id="cesiumContainer"></div>
-<script type="text/javascript">
-      "use script";
-      var viewer = new Cesium.Viewer("cesiumContainer");
-      viewer.scene.globe.depthTestAgainstTerrain = true;
+    <script type="text/javascript">
+      'use strict'
 
-      window.measureDistance = new Cesium.MeasureHandler(
-        viewer,
-        Cesium.MeasureMode.DISTANCE
-      );
-      window.measureArea = new Cesium.MeasureHandler(
-        viewer,
-        Cesium.MeasureMode.AREA
-      );
+      var ONLINE_TERRAIN_URL = 'https://data.mars3d.cn/terrain'
 
-      function deActivateAll() {
-        measureDistance.deactivate();
-        measureArea.deactivate();
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            { enablePickFeatures: false }
+          )
+        ),
+        terrain: new Cesium.Terrain(
+          Cesium.CesiumTerrainProvider.fromUrl(ONLINE_TERRAIN_URL)
+        )
+      })
+      viewer.scene.globe.depthTestAgainstTerrain = true
+
+      // 山地场景，便于高度/角度量算观察地形拾取效果
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(103.484, 29.556, 6000),
+        orientation: {
+          heading: 0,
+          pitch: Cesium.Math.toRadians(-35),
+          roll: 0
+        }
+      })
+
+      var measureHandle = new Cesium.MeasureHandle(viewer)
+
+      function stopMeasure() {
+        measureHandle.deactivate()
       }
 
       function clearAll() {
-        measureDistance.clear();
-        measureArea.clear();
+        measureHandle.clearAll()
       }
 
-      ExampleGui.addToolbarButton("距离", function() {
-        deActivateAll();
-        measureDistance.activate();
-      });
-      ExampleGui.addToolbarButton("面积", function() {
-        deActivateAll();
-        measureArea.activate();
-      });
+      function startMeasure(startFn, label) {
+        stopMeasure()
+        startFn(function (result) {
+          console.log(label + '测量完成', result)
+        })
+      }
 
-      ExampleGui.addToolbarButton("停止", function() {
-        deActivateAll();
-      });
-      ExampleGui.addToolbarButton("清除", function() {
-        clearAll();
-      });
+      ExampleGui.addToolbarButton('距离', function () {
+        startMeasure(measureHandle.measureDistance.bind(measureHandle), '距离')
+      })
+      ExampleGui.addToolbarButton('面积', function () {
+        startMeasure(measureHandle.measureArea.bind(measureHandle), '面积')
+      })
+      ExampleGui.addToolbarButton('高度', function () {
+        startMeasure(measureHandle.measureHeight.bind(measureHandle), '高度')
+      })
+      ExampleGui.addToolbarButton('角度', function () {
+        startMeasure(measureHandle.measureAngle.bind(measureHandle), '角度')
+      })
+
+      ExampleGui.addToolbarButton('停止', function () {
+        stopMeasure()
+      })
+      ExampleGui.addToolbarButton('清除', function () {
+        clearAll()
+      })
     </script>
   </body>
 </html>
