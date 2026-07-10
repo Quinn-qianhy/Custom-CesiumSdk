@@ -11,10 +11,7 @@ export function useResizableExamplePanel() {
   let activePointerId: number | null = null
 
   const getDefaultPanelWidth = () =>
-    Math.min(
-      Math.max(window.innerWidth * 0.35, MIN_PANEL_WIDTH),
-      window.innerWidth * 0.5
-    )
+    Math.min(Math.max(window.innerWidth * 0.35, MIN_PANEL_WIDTH), window.innerWidth * 0.5)
 
   const togglePanel = () => {
     panelCollapsed.value = !panelCollapsed.value
@@ -40,10 +37,7 @@ export function useResizableExamplePanel() {
         return
       }
       const delta = startX - moveEvent.clientX
-      panelWidth.value = Math.min(
-        Math.max(startWidth + delta, MIN_PANEL_WIDTH),
-        maxWidth
-      )
+      panelWidth.value = Math.min(Math.max(startWidth + delta, MIN_PANEL_WIDTH), maxWidth)
     }
 
     const endResize = () => {

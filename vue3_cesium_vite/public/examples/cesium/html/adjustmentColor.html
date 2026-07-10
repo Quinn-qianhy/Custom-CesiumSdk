@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>颜色调整</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false,
+            },
+          ),
+        ), // 初始化使用 ArcGIS 卫星图
+      });
+      //初始地球色调
+      var layer = viewer.imageryLayers.get(0);
+      layer.saturation = 0;
+      layer.hue = 0.56;
+      layer.contrast = 1.74;
+      layer.brightness = 1.1;
+      layer.gamma = layer.gamma ?? 1;
+
+      // The viewModel tracks the state of our mini application.
+      var viewModel = {
+        brightness: layer.brightness,
+        contrast: layer.contrast,
+        hue: layer.hue,
+        saturation: layer.saturation,
+        gamma: layer.gamma,
+      };
+      // Convert the viewModel members into knockout observables.
+      Cesium.knockout.track(viewModel);
+      // ExampleGui 参数面板
+      ExampleGui.addSlider(
+        "亮度",
+        viewModel.brightness,
+        0,
+        3,
+        0.01,
+        function (value) {
+          viewModel.brightness = value;
+        },
+      );
+      ExampleGui.addSlider(
+        "对比度",
+        viewModel.contrast,
+        0,
+        3,
+        0.01,
+        function (value) {
+          viewModel.contrast = value;
+        },
+      );
+      ExampleGui.addSlider("色调", viewModel.hue, 0, 1, 0.01, function (value) {
+        viewModel.hue = value;
+      });
+      ExampleGui.addSlider(
+        "饱和度",
+        viewModel.saturation,
+        0,
+        3,
+        0.01,
+        function (value) {
+          viewModel.saturation = value;
+        },
+      );
+      ExampleGui.addSlider(
+        "伽马",
+        viewModel.gamma || 1,
+        0,
+        3,
+        0.01,
+        function (value) {
+          viewModel.gamma = value;
+        },
+      );
+      ExampleGui.finishedLoading();
+
+      // Bind the viewModel to the DOM elements of the UI that call for it.
+      // Make the active imagery layer a subscriber of the viewModel.
+      function subscribeLayerParameter(name) {
+        Cesium.knockout
+          .getObservable(viewModel, name)
+          .subscribe(function (newValue) {
+            if (viewer.imageryLayers.length > 0) {
+              layer[name] = newValue;
+            }
+          });
+      }
+      subscribeLayerParameter("brightness");
+      subscribeLayerParameter("contrast");
+      subscribeLayerParameter("hue");
+      subscribeLayerParameter("saturation");
+      subscribeLayerParameter("gamma");
+
+      // Make the viewModel react to base layer changes.
+      function updateViewModel() {
+        if (viewer.imageryLayers.length > 0) {
+          viewModel.brightness = layer.brightness;
+          viewModel.contrast = layer.contrast;
+          viewModel.hue = layer.hue;
+          viewModel.saturation = layer.saturation;
+          viewModel.gamma = layer.gamma;
+        }
+      }
+      viewer.imageryLayers.layerAdded.addEventListener(updateViewModel);
+      viewer.imageryLayers.layerRemoved.addEventListener(updateViewModel);
+      viewer.imageryLayers.layerMoved.addEventListener(updateViewModel);
+      updateViewModel();
+    </script>
+  </body>
+</html>

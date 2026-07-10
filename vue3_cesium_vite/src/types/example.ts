@@ -32,12 +32,6 @@ export interface MenuSection {
   menuItem: MenuGroup[]
 }
 
-/** 菜单名称与组件 ID 映射 */
-export interface ComponentNameMapping {
-  id: string
-  name: string
-}
-
 /** 卡片状态展示信息 */
 export interface ExampleStatusMeta {
   labels: string[]

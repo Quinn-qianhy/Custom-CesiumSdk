@@ -11,13 +11,19 @@ import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useExamplesStore } from '@/stores/examplesStore'
 import { sceneManager, setScene } from '@/utils/sceneManager'
+import { olMapManager } from '@/utils/olMapManager'
 import { loadExampleFromSource, clearRuntimeStyles } from '@/utils/exampleRuntimeLoader'
+import type { EngineId } from '@/types/engine'
+
+const props = defineProps<{
+  engineId: EngineId
+}>()
 
 const route = useRoute()
 const store = useExamplesStore()
 const { customSource, applyRevision } = storeToRefs(store)
 
-const modules = import.meta.glob<{ default: Component }>([
+const cesiumModules = import.meta.glob<{ default: Component }>([
   '@/components/scene/*.vue',
   '@/components/layer/*.vue',
   '@/components/material/*.vue',
@@ -25,22 +31,41 @@ const modules = import.meta.glob<{ default: Component }>([
   '@/components/general/textView.vue'
 ])
 
+const olModules = import.meta.glob<{ default: Component }>(
+  '@/components/openlayers/*.vue'
+)
+
+const allModules = { ...cesiumModules, ...olModules }
+
 const modulePathById = new Map<string, string>()
-for (const path of Object.keys(modules)) {
-  const match = path.match(/\/([^/]+)\.vue$/)
-  if (match) {
-    modulePathById.set(match[1], path)
+
+function registerModules(modules: Record<string, () => Promise<{ default: Component }>>) {
+  for (const path of Object.keys(modules)) {
+    const match = path.match(/\/([^/]+)\.vue$/)
+    if (match) {
+      modulePathById.set(match[1], path)
+    }
   }
+}
+
+registerModules(cesiumModules)
+registerModules(olModules)
+
+function isVueComponent(value: unknown): value is Component {
+  if (typeof value !== 'object' || value === null) {
+    return false
+  }
+  return 'setup' in value || 'render' in value || '__asyncLoader' in value
 }
 
 const componentId = computed(() => route.params.componentId as string)
 const currentComponent = shallowRef<Component | null>(null)
 
 const componentKey = computed(
-  () => `${componentId.value}-${applyRevision.value}`
+  () => `${props.engineId}-${componentId.value}-${applyRevision.value}`
 )
 
-const resetViewerState = () => {
+const resetCesiumState = () => {
   const viewer = sceneManager.getViewer()
   if (!viewer || viewer.isDestroyed()) {
     return
@@ -49,6 +74,18 @@ const resetViewerState = () => {
   viewer.dataSources.removeAll()
   setScene(viewer)
   clearRuntimeStyles()
+}
+
+const resetOpenLayersState = () => {
+  olMapManager.resetMapState()
+}
+
+const resetRuntimeState = () => {
+  if (props.engineId === 'openlayers') {
+    resetOpenLayersState()
+    return
+  }
+  resetCesiumState()
 }
 
 const loadDefaultComponent = async (id: string) => {
@@ -60,7 +97,20 @@ const loadDefaultComponent = async (id: string) => {
     return
   }
 
-  const mod = await modules[modulePath]()
+  const loader = allModules[modulePath]
+  if (!loader) {
+    console.warn(`未找到示例模块加载器: ${modulePath}`)
+    currentComponent.value = null
+    return
+  }
+
+  const mod = await loader()
+  if (!isVueComponent(mod.default)) {
+    console.warn(`示例组件无效: ${id}`, mod.default)
+    currentComponent.value = null
+    return
+  }
+
   currentComponent.value = markRaw(mod.default)
 }
 
@@ -70,7 +120,7 @@ const loadComponent = async (id: string) => {
     return
   }
 
-  resetViewerState()
+  resetRuntimeState()
 
   if (customSource.value) {
     try {
@@ -90,7 +140,7 @@ const loadComponent = async (id: string) => {
 }
 
 watch(
-  [componentId, applyRevision],
+  [componentId, applyRevision, () => props.engineId],
   ([id], [prevId]) => {
     if (prevId && id !== prevId) {
       store.resetCustomSource()

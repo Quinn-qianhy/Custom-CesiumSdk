@@ -47,9 +47,8 @@ src/
 
 ## Adding a New Example
 
-1. `src/config/config.js` 添加菜单项
-2. `src/config/comNames.ts` 添加 `{ id, name }` 映射
-3. `src/components/<category>/<name>.vue` 创建组件（`<script setup lang="ts">`）
+1. `src/config/config.js`（或 `olMenu.js`）添加菜单项；Vue 示例的 `url` 填组件 ID（与 `.vue` 文件名一致）
+2. `src/components/<category>/<name>.vue` 创建组件（`<script setup lang="ts">`）
 
 示例组件惯例：
 
@@ -62,6 +61,7 @@ const { onMounted, GUI, getViewer, useExamplesStore } = useCommonImports()
 
 - **Cesium 定制 API**：`utils/customMaterial/*.ts` 与部分示例组件使用 `@ts-nocheck`（自编译包无完整类型）
 - **HTML 双 fetch**：已统一走 `loadHtmlExampleSource` 内存缓存
+- **HTML 示例目录**：按引擎分目录 — `public/examples/cesium/`、`public/examples/openlayers/`、`public/examples/shared/`
 - **HTML 示例工具栏**：嵌入宿主时由父页面 `htmlExampleGuiBridge` 代理创建 `lil-gui`（避免 iframe window 与父页面 DOM 错位）；独立打开 HTML 时仍用页面内 `example-gui.js`
 - **DrawTool**：`entityPoint.vue` 使用静态方法 `DrawTool.startDraw / stopDrawing`
-- **菜单占位**：部分 url 仍指向 `globe-for-webgl` 静态 HTML
+- **菜单占位**：部分 url 仍指向 `globe-for-webgl` 静态 HTML；Vue 示例的 `url` 即 componentId（见 `CONTEXT.md`）

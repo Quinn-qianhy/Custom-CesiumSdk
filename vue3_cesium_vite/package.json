@@ -22,6 +22,7 @@
     "element-plus": "^2.6.1",
     "lil-gui": "^0.19.2",
     "lodash": "^4.17.21",
+    "ol": "^10.9.0",
     "pinia": "^2.1.7",
     "vite-plugin-glsl": "^1.1.2",
     "vue": "^3.2.45",

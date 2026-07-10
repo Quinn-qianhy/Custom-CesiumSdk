@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>测试</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+#toolbar .header {
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  <div id="toolbar">
+  </div>
+  <script type="text/javascript">
+    "use script";
+    const defaultAccessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2YzU4ZDFiYS0yY2Q0LTRkYTItYjI1MS1iZjFiYTM2ZmVmNGYiLCJpZCI6MjU5LCJpYXQiOjE2NDg4MzQyNTN9.TTJ-QAXRECpsYbLFn6Pu60v6c21wIR2IOKBO9VSkOnM"
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
+        //ARCGIS蓝色底图
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      })
+        ),
+    });
+
+    const options = {
+      camera: viewer.scene.camera,
+      canvas: viewer.scene.canvas,
+      screenOverlayContainer: viewer.container
+    }
+
+    function clear_flyTo() {
+      viewer.dataSources.removeAll();
+      viewer.camera.flyTo({
+        destination: {
+          x: -4599965.752445295,
+          y: 17707844.759986628,
+          z: 10883500.137172224
+        },
+        orientation: {
+          heading: 6.283185307179586,
+          pitch: -1.5693370946091014,
+          roll: 0
+        }
+      })
+    }
+
+    function addKMZ_gdp() {
+      viewer.dataSources.add(
+        Cesium.KmlDataSource.load(
+          "static/examples/cesium/assets/sampleData/kml/gdpPerCapita2008.kmz",
+          options
+        )
+      );
+    }
+
+    function addScience() {
+      viewer.dataSources.add(
+        Cesium.KmlDataSource.load(
+          "static/examples/cesium/assets/sampleData/kml/facilities/facilities.kml",
+          options
+        )
+      )
+    }
+    ExampleGui.addToolbarButton("全球示例GDP数据", function () {
+      clear_flyTo()
+      addKMZ_gdp()
+    })
+
+
+    ExampleGui.addToolbarButton("全球科学设施数据", function () {
+      clear_flyTo()
+      addScience()
+    })
+
+  </script>
+</body>
+
+</html>

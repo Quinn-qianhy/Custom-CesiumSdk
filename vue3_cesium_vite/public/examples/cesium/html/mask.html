@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>反选遮罩</title>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      top: 5px;
+    }
+
+  </style>
+
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    })
+    viewer.scene.globe.depthTestAgainstTerrain = false
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1
+    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 5000000
+
+    fetch('/data/geojson/siChuanPolygon.json')
+      .then(response => response.json())
+      .then(res => {
+        var features = res.features;
+        var geo = []
+        for (var k = 0; k < features.length; k++) {
+          const geometries = getGoordGeometry(features[k].geometry)
+          for (var i = 0; i < geometries.length; i++) {
+            geo.push(geometries[i])
+          }
+        }
+        var maskLayer = viewer.entities.add({
+          polygon: {
+            hierarchy: {
+              positions: Cesium.Cartesian3.fromDegreesArray([
+                180.0,90.0,
+                180.0, 0.0,
+                10.0,0.0,
+                0.0,90.0
+              ]),
+              holes: [{
+                positions: Cesium.Cartesian3.fromDegreesArray(
+                  geo
+                )
+              }]
+            },
+            outline: false,
+            height:0,
+            material: Cesium.Color.fromCssColorString('#000e3bcc'),
+          },
+        })
+        var hierarchy = maskLayer.polygon.hierarchy.getValue(Cesium.JulianDate.now())
+        var positions = hierarchy.holes[0].positions
+        viewer.entities.add({
+            name: 'boderLine',
+            polyline: {
+                positions:positions,
+                width: 10,
+                material:Cesium.Color.fromCssColorString('#39E09Bcc'),
+                clampToGround: true
+            }
+        })
+      })
+
+    function getGoordGeometry(geometry) {
+      const res = [];
+      const coordinates = geometry.coordinates;
+      for (let i = 0; i < coordinates.length; i++) {
+        const coord = coordinates[i];
+        for (let j = 0; j < coord.length; j++) {
+          const item = coord[j];
+          for (let k = 0; k < item.length; k++) {
+            res.push(item[k]);
+          }
+        }
+      }
+      return res;
+    }
+
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 3000000.0),
+    })
+
+  </script>
+</body>
+
+</html>

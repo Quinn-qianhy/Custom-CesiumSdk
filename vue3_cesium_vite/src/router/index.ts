@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/examples/:componentId',
       component: () => import('@/layouts/MapLayout.vue'),
-      meta: { requiresCesium: true, exampleType: 'vue' },
+      meta: { exampleType: 'vue' },
       children: [
         {
           path: '',

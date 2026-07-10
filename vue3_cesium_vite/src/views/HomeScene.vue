@@ -107,7 +107,7 @@ import { resolveExampleImageUrl } from '@/utils/exampleImage'
 
 const router = useRouter()
 const engineStore = useEngineStore()
-const { menuData } = storeToRefs(engineStore)
+const { menuData, currentEngineId } = storeToRefs(engineStore)
 
 import type { ExamplePage, ExampleStatusMeta } from '@/types/example'
 
@@ -180,16 +180,16 @@ const openPage = (page: ExamplePage) => {
     return
   }
 
-  const componentId = resolveComponentId(name)
+  const componentId = resolveComponentId(page)
   if (!componentId) {
-    console.warn(`未找到示例组件映射: ${name}`)
+    console.warn(`未找到示例组件 ID: ${name}`)
     return
   }
 
   const routeUrl = router.resolve({
     name: 'Example',
     params: { componentId },
-    query: { title: name }
+    query: { title: name, engine: currentEngineId.value }
   })
 
   window.open(routeUrl.href, '_blank')

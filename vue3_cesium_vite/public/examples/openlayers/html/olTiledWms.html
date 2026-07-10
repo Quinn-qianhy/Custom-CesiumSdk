@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tiled WMS</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import TileLayer from 'ol/layer/WebGLTile.js'
+      import TileWMS from 'ol/source/TileWMS.js'
+      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const wmsLayer = new TileLayer({
+        extent: [-13884991, 2870341, -7455066, 6338219],
+        source: new TileWMS({
+          url: 'https://ahocevar.com/geoserver/wms',
+          params: { LAYERS: 'topp:states', TILED: true },
+          serverType: 'geoserver',
+          transition: 0
+        })
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), wmsLayer],
+        target: 'map',
+        view: new View({
+          center: [-10997148, 4569099],
+          zoom: 4
+        })
+      })
+
+      ExampleGui.addToggleButton('显示 WMS 图层', true, function (checked) {
+        wmsLayer.setVisible(checked)
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>地形开挖(任意多边形)</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+</style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+<script type="text/javascript">
+      "use script";
+
+      var viewer = new Cesium.Viewer("cesiumContainer");
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      var drawPolygon = new Cesium.DrawHandler(
+        viewer,
+        Cesium.DrawMode.POLYGON
+      );
+
+      function deActivateAll() {
+        drawPolygon.deactivate();
+      }
+
+      function clearAll() {
+        drawPolygon.clear();
+      }
+
+      ExampleGui.addToolbarButton(
+        "绘制开挖范围，左键开始，右键结束绘制",
+        function () {
+          deActivateAll();
+          drawPolygon.activate();
+          drawPolygon &&
+            drawPolygon.addDrawCompleteEventListener((result) => {
+              drawPolygon.clear();
+              result.shift();
+              var points = result;
+              console.log(result);
+
+              var polygonHierarchy = new Cesium.PolygonHierarchy(result);
+
+              var temp = new Cesium.GlobeClip({ viewer, polygonHierarchy });
+              viewer.scene.primitives.add(temp);
+
+              viewer.scene.globe.backFaceCulling = true;
+              viewer.scene.globe.showSkirts = true;
+            });
+        }
+      ); 
+    </script>
+  </body>
+</html>

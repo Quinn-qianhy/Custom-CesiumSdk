@@ -1,4 +1,5 @@
 import cesiumMenu from '@/config/config.js'
+import olMenu from '@/config/olMenu.js'
 import type { EngineConfig, EngineId } from '@/types/engine'
 import type { MenuSection } from '@/types/example'
 
@@ -8,7 +9,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineConfig> = {
     id: 'openlayers',
     label: 'OpenLayers',
     description: 'OpenLayers 二维地图引擎',
-    menu: []
+    menu: olMenu as MenuSection[]
   },
   cesium: {
     id: 'cesium',

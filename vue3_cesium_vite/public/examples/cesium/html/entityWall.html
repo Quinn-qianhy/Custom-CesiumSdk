@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>实体墙对象</title>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    #toolbar {
+      left: 5px;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 4px;
+      border-radius: 4px;
+      top: 5px;
+    }
+
+  </style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    })
+    viewer.scene.globe.depthTestAgainstTerrain = false
+
+    viewer.entities.add({
+      name: "方形墙体",
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [104.043733, 30.675891, 500,
+            104.058885, 30.676580, 500,
+            104.058805, 30.666952, 500,
+            104.043733, 30.666011, 500,
+            104.043733, 30.675891, 500
+          ]),
+        material: new Cesium.PolylineFlowMaterialProperty({
+          image: "/examples/cesium/assets/material/wallMaterial.png",
+          color: Cesium.Color.CHARTREUSE,
+          repeat: new Cesium.Cartesian2(1, 3),
+          axisY: true,
+          speed: 10
+        })
+      }
+    });
+
+    viewer.entities.add({
+      name: '方形箭头材质',
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [104.053733, 30.695891, 500,
+            104.068885, 30.696580, 500,
+            104.068805, 30.686952, 500,
+            104.053733, 30.686011, 500,
+            104.053733, 30.695891, 500
+          ]),
+        material: new Cesium.PolylineFlowMaterialProperty({
+          image: "/examples/cesium/assets/material/arrow2.png",
+          color: Cesium.Color.fromCssColorString("#ffff00"),
+          repeat: new Cesium.Cartesian2(30, 1),
+          speed: 10
+        })
+      }
+    })
+
+    viewer.entities.add({
+      name: '规则纯色墙体',
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [104.054815, 30.753495,500,
+          104.081255, 30.754257,500,
+          104.082284, 30.748255,500,
+          104.084748, 30.740141,500,
+          104.080557, 30.735556,500,
+          104.080023, 30.733741,500,
+          104.066846, 30.733737,500,
+          104.055531, 30.733151,500,
+          104.054787, 30.735978,500,
+          104.051994, 30.739036,500,
+          104.050691, 30.7416,500,
+          104.051215, 30.744734,500,
+          104.054815, 30.753495,500,]),
+        material: new Cesium.PolylineFlowMaterialProperty({
+          image: "/examples/cesium/assets/material/wallMaterial.png",
+          color: Cesium.Color.fromCssColorString("#ff0000"),
+          repeat: new Cesium.Cartesian2(1, 1),
+          axisY: true,
+          speed: 10
+        })
+      }
+    })
+
+    viewer.entities.add({
+      name: '水体材质墙',
+      wall: {
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          [104.055337, 30.662499, 500,
+            104.089107, 30.662437, 500,
+          ]),
+        material: new Cesium.ImageMaterialProperty({
+          image: "/examples/cesium/assets/material/movingRiver.png",
+          repeat: new Cesium.Cartesian2(10, 1)
+        })
+      }
+    })
+
+    viewer.zoomTo(viewer.entities);
+
+  </script>
+</body>
+
+</html>

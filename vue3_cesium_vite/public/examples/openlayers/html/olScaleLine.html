@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>比例尺</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .ol-scale-bar-inverted .ol-scale-singlebar-even {
+        background-color: var(--ol-background-color);
+      }
+
+      .ol-scale-bar-inverted .ol-scale-singlebar-odd {
+        background-color: var(--ol-subtle-foreground-color);
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import ScaleLine from 'ol/control/ScaleLine.js'
+      import { defaults as defaultControls } from 'ol/control/defaults.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT,
+        DEFAULT_ZOOM
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const settings = {
+        units: 'metric',
+        type: 'scaleline',
+        steps: 4,
+        showScaleText: true,
+        invertColors: false
+      }
+
+      let control
+
+      function createScaleControl() {
+        if (settings.type === 'scaleline') {
+          control = new ScaleLine({
+            units: settings.units
+          })
+        } else {
+          control = new ScaleLine({
+            units: settings.units,
+            bar: true,
+            steps: settings.steps,
+            text: settings.showScaleText,
+            minWidth: 140
+          })
+          updateInvertColors()
+        }
+        return control
+      }
+
+      function updateInvertColors() {
+        if (!control || !control.element) {
+          return
+        }
+        control.element.classList.toggle('ol-scale-bar-inverted', settings.invertColors)
+      }
+
+      function reconfigureScaleLine() {
+        map.removeControl(control)
+        map.addControl(createScaleControl())
+      }
+
+      const map = new Map({
+        controls: defaultControls().extend([createScaleControl()]),
+        layers: [createGaodeImageryLayer()],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: DEFAULT_ZOOM
+        })
+      })
+
+      ExampleGui.addMenu([
+        {
+          text: '公制',
+          onselect: function () {
+            settings.units = 'metric'
+            control.setUnits('metric')
+          }
+        },
+        {
+          text: '英制',
+          onselect: function () {
+            settings.units = 'imperial'
+            control.setUnits('imperial')
+          }
+        },
+        {
+          text: '美制',
+          onselect: function () {
+            settings.units = 'us'
+            control.setUnits('us')
+          }
+        },
+        {
+          text: '海里',
+          onselect: function () {
+            settings.units = 'nautical'
+            control.setUnits('nautical')
+          }
+        },
+        {
+          text: '度',
+          onselect: function () {
+            settings.units = 'degrees'
+            control.setUnits('degrees')
+          }
+        }
+      ])
+
+      ExampleGui.addMenu([
+        {
+          text: 'ScaleLine',
+          onselect: function () {
+            settings.type = 'scaleline'
+            reconfigureScaleLine()
+          }
+        },
+        {
+          text: 'ScaleBar',
+          onselect: function () {
+            settings.type = 'scalebar'
+            reconfigureScaleLine()
+          }
+        }
+      ])
+
+      ExampleGui.addSlider('ScaleBar 分段', settings.steps, 1, 8, 1, function (value) {
+        settings.steps = value
+        if (settings.type === 'scalebar') {
+          reconfigureScaleLine()
+        }
+      })
+
+      ExampleGui.addToggleButton('显示比例文字', settings.showScaleText, function (checked) {
+        settings.showScaleText = checked
+        if (settings.type === 'scalebar') {
+          reconfigureScaleLine()
+        }
+      })
+
+      ExampleGui.addToggleButton('反色', settings.invertColors, function (checked) {
+        settings.invertColors = checked
+        updateInvertColors()
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

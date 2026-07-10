@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>地球旋转</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          }),
+        ),
+        animation: true,
+        shouldAnimate: true,
+      });
+
+      let prev = viewer.clock.currentTime;
+      var icrf = () => {
+        var position = viewer.camera.position;
+        var { height } =
+          viewer.scene.globe.ellipsoid.cartesianToCartographic(position);
+        const a = (465.2 / (6371 * 1000)) * (height + 6371 * 1000);
+        var currentTime = viewer.clock.currentTime;
+        const interval =
+          Cesium.JulianDate.toDate(currentTime) -
+          Cesium.JulianDate.toDate(prev);
+        prev = currentTime;
+        viewer.scene.camera.rotate(
+          Cesium.Cartesian3.UNIT_Z,
+          (Math.PI / (24 * 60 * 60)) * ((interval * a) / 100),
+        );
+      };
+      viewer.clock.onTick.addEventListener(icrf);
+      function start() {
+        viewer.clock.multiplier = Number(viewModel.multiplier);
+      }
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-/** 解析示例卡片缩略图 URL（统一 public/examples，编码空格） */
+/** 解析示例卡片缩略图 URL（支持 /examples/{engine}/cards/ 路径，编码空格） */
 export function resolveExampleImageUrl(imagePath: string): string {
   if (!imagePath) {
     return ''
@@ -11,12 +11,16 @@ export function resolveExampleImageUrl(imagePath: string): string {
   let normalized = imagePath
 
   if (normalized.startsWith('/src/assets/images/exImages/')) {
-    normalized = `/examples/${normalized.slice('/src/assets/images/exImages/'.length)}`
+    normalized = `/examples/cesium/cards/${normalized.slice('/src/assets/images/exImages/'.length)}`
   }
 
-  if (!normalized.startsWith('/examples/')) {
-    const fileName = normalized.replace(/^\/+/, '')
-    normalized = `/examples/${fileName}`
+  if (
+    !normalized.startsWith('/examples/cesium/') &&
+    !normalized.startsWith('/examples/openlayers/') &&
+    !normalized.startsWith('/examples/shared/')
+  ) {
+    const fileName = normalized.replace(/^\/+/, '').replace(/^examples\//, '')
+    normalized = `/examples/cesium/cards/${fileName}`
   }
 
   const slashIndex = normalized.lastIndexOf('/')

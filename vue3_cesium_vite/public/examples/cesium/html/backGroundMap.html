@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>自定义背景图片</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div
+      id="cesiumContainer"
+      style="background-image: url(/examples/cesium/assets/backgroundPicture/background1.jpg)"
+    ></div>
+    <script type="text/javascript">
+      'use script'
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false
+            }
+          )
+        ),
+        contextOptions: {
+          webgl: {
+            alpha: true
+          }
+        },
+        orderIndependentTranslucency: false,
+        skyAtmosphere: false,
+        scene3DOnly: true
+      })
+      viewer.scene.sun.show = false
+      viewer.scene.moon.show = false
+      viewer.scene.globe.depthTestAgainstTerrain = false
+      viewer.scene.skyBox.show = false
+      viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0)
+
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 20000000.0)
+      })
+
+      var backgroundImages = [
+        'url(/examples/cesium/assets/backgroundPicture/background1.jpg)',
+        'url(/examples/cesium/assets/backgroundPicture/background2.jpg)',
+        'url(/examples/cesium/assets/backgroundPicture/background3.jpg)',
+        'url(/examples/cesium/assets/backgroundPicture/background4.jpg)'
+      ]
+
+      function selectPicture(numURL) {
+        document.getElementById('cesiumContainer').style.backgroundImage =
+          backgroundImages[numURL - 1]
+      }
+
+      selectPicture(1)
+
+      ExampleGui.addToolbarButton('背景1', function () {
+        selectPicture(1)
+      })
+      ExampleGui.addToolbarButton('背景2', function () {
+        selectPicture(2)
+      })
+      ExampleGui.addToolbarButton('背景3', function () {
+        selectPicture(3)
+      })
+      ExampleGui.addToolbarButton('背景4', function () {
+        selectPicture(4)
+      })
+    </script>
+  </body>
+</html>

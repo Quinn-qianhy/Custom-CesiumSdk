@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mapbox Vector Layer</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol": "https://esm.sh/ol@10.9.0",
+          "ol/": "https://esm.sh/ol@10.9.0/",
+          "ol-mapbox-style": "https://esm.sh/ol-mapbox-style@13.4.1?deps=ol@10.9.0"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import { MapboxVectorLayer } from 'ol-mapbox-style'
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+
+      const settings = {
+        accessToken: '',
+        styleId: 'mapbox/bright-v9'
+      }
+
+      const styleOptions = [
+        { text: 'bright-v9', value: 'mapbox/bright-v9' },
+        { text: 'streets-v12', value: 'mapbox/streets-v12' },
+        { text: 'dark-v11', value: 'mapbox/dark-v11' },
+        { text: 'outdoors-v12', value: 'mapbox/outdoors-v12' }
+      ]
+
+      let map = null
+
+      function disposeMap() {
+        if (map) {
+          map.setTarget(null)
+          map = null
+        }
+      }
+
+      function loadMap() {
+        const token = settings.accessToken.trim()
+        if (!token) {
+          return
+        }
+
+        disposeMap()
+
+        map = new Map({
+          target: 'map',
+          layers: [
+            new MapboxVectorLayer({
+              styleUrl: 'mapbox://styles/' + settings.styleId,
+              accessToken: token
+            })
+          ],
+          view: new View({
+            center: [0, 0],
+            zoom: 2
+          })
+        })
+      }
+
+      ExampleGui.addTextInput('Access Token', settings, 'accessToken')
+
+      ExampleGui.addMenu(
+        styleOptions.map(function (item) {
+          return {
+            text: item.text,
+            onselect: function () {
+              settings.styleId = item.value
+            }
+          }
+        })
+      )
+
+      ExampleGui.addToolbarButton('加载地图', loadMap)
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

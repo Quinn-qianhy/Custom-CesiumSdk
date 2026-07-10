@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>BIM剖切</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+</style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+<script type="text/javascript">
+      "use script";
+
+      var viewer = new Cesium.Viewer("cesiumContainer", { baseLayerPicker: true});
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      var tileset = new Cesium.Cesium3DTileset({
+        url: "http://180.167.213.122:18000/fangjianmodel/tileset.json",
+      });
+
+      tileset.readyPromise
+        .then(function (tileset) {
+          viewer.scene.primitives.add(tileset);
+          viewer.zoomTo(
+            tileset,
+            new Cesium.HeadingPitchRange(
+              0.0,
+              -0.5,
+              tileset.boundingSphere.radius * 2.0
+            )
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        
+      var drawPolygon = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYGON);
+
+      function deActivateAll() {
+        drawPolygon.deactivate();
+      }
+
+      function clearAll() {
+        drawPolygon.clear();
+      }
+
+      ExampleGui.addToolbarButton("绘制开挖范围，逆时针凸多边形", function() {
+        deActivateAll();
+        drawPolygon.activate();
+        drawPolygon &&
+          drawPolygon.addDrawCompleteEventListener(result => {
+            drawPolygon.clear();
+            result.shift();
+            var points = result;
+            tileset.clearClippingPlanes();
+            tileset.addClippingPlanes(points);
+          });
+      });
+      ExampleGui.addToolbarButton("停止绘制", function () {
+          deActivateAll();
+      });
+      
+      var clipObjects = ["顶部", "东", "西", "南", '北', '底部'];
+      var viewModel = {
+        exampleTypes: clipObjects,
+        currentExampleType: clipObjects[0],
+        distance: 20,
+        direction: false
+      };
+      
+      let normal = new Cesium.Cartesian3(0.0, 0.0, -1.0)
+      const clippingPlanes = new Cesium.ClippingPlaneCollection({
+        planes: [
+          new Cesium.ClippingPlane(normal, viewModel.distance),
+        ],
+        edgeWidth: 1.0,
+      })
+      tileset.clippingPlanes = clippingPlanes
+      // Track and create the bindings for the view model
+Cesium.knockout.track(viewModel);
+    // ExampleGui 参数面板
+    ExampleGui.addSlider('距离', 20, 0, 500, 1, function(value) {
+      viewModel.distance = value;
+    });
+    ExampleGui.finishedLoading();
+Cesium.knockout
+        .getObservable(viewModel, "currentExampleType")
+        .subscribe(function (newValue) {
+          viewModel.distance = 0;
+          switch (newValue) {
+            case '顶部':
+              normal = new Cesium.Cartesian3(0.0, 0.0, -1.0)
+              break;
+            case '东':
+              normal = new Cesium.Cartesian3(-1.0, 0.0, 0.0)
+              break;
+            case '西':
+              normal = new Cesium.Cartesian3(1.0, 0.0, 0.0)
+              break;
+            case '南':
+              normal = new Cesium.Cartesian3(0.0, 1.0, 0.0)
+              break;
+            case '北':
+              normal = new Cesium.Cartesian3(0.0, -1.0, 0.0)
+              break;
+            case '底部':
+              normal = new Cesium.Cartesian3(0.0, 0.0, 1.0)
+              break;
+          
+            default:
+              break;
+          }
+          if (viewModel.direction) normal = new Cesium.Cartesian3(-normal.x, -normal.y, -normal.z)
+          const clippingPlanes = new Cesium.ClippingPlaneCollection({
+            planes: [
+              new Cesium.ClippingPlane(normal, viewModel.distance),
+            ],
+            edgeWidth: 1.0,
+          })
+          tileset.clippingPlanes = clippingPlanes
+        });
+    
+      Cesium.knockout
+      .getObservable(viewModel, "distance")
+      .subscribe(function (newValue) {
+        console.log(newValue)
+        const clippingPlanes = new Cesium.ClippingPlaneCollection({
+          planes: [
+            new Cesium.ClippingPlane(normal, viewModel.distance),
+          ],
+          edgeWidth: 1.0,
+        })
+        tileset.clippingPlanes = clippingPlanes
+      });
+      ExampleGui.addToggleButton("剖切方向取反", false, function (
+        checked
+      ) {
+        viewModel.direction = checked;
+        normal = new Cesium.Cartesian3(-normal.x, -normal.y, -normal.z)
+        const clippingPlanes = new Cesium.ClippingPlaneCollection({
+          planes: [
+            new Cesium.ClippingPlane(normal, viewModel.distance),
+          ],
+          edgeWidth: 1.0,
+        })
+        tileset.clippingPlanes = clippingPlanes
+      });
+    </script>
+  </body>
+</html>

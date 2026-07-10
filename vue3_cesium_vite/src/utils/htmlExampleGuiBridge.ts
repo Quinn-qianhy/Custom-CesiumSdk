@@ -97,7 +97,10 @@ export function createHtmlExampleGuiBridge(deps: {
       toggleCounter += 1
       const key = `__toggle${toggleCounter}`
       const state: Record<string, boolean> = { [key]: checked }
-      gui.add(state, key).name(text).onChange((value) => onchange(Boolean(value)))
+      gui
+        .add(state, key)
+        .name(text)
+        .onChange((value) => onchange(Boolean(value)))
       notifyReady()
     },
 
@@ -109,7 +112,10 @@ export function createHtmlExampleGuiBridge(deps: {
       sliderCounter += 1
       const key = `__slider${sliderCounter}`
       const state: Record<string, number> = { [key]: value }
-      gui.add(state, key, min, max, step).name(text).onChange((value) => onchange(Number(value)))
+      gui
+        .add(state, key, min, max, step)
+        .name(text)
+        .onChange((value) => onchange(Number(value)))
       notifyReady()
     },
 

@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 const SRC = path.resolve(ROOT, '../globe-for-webgl/static/examples')
-const DEST = path.resolve(ROOT, 'public/examples')
+const DEST = path.resolve(ROOT, 'public/examples/cesium/cards')
 
 const IMAGE_EXT = /\.(png|gif|jpe?g|webp|svg)$/i
 

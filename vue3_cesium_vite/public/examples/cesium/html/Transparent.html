@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>地表透明</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      'use script'
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false
+            }
+          )
+        ),
+        terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1))
+      })
+
+      var scene = viewer.scene
+      var globe = scene.globe
+      scene.screenSpaceCameraController.enableCollisionDetection = false
+
+      var alphaByDistance = new Cesium.NearFarScalar(400.0, 0.0, 800.0, 1.0)
+      globe.translucency.frontFaceAlphaByDistance = alphaByDistance
+      globe.translucency.backFaceAlphaByDistance = new Cesium.NearFarScalar(400.0, 0.0, 800.0, 1.0)
+
+      var modelUrl = '/examples/cesium/assets/sampleData/models/ParcLeadMine.glb'
+      var position = Cesium.Cartesian3.fromDegrees(-3.82518, 53.11728, 50)
+
+      viewer.entities.add({
+        name: 'ParcLeadMine',
+        position: position,
+        model: {
+          uri: modelUrl
+        }
+      })
+
+      var viewModel = {
+        translucencyEnabled: true,
+        fadeByDistance: true,
+        alpha: 0.5
+      }
+
+      function update() {
+        globe.translucency.enabled = viewModel.translucencyEnabled
+        var alpha = Number(viewModel.alpha)
+        alpha = !isNaN(alpha) ? alpha : 1.0
+        alpha = Cesium.Math.clamp(alpha, 0.0, 1.0)
+        var farValue = viewModel.fadeByDistance ? 1.0 : alpha
+        globe.translucency.frontFaceAlphaByDistance.nearValue = alpha
+        globe.translucency.frontFaceAlphaByDistance.farValue = farValue
+        globe.translucency.backFaceAlphaByDistance.nearValue = alpha
+        globe.translucency.backFaceAlphaByDistance.farValue = farValue
+      }
+
+      ExampleGui.addToggleButton('地表透明', true, function (checked) {
+        viewModel.translucencyEnabled = checked
+        update()
+      })
+      ExampleGui.addToggleButton('距离渐变', true, function (checked) {
+        viewModel.fadeByDistance = checked
+        update()
+      })
+      ExampleGui.addSlider('透明度', 0.5, 0, 1, 0.01, function (value) {
+        viewModel.alpha = value
+        update()
+      })
+      ExampleGui.finishedLoading()
+      update()
+
+      viewer.scene.camera.flyTo({
+        destination: new Cesium.Cartesian3(
+          3828801.301868665,
+          -255614.49939053337,
+          5078030.751106716
+        ),
+        orientation: {
+          direction: new Cesium.Cartesian3(
+            -0.833374107761545,
+            -0.013689476527142991,
+            0.5525397675688708
+          ),
+          up: new Cesium.Cartesian3(0.5525940305036037, -0.04105463179882453, 0.8324387993478232)
+        },
+        duration: 2.0
+      })
+    </script>
+  </body>
+</html>

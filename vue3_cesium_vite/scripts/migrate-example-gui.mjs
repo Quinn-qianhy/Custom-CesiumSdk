@@ -7,7 +7,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples')
+const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples/cesium/cards')
 
 const LIL_GUI_CSS =
   '<link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />'
@@ -56,13 +56,13 @@ function migrateHtml(content) {
 
   let next = content.replace(
     BUCKET_CSS_RE,
-    '<link href="/examples/example-gui.css" rel="stylesheet" />'
+    '<link href="/examples/shared/example-gui.css" rel="stylesheet" />'
   )
 
   if (needsGui) {
     next = next.replace(
       SANDCASTLE_SCRIPT_RE,
-      '\n    <script src="/examples/example-gui.js"></script>\n'
+      '\n    <script src="/examples/shared/example-gui.js"></script>\n'
     )
     next = next.replace(/Sandcastle\./g, 'ExampleGui.')
     next = injectLilGui(next)

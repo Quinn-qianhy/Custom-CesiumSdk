@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>限高分析</title>
+<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+
+  
+
+  <script type="text/javascript">
+    "use script";
+
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
+        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+      })
+        ),
+    });
+    var tileslimitHeight;
+    const viewModel = {
+      tileslimitHeight: 14.49
+    }
+    Cesium.knockout.track(viewModel);
+    // ExampleGui 参数面板
+    ExampleGui.addSlider('限制高度', 14.49, 0.0, 80.0, 1, function(value) {
+      viewModel.tileslimitHeight = value;
+    });
+    ExampleGui.finishedLoading();
+Cesium.knockout
+      .getObservable(viewModel, "tileslimitHeight")
+      .subscribe(function (value) {
+        tileslimitHeight = Number(value);
+        if (isNaN(value)) {
+          return;
+        }
+      })
+
+
+    function createPlaneUpdateFunction(plane) {
+      return function () {
+        plane.distance = Number(tileslimitHeight - 14.9);
+        return plane;
+      };
+    }
+    let tileset;
+    var paramObj = {
+      url: "http://earthsdk.com/v/last/Apps/assets/dayanta/tileset.json", //大雁塔倾斜模型数据地址
+      position: [114.0595, 22.539, 10],
+      heading: 0, // 方位角(heading)
+      pitch: 0, // 俯仰角(pitch) 旋转角度
+      roll: 360, // 滚动角(roll)
+      destination: [114.0595, 22.539, 50], //相机视角
+      orientation: {
+        heading: 0.0,
+        pitch: 0.0,
+        roll: 0.0,
+      },
+    };
+
+    function loadTileset(url) {
+      const clippingPlanes = new Cesium.ClippingPlaneCollection({
+        planes: [
+          new Cesium.ClippingPlane(
+            new Cesium.Cartesian3(0.0, 0.0, -1.0),
+            0.0
+          ),
+        ],
+        edgeWidth: 0.5,
+        limitHeight: true,
+      });
+
+      tileset = viewer.scene.primitives.add(
+        new Cesium.Cesium3DTileset({
+          url: url,
+          clippingPlanes: clippingPlanes,
+        })
+      );
+      return tileset.readyPromise
+        .then(function () {
+          const boundingSphere = tileset.boundingSphere;
+          const radius = boundingSphere.radius;
+          if (
+            !Cesium.Matrix4.equals(
+              tileset.root.transform,
+              Cesium.Matrix4.IDENTITY
+            )
+          ) {
+            var position = Cesium.Cartesian3.fromDegrees(
+              paramObj.position[0],
+              paramObj.position[1],
+              paramObj.position[2]
+            );
+            var heading = Cesium.Math.toRadians(paramObj.heading);
+            var pitch = Cesium.Math.toRadians(paramObj.pitch);
+            var roll = Cesium.Math.toRadians(paramObj.roll);
+            var hpRoll = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+            var converter = Cesium.Transforms.eastNorthUpToFixedFrame;
+            var modelMatrix = Cesium.Transforms.headingPitchRollToFixedFrame(
+              position,
+              hpRoll,
+              Cesium.Ellipsoid.WGS84,
+              converter
+            );
+
+            tileset.root.transform = modelMatrix;
+            const transformCenter = Cesium.Matrix4.getTranslation(
+              tileset.root.transform,
+              new Cesium.Cartesian3()
+            );
+            const transformCartographic = Cesium.Cartographic.fromCartesian(
+              transformCenter
+            );
+            const boundingSphereCartographic = Cesium.Cartographic.fromCartesian(
+              tileset.boundingSphere.center
+            );
+            const height =
+              boundingSphereCartographic.height -
+              transformCartographic.height;
+            clippingPlanes.modelMatrix = Cesium.Matrix4.fromTranslation(
+              new Cesium.Cartesian3(0.0, 0.0, height)
+            );
+          }
+
+          for (let i = 0; i < clippingPlanes.length; ++i) {
+            const plane = clippingPlanes.get(i);
+            const ellipsoid = viewer.scene.globe.ellipsoid;
+            const caheight = ellipsoid.cartesianToCartographic(
+              boundingSphere.center
+            );
+            // 限制高度
+            tileslimitHeight = caheight.height.toFixed(2);
+            const planeEntity = viewer.entities.add({
+              position: boundingSphere.center,
+              plane: {
+                dimensions: new Cesium.Cartesian2(radius, radius),
+                material: Cesium.Color.BLUE.withAlpha(0.1),
+                plane: new Cesium.CallbackProperty(
+                  createPlaneUpdateFunction(plane),
+                  false
+                ),
+                outline: true,
+                outlineColor: Cesium.Color.BLUE,
+              },
+            });
+            const labelEntity = viewer.entities.add({
+              position: boundingSphere.center,
+              label: {
+                text: new Cesium.CallbackProperty(
+                  () => {
+                    return `模型限高:` + tileslimitHeight + `米`
+                  },
+                  false
+                ),
+                pixelOffset: new Cesium.Cartesian2(0, -100),
+                font: "28px 微软雅黑",
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.fromCssColorString("#00FF99"),
+                outlineWidth: 1,
+                scale: 0.7,
+              },
+            });
+          }
+          viewer.flyTo(tileset);
+          return tileset;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
+    loadTileset(paramObj.url);
+
+  </script>
+</body>
+
+</html>

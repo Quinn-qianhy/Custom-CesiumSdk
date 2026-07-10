@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 const SRC = path.resolve(ROOT, '../globe-for-webgl/static/examples')
-const DEST = path.resolve(ROOT, 'public/examples')
+const DEST = path.resolve(ROOT, 'public/examples/cesium/cards')
 const THUMBNAIL_PREFIX = '/examples'
 
 const SERVER_DATA_PATTERNS = [
@@ -54,8 +54,8 @@ function transformContent(content) {
     .replace(/\/static\/Build\/Cesium\//g, '/cesium/')
     .replace(/\/static\/defaultAccessToken\.js/g, '/defaultAccessToken.js')
     .replace(/\/static\/examples\//g, '/examples/')
-    .replace(/\/examples\/Sandcastle-header\.js/g, '/examples/example-gui.js')
-    .replace(/\/examples\/bucket\.css/g, '/examples/example-gui.css')
+    .replace(/\/examples\/Sandcastle-header\.js/g, '/examples/shared/example-gui.js')
+    .replace(/\/examples\/bucket\.css/g, '/examples/shared/example-gui.css')
     .replace(/Sandcastle\./g, 'ExampleGui.')
 }
 
@@ -283,25 +283,25 @@ function main() {
         pages: [
           {
             name: '内置线材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
             url: '/Material/OwnlineMaterial'
           },
           {
             name: '自定义线材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
             url: '/Material/CustomlineMaterial'
           },
           {
             name: '内置面材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
             url: '/Material/OwnPolygonMaterial'
           },
           {
             name: '自定义面材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
             url: '/Material/CustomPolygonMaterial'
           }
@@ -312,7 +312,7 @@ function main() {
         pages: [
           {
             name: '百度地图 (Vue)',
-            image: '/examples/baiduMap.png',
+            image: '/examples/cesium/cards/baiduMap.png',
             type: 'vue',
             url: '/baiduLayer'
           }
@@ -323,19 +323,19 @@ function main() {
         pages: [
           {
             name: 'entity点',
-            image: '/examples/entityPoint.png',
+            image: '/examples/cesium/cards/entityPoint.png',
             type: 'vue',
             url: '/entityData/point'
           },
           {
             name: 'entity线',
-            image: '/examples/entityPolyline.png',
+            image: '/examples/cesium/cards/entityPolyline.png',
             type: 'vue',
             url: '/entityData/line'
           },
           {
             name: 'entity面',
-            image: '/examples/entityPolygon.png',
+            image: '/examples/cesium/cards/entityPolygon.png',
             type: 'vue',
             url: '/entityData/rectangle'
           }

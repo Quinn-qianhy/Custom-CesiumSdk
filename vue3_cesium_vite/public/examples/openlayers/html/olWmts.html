@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>WMTS</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import { getTopLeft, getWidth } from 'ol/extent.js'
+      import TileLayer from 'ol/layer/Tile.js'
+      import { get as getProjection } from 'ol/proj.js'
+      import WMTS from 'ol/source/WMTS.js'
+      import WMTSTileGrid from 'ol/tilegrid/WMTS.js'
+      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const projection = getProjection('EPSG:3857')
+      const projectionExtent = projection.getExtent()
+      const size = getWidth(projectionExtent) / 256
+      const resolutions = new Array(19)
+      const matrixIds = new Array(19)
+      for (let z = 0; z < 19; ++z) {
+        resolutions[z] = size / Math.pow(2, z)
+        matrixIds[z] = z
+      }
+
+      const wmtsLayer = new TileLayer({
+        opacity: 0.7,
+        source: new WMTS({
+          attributions:
+            'Tiles © <a href="https://mrdata.usgs.gov/geology/state/" target="_blank">USGS</a>',
+          url: 'https://mrdata.usgs.gov/mapcache/wmts',
+          layer: 'sgmc2',
+          matrixSet: 'GoogleMapsCompatible',
+          format: 'image/png',
+          projection: projection,
+          tileGrid: new WMTSTileGrid({
+            origin: getTopLeft(projectionExtent),
+            resolutions: resolutions,
+            matrixIds: matrixIds
+          }),
+          style: 'default',
+          wrapX: true
+        })
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), wmtsLayer],
+        target: 'map',
+        view: new View({
+          center: [-11158582, 4813697],
+          zoom: 4
+        })
+      })
+
+      ExampleGui.addSlider('WMTS 透明度', 0.7, 0, 1, 0.05, function (value) {
+        wmtsLayer.setOpacity(value)
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

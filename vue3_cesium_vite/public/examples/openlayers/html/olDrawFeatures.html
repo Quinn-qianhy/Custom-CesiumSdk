@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>交互绘制</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Draw from 'ol/interaction/Draw.js'
+      import VectorLayer from 'ol/layer/Vector.js'
+      import VectorSource from 'ol/source/Vector.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT,
+        DEFAULT_ZOOM
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const source = new VectorSource({ wrapX: false })
+
+      const vector = new VectorLayer({
+        source: source,
+        style: {
+          'fill-color': 'rgba(46, 204, 113, 0.25)',
+          'stroke-color': '#27ae60',
+          'stroke-width': 3,
+          'circle-radius': 7,
+          'circle-fill-color': '#e74c3c',
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 2
+        }
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), vector],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: DEFAULT_ZOOM
+        })
+      })
+
+      let draw = null
+
+      function removeDrawInteraction() {
+        if (draw) {
+          map.removeInteraction(draw)
+          draw = null
+        }
+      }
+
+      function addDrawInteraction(type) {
+        removeDrawInteraction()
+
+        if (type === 'None') {
+          return
+        }
+
+        draw = new Draw({
+          source: source,
+          type: type
+        })
+        map.addInteraction(draw)
+      }
+
+      ExampleGui.addMenu([
+        {
+          text: '点',
+          onselect: function () {
+            addDrawInteraction('Point')
+          }
+        },
+        {
+          text: '线',
+          onselect: function () {
+            addDrawInteraction('LineString')
+          }
+        },
+        {
+          text: '面',
+          onselect: function () {
+            addDrawInteraction('Polygon')
+          }
+        },
+        {
+          text: '圆',
+          onselect: function () {
+            addDrawInteraction('Circle')
+          }
+        },
+        {
+          text: '停止绘制',
+          onselect: function () {
+            addDrawInteraction('None')
+          }
+        }
+      ])
+
+      ExampleGui.addToolbarButton('撤销上一点', function () {
+        if (draw) {
+          draw.removeLastPoint()
+        }
+      })
+
+      ExampleGui.addToolbarButton('清除全部', function () {
+        source.clear()
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

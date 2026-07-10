@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mapbox-gl Layer</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        font-size: medium;
+        font-family: 'Quattrocento Sans', sans-serif;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import GeoJSON from 'ol/format/GeoJSON.js'
+      import HeatmapLayer from 'ol/layer/Heatmap.js'
+      import Layer from 'ol/layer/Layer.js'
+      import { fromLonLat, toLonLat } from 'ol/proj.js'
+      import Source from 'ol/source/Source.js'
+      import VectorSource from 'ol/source/Vector.js'
+
+      const center = [-98.8, 37.9]
+
+      const settings = {
+        accessToken: '',
+        styleId: 'mapbox/light-v11'
+      }
+
+      const styleOptions = [
+        { text: 'light-v11', value: 'mapbox/light-v11' },
+        { text: 'dark-v11', value: 'mapbox/dark-v11' },
+        { text: 'streets-v12', value: 'mapbox/streets-v12' },
+        { text: 'satellite-streets-v12', value: 'mapbox/satellite-streets-v12' }
+      ]
+
+      let map = null
+      let mbMap = null
+      let mbLayer = null
+
+      function disposeMap() {
+        if (map) {
+          map.setTarget(null)
+          map = null
+        }
+        if (mbMap) {
+          mbMap.remove()
+          mbMap = null
+        }
+        mbLayer = null
+        document.getElementById('map').innerHTML = ''
+      }
+
+      function loadMap() {
+        const token = settings.accessToken.trim()
+        if (!token) {
+          return
+        }
+
+        disposeMap()
+
+        mapboxgl.accessToken = token
+
+        mbMap = new mapboxgl.Map({
+          style: 'mapbox://styles/' + settings.styleId,
+          attributionControl: false,
+          boxZoom: false,
+          center: center,
+          container: 'map',
+          doubleClickZoom: false,
+          dragPan: false,
+          dragRotate: false,
+          interactive: false,
+          keyboard: false,
+          pitchWithRotate: false,
+          scrollZoom: false,
+          touchZoomRotate: false
+        })
+
+        mbLayer = new Layer({
+          render: function (frameState) {
+            const canvas = mbMap.getCanvas()
+            const viewState = frameState.viewState
+
+            canvas.style.display = mbLayer.getVisible() ? 'block' : 'none'
+            canvas.style.position = 'absolute'
+            canvas.style.opacity = String(mbLayer.getOpacity())
+
+            const rotation = viewState.rotation
+            mbMap.jumpTo({
+              center: toLonLat(viewState.center),
+              zoom: viewState.zoom - 1,
+              bearing: (-rotation * 180) / Math.PI,
+              animate: false
+            })
+
+            if (mbMap._frame) {
+              mbMap._frame.cancel()
+              mbMap._frame = null
+            }
+            mbMap._render()
+
+            return canvas
+          },
+          source: new Source({
+            attributions: [
+              '<a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>',
+              '<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>'
+            ]
+          })
+        })
+
+        const cities = new HeatmapLayer({
+          source: new VectorSource({
+            url: 'https://openlayers.org/en/v10.9.0/examples/data/geojson/world-cities.geojson',
+            format: new GeoJSON()
+          }),
+          weight: function (feature) {
+            return feature.get('population') / 1e7
+          },
+          radius: 15,
+          blur: 15
+        })
+
+        map = new Map({
+          target: 'map',
+          view: new View({
+            center: fromLonLat(center),
+            zoom: 4
+          }),
+          layers: [mbLayer, cities]
+        })
+      }
+
+      ExampleGui.addTextInput('Access Token', settings, 'accessToken')
+
+      ExampleGui.addMenu(
+        styleOptions.map(function (item) {
+          return {
+            text: item.text,
+            onselect: function () {
+              settings.styleId = item.value
+            }
+          }
+        })
+      )
+
+      ExampleGui.addToolbarButton('加载地图', loadMap)
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

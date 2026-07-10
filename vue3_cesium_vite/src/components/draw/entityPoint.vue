@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
-import { DrawTool} from '../../utils/draw'
+import { DrawTool } from '../../utils/draw'
 const { onMounted, GUI, Cesium, useExamplesStore, getViewer, getGuiMount } = useCommonImports()
 const store = useExamplesStore()
 

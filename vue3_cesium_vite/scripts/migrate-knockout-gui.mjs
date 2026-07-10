@@ -8,12 +8,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples')
+const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples/cesium/cards')
 
 const LIL_GUI_CSS =
   '<link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />'
 const LIL_GUI_JS = '<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>'
-const EXAMPLE_GUI_JS = '<script src="/examples/example-gui.js"></script>'
+const EXAMPLE_GUI_JS = '<script src="/examples/shared/example-gui.js"></script>'
 
 const TOOLBAR_STYLE_RE = /\s*#toolbar[^{]*\{[^}]*\}\s*/g
 const TOOLBAR_INPUT_STYLE_RE = /\s*#toolbar\s+input[^{]*\{[^}]*\}\s*/g
@@ -70,7 +70,7 @@ function injectGuiAssets(content) {
       /(<script\s+src="\/cesium\/Cesium\.js"><\/script>)/i,
       `${LIL_GUI_JS}\n    ${EXAMPLE_GUI_JS}\n$1`
     )
-  } else if (!next.includes('/examples/example-gui.js')) {
+  } else if (!next.includes('/examples/shared/example-gui.js')) {
     next = next.replace(
       /(<script\s+src="\/vendor\/lil-gui\/lil-gui\.umd\.min\.js"><\/script>)/i,
       `$1\n    ${EXAMPLE_GUI_JS}`
@@ -78,7 +78,7 @@ function injectGuiAssets(content) {
   }
 
   if (!next.includes('/vendor/lil-gui/lil-gui.min.css')) {
-    if (next.includes('/examples/example-gui.css')) {
+    if (next.includes('/examples/shared/example-gui.css')) {
       next = next.replace(
         /(<link\s+href="\/examples\/example-gui\.css"\s+rel="stylesheet"\s*\/?>)/i,
         `${LIL_GUI_CSS}\n  $1`
@@ -86,13 +86,13 @@ function injectGuiAssets(content) {
     } else {
       next = next.replace(
         /(<link\s+href="\/cesium\/Widgets\/widgets\.css"\s+rel="stylesheet"\s*\/?>)/i,
-        `$1\n  ${LIL_GUI_CSS}\n  <link href="/examples/example-gui.css" rel="stylesheet" />`
+        `$1\n  ${LIL_GUI_CSS}\n  <link href="/examples/shared/example-gui.css" rel="stylesheet" />`
       )
     }
-  } else if (!next.includes('/examples/example-gui.css')) {
+  } else if (!next.includes('/examples/shared/example-gui.css')) {
     next = next.replace(
       /(<link\s+href="\/vendor\/lil-gui\/lil-gui\.min\.css"\s+rel="stylesheet"\s*\/?>)/i,
-      `$1\n  <link href="/examples/example-gui.css" rel="stylesheet" />`
+      `$1\n  <link href="/examples/shared/example-gui.css" rel="stylesheet" />`
     )
   }
 

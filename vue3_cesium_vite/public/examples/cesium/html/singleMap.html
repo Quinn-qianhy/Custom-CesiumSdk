@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>单张图片加载</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          }),
+        ),
+      });
+
+      //切换底图
+      function selectImage(num) {
+        switch (num) {
+          case 1:
+            imageUrl = "/examples/cesium/assets/singlePicture/singleMap1.jpg";
+            break;
+          case 2:
+            imageUrl = "/examples/cesium/assets/singlePicture/singleMap2.jpg";
+            break;
+          case 3:
+            imageUrl = "/examples/cesium/assets/singlePicture/singleMap3.jpg";
+            break;
+          case 4:
+            imageUrl = "/examples/cesium/assets/singlePicture/singleMap4.jpg";
+            break;
+        }
+        viewer.imageryLayers.addImageryProvider(
+          new Cesium.SingleTileImageryProvider({
+            rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0),
+            url: imageUrl,
+          }),
+        );
+      }
+
+      ExampleGui.addToolbarButton("图片1", function () {
+        selectImage(1);
+      });
+      ExampleGui.addToolbarButton("图片2", function () {
+        selectImage(2);
+      });
+      ExampleGui.addToolbarButton("图片3", function () {
+        selectImage(3);
+      });
+      ExampleGui.addToolbarButton("图片4", function () {
+        selectImage(4);
+      });
+    </script>
+  </body>
+</html>

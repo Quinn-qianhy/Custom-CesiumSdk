@@ -1,0 +1,317 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>多屏联动</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      #mapGrid {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        gap: 2px;
+        background: #111;
+      }
+
+      #mapGrid.layout-2 {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+      }
+
+      #mapGrid.layout-4 {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+
+      #mapGrid.layout-8 {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr 1fr;
+      }
+
+      .map-cell {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .map-label {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        z-index: 10;
+        padding: 2px 8px;
+        border-radius: 3px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font: 12px/1.4 sans-serif;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="mapGrid" class="layout-2"></div>
+    <script type="text/javascript">
+      "use script";
+
+      var mapGrid = document.getElementById("mapGrid");
+      var viewers = [];
+      var handlers = [];
+      var syncHandlers = [];
+      var activeIndex = 0;
+      var linked = false;
+      var isSyncing = false;
+      var currentLayout = 0;
+
+      var initialView = {
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0),
+      };
+
+      function createViewerOptions() {
+        return {
+          baseLayerPicker: false,
+          animation: false,
+          timeline: false,
+          geocoder: false,
+          homeButton: false,
+          sceneModePicker: false,
+          navigationHelpButton: false,
+          baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+            Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+              Cesium.ArcGisBaseMapType.SATELLITE,
+              {
+                enablePickFeatures: false,
+              },
+            ),
+          ),
+        };
+      }
+
+      function applyFirstPanelStyle(viewer) {
+        function apply(layer) {
+          layer.saturation = 0;
+          layer.hue = 0.56;
+          layer.contrast = 1.74;
+          layer.brightness = 1.1;
+        }
+
+        var layer = viewer.imageryLayers.get(0);
+        if (layer) {
+          apply(layer);
+        } else {
+          viewer.imageryLayers.layerAdded.addEventListener(function (layer, index) {
+            if (index === 0) {
+              apply(layer);
+            }
+          });
+        }
+      }
+
+      function copyCamera(fromViewer, toViewer) {
+        toViewer.camera.setView({
+          destination: fromViewer.camera.position,
+          orientation: {
+            heading: fromViewer.camera.heading,
+            pitch: fromViewer.camera.pitch,
+            roll: fromViewer.camera.roll,
+          },
+        });
+      }
+
+      function syncFromViewer(sourceIndex) {
+        return function () {
+          if (!linked || isSyncing || activeIndex !== sourceIndex) {
+            return;
+          }
+          var sourceViewer = viewers[sourceIndex];
+          if (!sourceViewer) {
+            return;
+          }
+          isSyncing = true;
+          for (var i = 0; i < viewers.length; i++) {
+            if (i !== sourceIndex) {
+              copyCamera(sourceViewer, viewers[i]);
+            }
+          }
+          isSyncing = false;
+        };
+      }
+
+      function bindViewerEvents(viewer, index) {
+        var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        var activate = function () {
+          activeIndex = index;
+        };
+
+        [
+          Cesium.ScreenSpaceEventType.MOUSE_MOVE,
+          Cesium.ScreenSpaceEventType.LEFT_DOWN,
+          Cesium.ScreenSpaceEventType.WHEEL,
+        ].forEach(function (eventType) {
+          handler.setInputAction(activate, eventType);
+        });
+
+        handlers[index] = handler;
+        syncHandlers[index] = syncFromViewer(index);
+      }
+
+      function createViewer(index) {
+        var cell = document.createElement("div");
+        cell.className = "map-cell";
+        cell.id = "mapCell" + index;
+
+        var label = document.createElement("div");
+        label.className = "map-label";
+        label.textContent = "屏 " + (index + 1);
+        cell.appendChild(label);
+
+        var mount = document.createElement("div");
+        mount.id = "mapMount" + index;
+        mount.style.width = "100%";
+        mount.style.height = "100%";
+        cell.appendChild(mount);
+
+        mapGrid.appendChild(cell);
+
+        var viewer = new Cesium.Viewer(mount.id, createViewerOptions());
+        if (index === 0) {
+          applyFirstPanelStyle(viewer);
+        }
+        viewer.camera.setView(initialView);
+        bindViewerEvents(viewer, index);
+        viewers[index] = viewer;
+      }
+
+      function destroyLastViewer() {
+        closeOpen();
+        var index = viewers.length - 1;
+        if (index < 0) {
+          return;
+        }
+        if (handlers[index]) {
+          handlers[index].destroy();
+        }
+        if (viewers[index]) {
+          viewers[index].destroy();
+        }
+        handlers.pop();
+        viewers.pop();
+        syncHandlers.pop();
+        if (mapGrid.lastElementChild) {
+          mapGrid.removeChild(mapGrid.lastElementChild);
+        }
+      }
+
+      function ensureViewerCount(count) {
+        while (viewers.length < count) {
+          createViewer(viewers.length);
+        }
+        while (viewers.length > count) {
+          destroyLastViewer();
+        }
+      }
+
+      function syncAllToFirst() {
+        if (!viewers[0]) {
+          return;
+        }
+        isSyncing = true;
+        for (var i = 1; i < viewers.length; i++) {
+          copyCamera(viewers[0], viewers[i]);
+        }
+        isSyncing = false;
+      }
+
+      function resizeViewers() {
+        viewers.forEach(function (viewer) {
+          if (viewer) {
+            viewer.resize();
+          }
+        });
+      }
+
+      function setLayout(count) {
+        if (currentLayout === count) {
+          return;
+        }
+
+        var wasLinked = linked;
+        closeOpen();
+        ensureViewerCount(count);
+        mapGrid.className = "layout-" + count;
+        currentLayout = count;
+        activeIndex = 0;
+        syncAllToFirst();
+        resizeViewers();
+
+        if (wasLinked) {
+          linkOpen();
+        }
+      }
+
+      function linkOpen() {
+        if (linked) {
+          return;
+        }
+        linked = true;
+        for (var i = 0; i < viewers.length; i++) {
+          if (!viewers[i] || !syncHandlers[i]) {
+            continue;
+          }
+          viewers[i].camera.changed.addEventListener(syncHandlers[i]);
+          viewers[i].scene.preRender.addEventListener(syncHandlers[i]);
+        }
+      }
+
+      function closeOpen() {
+        if (!linked) {
+          return;
+        }
+        linked = false;
+        for (var i = 0; i < viewers.length; i++) {
+          if (!viewers[i] || !syncHandlers[i]) {
+            continue;
+          }
+          viewers[i].camera.changed.removeEventListener(syncHandlers[i]);
+          viewers[i].scene.preRender.removeEventListener(syncHandlers[i]);
+        }
+      }
+
+      setLayout(2);
+
+      ExampleGui.addToolbarButton("2屏", function () {
+        setLayout(2);
+      });
+      ExampleGui.addToolbarButton("4屏", function () {
+        setLayout(4);
+      });
+      ExampleGui.addToolbarButton("8屏", function () {
+        setLayout(8);
+      });
+      ExampleGui.addToolbarButton("开启联动", function () {
+        linkOpen();
+      });
+      ExampleGui.addToolbarButton("关闭联动", function () {
+        closeOpen();
+      });
+      ExampleGui.finishedLoading();
+    </script>
+  </body>
+</html>

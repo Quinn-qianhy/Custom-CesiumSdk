@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vector tiles created from a Mapbox Style object</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map .ol-rotate {
+        left: 0.5em;
+        bottom: 0.5em;
+        top: auto;
+        right: auto;
+      }
+
+      #map:-webkit-full-screen {
+        height: 100%;
+        margin: 0;
+      }
+
+      #map:fullscreen {
+        height: 100%;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol": "https://esm.sh/ol@10.9.0",
+          "ol/": "https://esm.sh/ol@10.9.0/",
+          "ol-mapbox-style": "https://esm.sh/ol-mapbox-style@13.4.1?deps=ol@10.9.0"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import olms from 'ol-mapbox-style'
+      import FullScreen from 'ol/control/FullScreen.js'
+
+      const settings = {
+        accessToken: '',
+        styleId: 'mapbox/streets-v12'
+      }
+
+      const styleOptions = [
+        { text: 'streets-v12', value: 'mapbox/streets-v12' },
+        { text: 'light-v11', value: 'mapbox/light-v11' },
+        { text: 'dark-v11', value: 'mapbox/dark-v11' },
+        { text: 'satellite-streets-v12', value: 'mapbox/satellite-streets-v12' }
+      ]
+
+      let map = null
+
+      function disposeMap() {
+        if (map) {
+          map.setTarget(null)
+          map = null
+        }
+        document.getElementById('map').innerHTML = ''
+      }
+
+      function getStyleUrl() {
+        return (
+          'https://api.mapbox.com/styles/v1/' +
+          settings.styleId +
+          '?access_token=' +
+          settings.accessToken.trim()
+        )
+      }
+
+      function loadMap() {
+        const token = settings.accessToken.trim()
+        if (!token) {
+          return
+        }
+
+        disposeMap()
+
+        olms('map', getStyleUrl()).then(function (createdMap) {
+          map = createdMap
+          map.addControl(new FullScreen())
+        })
+      }
+
+      ExampleGui.addTextInput('Access Token', settings, 'accessToken')
+
+      ExampleGui.addMenu(
+        styleOptions.map(function (item) {
+          return {
+            text: item.text,
+            onselect: function () {
+              settings.styleId = item.value
+            }
+          }
+        })
+      )
+
+      ExampleGui.addToolbarButton('加载地图', loadMap)
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

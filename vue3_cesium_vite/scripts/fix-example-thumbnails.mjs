@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
-const THUMBNAIL_DIR = path.resolve(ROOT, 'public/examples')
+const THUMBNAIL_DIR = path.resolve(ROOT, 'public/examples/cesium/cards')
 const THUMBNAIL_PREFIX = '/examples'
 const GLOBE_CONFIG = path.resolve(ROOT, '../globe-for-webgl/src/pages/Examples/config.js')
 const VUE_CONFIG = path.resolve(ROOT, 'src/config/config.js')

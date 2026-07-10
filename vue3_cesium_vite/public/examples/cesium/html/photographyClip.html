@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>倾斜摄影开挖</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+</style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+<script type="text/javascript">
+      "use script";
+
+      var viewer = new Cesium.Viewer("cesiumContainer", { baseLayerPicker: true});
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+
+      var tileset = new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(75343),
+      });
+
+      tileset.readyPromise
+        .then(function (tileset) {
+          viewer.scene.primitives.add(tileset);
+          viewer.zoomTo(
+            tileset,
+            new Cesium.HeadingPitchRange(
+              0.0,
+              -0.5,
+              tileset.boundingSphere.radius * 2.0
+            )
+          );
+        })
+        
+      var drawPolygon = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYGON);
+
+      function deActivateAll() {
+        drawPolygon.deactivate();
+      }
+
+      function clearAll() {
+        drawPolygon.clear();
+      }
+
+      ExampleGui.addToolbarButton("绘制开挖范围，逆时针凸多边形", function() {
+        deActivateAll();
+        drawPolygon.activate();
+        drawPolygon &&
+          drawPolygon.addDrawCompleteEventListener(result => {
+            drawPolygon.clear();
+            result.shift();
+            var points = result;
+            tileset.clearClippingPlanes();
+            tileset.addClippingPlanes(points);
+          });
+      });
+      ExampleGui.addToolbarButton("停止绘制", function () {
+          deActivateAll();
+      });
+      ExampleGui.addToolbarButton("清除开挖面", function () {
+          tileset.clearClippingPlanes();
+      });
+    </script>
+  </body>
+</html>

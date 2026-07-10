@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>绘制点线面</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      'use strict'
+
+      var viewer = new Cesium.Viewer('cesiumContainer')
+      viewer.scene.globe.depthTestAgainstTerrain = true
+
+      var drawHandle = new Cesium.DrawHandle(viewer)
+      var DrawMode = Cesium.DrawHandle.DrawMode
+
+      function stopDraw() {
+        drawHandle.deactivate()
+      }
+
+      function clearAll() {
+        drawHandle.clear()
+      }
+
+      function startDraw(mode, label) {
+        stopDraw()
+        drawHandle.startDraw(mode, {}, function (entity) {
+          console.log(label + '绘制完成', entity)
+        })
+      }
+
+      ExampleGui.addToolbarButton('点', function () {
+        startDraw(DrawMode.POINT, '点')
+      })
+      ExampleGui.addToolbarButton('线', function () {
+        startDraw(DrawMode.LINE, '线')
+      })
+      ExampleGui.addToolbarButton('面', function () {
+        startDraw(DrawMode.POLYGON, '面')
+      })
+      ExampleGui.addToolbarButton('矩形', function () {
+        startDraw(DrawMode.RECTANGLE, '矩形')
+      })
+      ExampleGui.addToolbarButton('圆形', function () {
+        startDraw(DrawMode.CIRCLE, '圆形')
+      })
+
+      ExampleGui.addToolbarButton('停止', function () {
+        stopDraw()
+      })
+      ExampleGui.addToolbarButton('清除', function () {
+        clearAll()
+      })
+    </script>
+  </body>
+</html>

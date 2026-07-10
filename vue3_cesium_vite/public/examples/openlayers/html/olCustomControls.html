@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>自定义控件</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .rotate-north {
+        top: 65px;
+        left: 0.5em;
+      }
+
+      .ol-touch .rotate-north {
+        top: 80px;
+      }
+
+      .rotate-north button {
+        font-weight: 700;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Control from 'ol/control/Control.js'
+      import { defaults as defaultControls } from 'ol/control/defaults.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT,
+        DEFAULT_ZOOM
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      class RotateNorthControl extends Control {
+        constructor(opt_options) {
+          const options = opt_options || {}
+          const button = document.createElement('button')
+          button.innerHTML = 'N'
+          button.title = '旋转至正北'
+
+          const element = document.createElement('div')
+          element.className = 'rotate-north ol-unselectable ol-control'
+          element.appendChild(button)
+
+          super({
+            element: element,
+            target: options.target
+          })
+
+          button.addEventListener('click', this.handleRotateNorth.bind(this), false)
+        }
+
+        handleRotateNorth() {
+          this.getMap().getView().animate({
+            rotation: 0,
+            duration: 300
+          })
+        }
+      }
+
+      const viewOptions = {
+        rotation: Math.PI / 6
+      }
+
+      const map = new Map({
+        controls: defaultControls().extend([new RotateNorthControl()]),
+        layers: [createGaodeImageryLayer()],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: DEFAULT_ZOOM,
+          rotation: viewOptions.rotation
+        })
+      })
+
+      const view = map.getView()
+
+      ExampleGui.addSlider('地图旋转', viewOptions.rotation, 0, Math.PI * 2, 0.1, function (value) {
+        viewOptions.rotation = value
+        view.setRotation(value)
+      })
+
+      ExampleGui.addToolbarButton('重置正北', function () {
+        view.animate({
+          rotation: 0,
+          duration: 300
+        })
+        viewOptions.rotation = 0
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

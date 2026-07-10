@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>测试</title>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      #toolbar {
+        left: 5px;
+        top: 5px;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      "use script";
+      var viewer = new Cesium.Viewer("cesiumContainer");
+
+      // viewer.imageryLayers.addImageryProvider(
+      //   new Cesium.AmapImageryProvider({
+      //     layerType: Cesium.AmapLayerType.SATELLITE,
+      //   })
+      // )
+
+      //初始定位位置
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), //四川省政府
+      });
+
+      var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+      handler.setInputAction(function (movement) {
+        ScreenToCoordinates(movement.endPosition);
+        console.log(movement.endPosition);
+      }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+      //屏幕坐标直接转为经纬度坐标
+      //功能封装
+      //position 屏幕坐标
+      function ScreenToCoordinates(position) {
+        var longitudeString;
+        var latitudeString;
+        var heightString;
+        var cartesian = viewer.scene.pickPosition(position);
+        if (cartesian) {
+          var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+          longitudeString = Cesium.Math.toDegrees(
+            cartographic.longitude,
+          ).toFixed(2);
+          latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(
+            2,
+          );
+          heightString = cartographic.height.toFixed(2);
+        }
+        return (endPosition = {
+          lon: longitudeString,
+          lat: latitudeString,
+          height: -heightString,
+        });
+      }
+    </script>
+  </body>
+</html>

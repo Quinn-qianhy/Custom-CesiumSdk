@@ -1,4 +1,4 @@
-/** 示例菜单 — 缩略图统一放在 public/examples，路径 /examples/xxx */
+/** 示例菜单 — 缩略图按引擎放在 public/examples/{engine}/cards/ */
 const menu = [
   {
     subMenu: '场景控制',
@@ -8,39 +8,39 @@ const menu = [
         pages: [
           {
             name: '基础场景浏览',
-            image: '/examples/viewer.png',
+            image: '/examples/cesium/cards/viewer.png',
             type: 'html',
-            url: '/examples/viewer.html'
+            url: '/examples/cesium/html/viewer.html'
           },
           {
             name: '场景出图（导出图片）',
-            image: '/examples/sceneScreenshot.png',
+            image: '/examples/cesium/cards/sceneScreenshot.png',
             type: 'html',
-            url: '/examples/sceneScreenshot.html'
+            url: '/examples/cesium/html/sceneScreenshot.html'
           },
           {
             name: '自定义空间背景图',
-            image: '/examples/backgroundPicture.png',
+            image: '/examples/cesium/cards/backgroundPicture.png',
             type: 'html',
-            url: '/examples/backGroundMap.html'
+            url: '/examples/cesium/html/backGroundMap.html'
           },
           {
             name: '自定义天空盒',
-            image: '/examples/skyboxPicture.png',
+            image: '/examples/cesium/cards/skyboxPicture.png',
             type: 'html',
-            url: '/examples/mapRotation.html'
+            url: '/examples/cesium/html/mapRotation.html'
           },
           {
             name: '动态天空盒',
-            image: '/examples/Dynamic SkyBox.gif',
+            image: '/examples/cesium/cards/Dynamic SkyBox.gif',
             type: 'html',
-            url: '/examples/Dynamic SkyBox.html'
+            url: '/examples/cesium/html/Dynamic SkyBox.html'
           },
           {
             name: '测试用窗口',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'html',
-            url: '/examples/text.html'
+            url: '/examples/cesium/html/text.html'
           }
         ]
       },
@@ -49,33 +49,33 @@ const menu = [
         pages: [
           {
             name: '颜色调整',
-            image: '/examples/adjustmentColor.png',
+            image: '/examples/cesium/cards/adjustmentColor.png',
             type: 'html',
-            url: '/examples/adjustmentColor.html'
+            url: '/examples/cesium/html/adjustmentColor.html'
           },
           {
             name: '多屏联动',
-            image: '/examples/doubleView.png',
+            image: '/examples/cesium/cards/doubleView.png',
             type: 'html',
-            url: '/examples/doubleView.html'
+            url: '/examples/cesium/html/doubleView.html'
           },
           {
             name: '卷帘对比',
-            image: '/examples/slidingWindow.gif',
+            image: '/examples/cesium/cards/slidingWindow.gif',
             type: 'html',
-            url: '/examples/slidingWindow.html'
+            url: '/examples/cesium/html/slidingWindow.html'
           },
           {
             name: '地表透明',
-            image: '/examples/Transparent.gif',
+            image: '/examples/cesium/cards/Transparent.gif',
             type: 'html',
-            url: '/examples/Transparent.html'
+            url: '/examples/cesium/html/Transparent.html'
           },
           {
             name: '二三维视图切换',
-            image: '/examples/viewSwitch.png',
+            image: '/examples/cesium/cards/viewSwitch.png',
             type: 'html',
-            url: '/examples/viewSwitch.html'
+            url: '/examples/cesium/html/viewSwitch.html'
           }
         ]
       },
@@ -84,45 +84,45 @@ const menu = [
         pages: [
           {
             name: '开场动画',
-            image: '/examples/openAnimation.gif',
+            image: '/examples/cesium/cards/openAnimation.gif',
             type: 'html',
-            url: '/examples/openAnimation.html'
+            url: '/examples/cesium/html/openAnimation.html'
           },
           {
             name: '地球旋转',
-            image: '/examples/openAnimation.gif',
+            image: '/examples/cesium/cards/openAnimation.gif',
             type: 'html',
-            url: '/examples/rotationMap.html'
+            url: '/examples/cesium/html/rotationMap.html'
           },
           {
             name: '绕点飞行',
-            image: '/examples/RouteFlyManager.gif',
+            image: '/examples/cesium/cards/RouteFlyManager.gif',
             type: 'html',
-            url: '/examples/rotationPoint.html',
+            url: '/examples/cesium/html/rotationPoint.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '限定视角范围',
-            image: '/examples/limitCameraView.gif',
+            image: '/examples/cesium/cards/limitCameraView.gif',
             type: 'html',
-            url: '/examples/limitCameraView.html'
+            url: '/examples/cesium/html/limitCameraView.html'
           },
           {
             name: '视角历史记录',
-            image: '/examples/viewRecord.png',
+            image: '/examples/cesium/cards/viewRecord.png',
             type: 'html',
-            url: '/examples/viewRecord.html',
+            url: '/examples/cesium/html/viewRecord.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '路径飞行',
-            image: '/examples/RouteFlyManager.gif',
+            image: '/examples/cesium/cards/RouteFlyManager.gif',
             type: 'html',
-            url: '/examples/RouteFlyManager.html',
+            url: '/examples/cesium/html/RouteFlyManager.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
@@ -139,36 +139,36 @@ const menu = [
         pages: [
           {
             name: '百度地图',
-            image: '/examples/baiduMapOffset.png',
+            image: '/examples/cesium/cards/baiduMapOffset.png',
             type: 'html',
-            url: '/examples/baiduMap.html'
+            url: '/examples/cesium/html/baiduMap.html'
           },
 
           {
             name: '高德地图',
-            image: '/examples/gaodeMap.png',
+            image: '/examples/cesium/cards/gaodeMap.png',
             type: 'html',
-            url: '/examples/gaodeMap.html'
+            url: '/examples/cesium/html/gaodeMap.html'
           },
           {
             name: 'ArcGis Online地图',
-            image: '/examples/arcMapOnline.png',
+            image: '/examples/cesium/cards/arcMapOnline.png',
             type: 'html',
-            url: '/examples/arcMapOnline.html'
+            url: '/examples/cesium/html/arcMapOnline.html'
           },
           {
             name: 'OSM地图',
-            image: '/examples/OsmMap.png',
+            image: '/examples/cesium/cards/OsmMap.png',
             type: 'html',
-            url: '/examples/OsmMap.html',
+            url: '/examples/cesium/html/OsmMap.html',
             statusTags: ['hint'],
             statusHint: 'OSM 服务 需要配置代理服务'
           },
           {
             name: '反色滤镜地图',
-            image: '/examples/mapColorFilter.png',
+            image: '/examples/cesium/cards/mapColorFilter.png',
             type: 'html',
-            url: '/examples/mapColorFilter.html',
+            url: '/examples/cesium/html/mapColorFilter.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
@@ -180,44 +180,44 @@ const menu = [
         pages: [
           {
             name: 'CesiumIon地形',
-            image: '/examples/chinaExaggeration.png',
+            image: '/examples/cesium/cards/chinaExaggeration.png',
             type: 'html',
-            url: '/examples/chinaExaggeration.html'
+            url: '/examples/cesium/html/chinaExaggeration.html'
           },
           {
             name: 'ARCGIS地形',
-            image: '/examples/arcgisTerrain.png',
+            image: '/examples/cesium/cards/arcgisTerrain.png',
             type: 'html',
-            url: '/examples/arcGisTerrain.html',
+            url: '/examples/cesium/html/arcGisTerrain.html',
             statusTags: ['hint'],
             statusHint: '使用 ArcGIS 地形服务, 不能随时加载成功'
           },
           {
             name: 'SuperMap超图在线地形',
-            image: '/examples/SuperMapOnlineTerrain.png',
+            image: '/examples/cesium/cards/SuperMapOnlineTerrain.png',
             type: 'html',
-            url: '/examples/SuperMapOnlineTerrain.html'
+            url: '/examples/cesium/html/SuperMapOnlineTerrain.html'
           },
           {
             name: 'Mars3D在线地形',
-            image: '/examples/Mars3DOnlineTerrain.png',
+            image: '/examples/cesium/cards/Mars3DOnlineTerrain.png',
             type: 'html',
-            url: '/examples/Mars3DOnlineTerrain.html'
+            url: '/examples/cesium/html/Mars3DOnlineTerrain.html'
           },
           {
             name: '局部地形（本地）',
-            image: '/examples/localTerrain.png',
+            image: '/examples/cesium/cards/localTerrain.png',
             type: 'html',
-            url: '/examples/localTerrain.html',
+            url: '/examples/cesium/html/localTerrain.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '地形夸张',
-            image: '/examples/terrainExaggeration.png',
+            image: '/examples/cesium/cards/terrainExaggeration.png',
             type: 'html',
-            url: '/examples/terrainExaggeration.html'
+            url: '/examples/cesium/html/terrainExaggeration.html'
           }
         ]
       },
@@ -226,37 +226,37 @@ const menu = [
         pages: [
           {
             name: '本地单张图片',
-            image: '/examples/singlePicture.png',
+            image: '/examples/cesium/cards/singlePicture.png',
             type: 'html',
-            url: '/examples/singleMap.html'
+            url: '/examples/cesium/html/singleMap.html'
           },
           {
             name: '本地区域影像',
-            image: '/examples/localImage.png',
+            image: '/examples/cesium/cards/localImage.png',
             type: 'html',
-            url: '/examples/localImage.html'
+            url: '/examples/cesium/html/localImage.html'
           },
           {
             name: 'geoserver WMS服务',
-            image: '/examples/geoserverWMS.png',
+            image: '/examples/cesium/cards/geoserverWMS.png',
             type: 'html',
-            url: '/examples/geoserverWMS.html',
+            url: '/examples/cesium/html/geoserverWMS.html',
             statusTags: ['hint'],
             statusHint: '请在左上角面板填写 WMS 服务地址与图层名称，点击「加载 WMS」'
           },
           {
             name: 'geoserver WMTS服务',
-            image: '/examples/geoserverWMTS.png',
+            image: '/examples/cesium/cards/geoserverWMTS.png',
             type: 'html',
-            url: '/examples/geoserverWMTS.html',
+            url: '/examples/cesium/html/geoserverWMTS.html',
             statusTags: ['hint'],
             statusHint: '请在左上角面板填写 WMTS 服务地址与图层名称，点击「加载 WMTS」'
           },
           {
             name: 'TMS服务',
-            image: '/examples/3DTile_buildingMaterial.png',
+            image: '/examples/cesium/cards/3DTile_buildingMaterial.png',
             type: 'html',
-            url: '/examples/geoserverTMS.html',
+            url: '/examples/cesium/html/geoserverTMS.html',
             statusTags: ['hint'],
             statusHint: '请在左上角面板填写 TMS 服务地址，点击「加载 TMS」'
           }
@@ -272,21 +272,21 @@ const menu = [
         pages: [
           {
             name: 'POI兴趣点搜索',
-            image: '/examples/POIsearch.png',
+            image: '/examples/cesium/cards/POIsearch.png',
             type: 'html',
-            url: '/examples/POIsearch.html'
+            url: '/examples/cesium/html/POIsearch.html'
           },
           {
             name: '偏振立体(VR)',
-            image: '/examples/Polarized Stereo.png',
+            image: '/examples/cesium/cards/Polarized Stereo.png',
             type: 'html',
-            url: '/examples/Polarized Stereo.html'
+            url: '/examples/cesium/html/Polarized Stereo.html'
           },
           {
             name: '时间控制器',
-            image: '/examples/timeController.png',
+            image: '/examples/cesium/cards/timeController.png',
             type: 'html',
-            url: '/examples/timeController.html'
+            url: '/examples/cesium/html/timeController.html'
           }
         ]
       },
@@ -295,27 +295,27 @@ const menu = [
         pages: [
           {
             name: '导航控件',
-            image: '/examples/navigation.png',
+            image: '/examples/cesium/cards/navigation.png',
             type: 'html',
-            url: '/examples/navigation.html'
+            url: '/examples/cesium/html/navigation.html'
           },
           {
             name: '鹰眼控件',
-            image: '/examples/OverviewMap.png',
+            image: '/examples/cesium/cards/OverviewMap.png',
             type: 'html',
-            url: '/examples/OverviewMap.html'
+            url: '/examples/cesium/html/OverviewMap.html'
           },
           {
             name: '状态栏控件',
-            image: '/examples/statusBar.png',
+            image: '/examples/cesium/cards/statusBar.png',
             type: 'html',
-            url: '/examples/statusBar.html'
+            url: '/examples/cesium/html/statusBar.html'
           },
           {
             name: '经纬度拾取',
-            image: '/examples/PickLocation.png',
+            image: '/examples/cesium/cards/PickLocation.png',
             type: 'html',
-            url: '/examples/coordinateDisplay.html',
+            url: '/examples/cesium/html/coordinateDisplay.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
@@ -332,9 +332,9 @@ const menu = [
         pages: [
           {
             name: '绘制点线面',
-            image: '/examples/drawGeometry.png',
+            image: '/examples/cesium/cards/drawGeometry.png',
             type: 'html',
-            url: '/examples/drawGeometry.html'
+            url: '/examples/cesium/html/drawGeometry.html'
           }
         ]
       },
@@ -343,27 +343,27 @@ const menu = [
         pages: [
           {
             name: '加载实体点',
-            image: '/examples/entityPoint.png',
+            image: '/examples/cesium/cards/entityPoint.png',
             type: 'html',
-            url: '/examples/entityPoint.html'
+            url: '/examples/cesium/html/entityPoint.html'
           },
           {
             name: '加载实体线',
-            image: '/examples/entityPolyline.png',
+            image: '/examples/cesium/cards/entityPolyline.png',
             type: 'html',
-            url: '/examples/entityPolyline.html'
+            url: '/examples/cesium/html/entityPolyline.html'
           },
           {
             name: '实体线材质',
-            image: '/examples/entityPolylineMaterial.png',
+            image: '/examples/cesium/cards/entityPolylineMaterial.png',
             type: 'html',
-            url: '/examples/entityPolylineMaterial.html'
+            url: '/examples/cesium/html/entityPolylineMaterial.html'
           },
           {
             name: '加载实体面',
-            image: '/examples/entityPolygon.png',
+            image: '/examples/cesium/cards/entityPolygon.png',
             type: 'html',
-            url: '/examples/entityPolygon.html'
+            url: '/examples/cesium/html/entityPolygon.html'
           }
         ]
       },
@@ -372,36 +372,36 @@ const menu = [
         pages: [
           {
             name: '聚合点',
-            image: '/examples/clusterPoint.png',
+            image: '/examples/cesium/cards/clusterPoint.png',
             type: 'html',
-            url: '/examples/clusterPoint.html'
+            url: '/examples/cesium/html/clusterPoint.html'
           },
           {
             name: '动态效果点',
-            image: '/examples/pointDynamic.gif',
+            image: '/examples/cesium/cards/pointDynamic.gif',
             type: 'html',
-            url: '/examples/pointDynamic.html'
+            url: '/examples/cesium/html/pointDynamic.html'
           },
           {
             name: '图标点加文字(primitive)',
-            image: '/examples/Icon with Text.png',
+            image: '/examples/cesium/cards/Icon with Text.png',
             type: 'html',
-            url: '/examples/Icon with Text.html',
+            url: '/examples/cesium/html/Icon with Text.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: 'Primitive大量点',
-            image: '/examples/pointsPrimitive.png',
+            image: '/examples/cesium/cards/pointsPrimitive.png',
             type: 'html',
-            url: '/examples/pointPrimitive.html'
+            url: '/examples/cesium/html/pointPrimitive.html'
           },
           {
             name: '旋转棱锥',
-            image: '/examples/entityRotaryPyramid.gif',
+            image: '/examples/cesium/cards/entityRotaryPyramid.gif',
             type: 'html',
-            url: '/examples/entityRotaryPyramid.html'
+            url: '/examples/cesium/html/entityRotaryPyramid.html'
           }
         ]
       },
@@ -410,30 +410,30 @@ const menu = [
         pages: [
           {
             name: '光晕线',
-            image: '/examples/glowPolyline.png',
+            image: '/examples/cesium/cards/glowPolyline.png',
             type: 'html',
-            url: '/examples/glowPolyline.html'
+            url: '/examples/cesium/html/glowPolyline.html'
           },
           {
             name: '动态Path轨迹线',
-            image: '/examples/PathTrackLine.gif',
+            image: '/examples/cesium/cards/PathTrackLine.gif',
             type: 'html',
-            url: '/examples/Path Track Line.html'
+            url: '/examples/cesium/html/Path Track Line.html'
           },
           {
             name: '迁徙效果',
-            image: '/examples/migrationPolyline.gif',
+            image: '/examples/cesium/cards/migrationPolyline.gif',
             type: 'html',
-            url: '/examples/migrationPolyline.html',
+            url: '/examples/cesium/html/migrationPolyline.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: 'Polyline Volume管线',
-            image: '/examples/PolylineVolume.png',
+            image: '/examples/cesium/cards/PolylineVolume.png',
             type: 'html',
-            url: '/examples/PolylineVolume.html'
+            url: '/examples/cesium/html/PolylineVolume.html'
           }
         ]
       },
@@ -442,39 +442,39 @@ const menu = [
         pages: [
           {
             name: '矩形(promitives)',
-            image: '/examples/Primitives Rectangle.png',
+            image: '/examples/cesium/cards/Primitives Rectangle.png',
             type: 'html',
-            url: '/examples/Primitives Rectangle.html'
+            url: '/examples/cesium/html/Primitives Rectangle.html'
           },
           {
             name: '动态墙对象',
-            image: '/examples/entityWall.gif',
+            image: '/examples/cesium/cards/entityWall.gif',
             type: 'html',
-            url: '/examples/entityWall.html'
+            url: '/examples/cesium/html/entityWall.html'
           },
           {
             name: '绘制反选遮罩',
-            image: '/examples/maskLayer.png',
+            image: '/examples/cesium/cards/maskLayer.png',
             type: 'html',
-            url: '/examples/mask.html'
+            url: '/examples/cesium/html/mask.html'
           },
           {
             name: '雷达扫描',
-            image: '/examples/RadarScan.gif',
+            image: '/examples/cesium/cards/RadarScan.gif',
             type: 'html',
-            url: '/examples/RadarScan.html'
+            url: '/examples/cesium/html/RadarScan.html'
           },
           {
             name: '圆形波纹',
-            image: '/examples/RippleCircular.gif',
+            image: '/examples/cesium/cards/RippleCircular.gif',
             type: 'html',
-            url: '/examples/RippleCircular.html'
+            url: '/examples/cesium/html/RippleCircular.html'
           },
           {
             name: '圆形扩散',
-            image: '/examples/DiffusionCircle.gif',
+            image: '/examples/cesium/cards/DiffusionCircle.gif',
             type: 'html',
-            url: '/examples/DiffusionCircle.html'
+            url: '/examples/cesium/html/DiffusionCircle.html'
           }
         ]
       }
@@ -488,51 +488,51 @@ const menu = [
         pages: [
           {
             name: '量算',
-            image: '/examples/measure.png',
+            image: '/examples/cesium/cards/measure.png',
             type: 'html',
-            url: '/examples/measure.html'
+            url: '/examples/cesium/html/measure.html'
           },
           {
             name: '缓冲分析',
-            image: '/examples/Buffer Analysis.png',
+            image: '/examples/cesium/cards/Buffer Analysis.png',
             type: 'html',
-            url: '/examples/Buffer Analysis.html',
+            url: '/examples/cesium/html/Buffer Analysis.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '限高分析',
-            image: '/examples/HeightLimitAnalysis.gif',
+            image: '/examples/cesium/cards/HeightLimitAnalysis.gif',
             type: 'html',
-            url: '/examples/HeightLimitAnalysis.html',
+            url: '/examples/cesium/html/HeightLimitAnalysis.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '通视分析',
-            image: '/examples/Line of Sight Analysis.png',
+            image: '/examples/cesium/cards/Line of Sight Analysis.png',
             type: 'html',
-            url: '/examples/Line of Sight Analysis.html',
+            url: '/examples/cesium/html/Line of Sight Analysis.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '天际线分析',
-            image: '/examples/Skyline Analysis.png',
+            image: '/examples/cesium/cards/Skyline Analysis.png',
             type: 'html',
-            url: '/examples/Skyline Analysis.html',
+            url: '/examples/cesium/html/Skyline Analysis.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '可视域分析',
-            image: '/examples/Viewshed Analysis.png',
+            image: '/examples/cesium/cards/Viewshed Analysis.png',
             type: 'html',
-            url: '/examples/Viewshed Analysis.html',
+            url: '/examples/cesium/html/Viewshed Analysis.html',
             status: 'pending',
             statusTags: ['server-data', 'cesium-api'],
             statusReason:
@@ -545,36 +545,36 @@ const menu = [
         pages: [
           {
             name: '地形开挖(凸多边形)',
-            image: '/examples/globeClip.png',
+            image: '/examples/cesium/cards/globeClip.png',
             type: 'html',
-            url: '/examples/globeClip.html',
+            url: '/examples/cesium/html/globeClip.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '地形开挖(任意多边形)',
-            image: '/examples/globeClipArbitrarily.png',
+            image: '/examples/cesium/cards/globeClipArbitrarily.png',
             type: 'html',
-            url: '/examples/globeClipArbitrarily.html',
+            url: '/examples/cesium/html/globeClipArbitrarily.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '淹没分析',
-            image: '/examples/Inundation Analysis.gif',
+            image: '/examples/cesium/cards/Inundation Analysis.gif',
             type: 'html',
-            url: '/examples/Inundation Analysis.html',
+            url: '/examples/cesium/html/Inundation Analysis.html',
             status: 'pending',
             statusTags: ['cesium-api'],
             statusReason: '使用定制 Cesium API 或扩展插件'
           },
           {
             name: '坡度坡向分析',
-            image: '/examples/SlopeAspectAnalysis.png',
+            image: '/examples/cesium/cards/SlopeAspectAnalysis.png',
             type: 'html',
-            url: '/examples/SlopeAspectAnalysis.html',
+            url: '/examples/cesium/html/SlopeAspectAnalysis.html',
             status: 'pending',
             statusTags: ['server-data', 'cesium-api'],
             statusReason: '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件'
@@ -586,48 +586,48 @@ const menu = [
         pages: [
           {
             name: '3dtiles模型剖切（BIM）',
-            image: '/examples/BIMClip.png',
+            image: '/examples/cesium/cards/BIMClip.png',
             type: 'html',
-            url: '/examples/BIMClip.html',
+            url: '/examples/cesium/html/BIMClip.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '倾斜模型裁剪开挖',
-            image: '/examples/photographyClip.png',
+            image: '/examples/cesium/cards/photographyClip.png',
             type: 'html',
-            url: '/examples/photographyClip.html'
+            url: '/examples/cesium/html/photographyClip.html'
           },
           {
             name: '倾斜模型局部压平',
-            image: '/examples/3DTilesFlatten.gif',
+            image: '/examples/cesium/cards/3DTilesFlatten.gif',
             type: 'html',
-            url: '/examples/3DTilesFlatten.html'
+            url: '/examples/cesium/html/3DTilesFlatten.html'
           },
           {
             name: '3dtiles拾取效果',
-            image: '/examples/3dtileStylePicking.png',
+            image: '/examples/cesium/cards/3dtileStylePicking.png',
             type: 'html',
-            url: '/examples/3dtileStylePicking.html'
+            url: '/examples/cesium/html/3dtileStylePicking.html'
           },
           {
             name: '3dtileStyle批量着色',
-            image: '/examples/3dtileFeatureStyling.png',
+            image: '/examples/cesium/cards/3dtileFeatureStyling.png',
             type: 'html',
-            url: '/examples/3dtileFeatureStyling.html'
+            url: '/examples/cesium/html/3dtileFeatureStyling.html'
           },
           {
             name: '倾斜摄影模型建筑单体化(分栋)',
-            image: '/examples/3dtilesMonomerization.png',
+            image: '/examples/cesium/cards/3dtilesMonomerization.png',
             type: 'html',
-            url: '/examples/3dtilesMonomerization.html'
+            url: '/examples/cesium/html/3dtilesMonomerization.html'
           },
           {
             name: '倾斜摄影模型建筑单体化(分层)',
-            image: '/examples/3DTiles_Monomerization.png',
+            image: '/examples/cesium/cards/3DTiles_Monomerization.png',
             type: 'html',
-            url: '/examples/3DTiles_Monomerization.html'
+            url: '/examples/cesium/html/3DTiles_Monomerization.html'
           }
         ]
       }
@@ -641,48 +641,48 @@ const menu = [
         pages: [
           {
             name: '飞线',
-            image: '/examples/PolylineTrailMaterialProperty.gif',
+            image: '/examples/cesium/cards/PolylineTrailMaterialProperty.gif',
             type: 'html',
-            url: '/examples/PolylineTrailMaterialProperty.html',
+            url: '/examples/cesium/html/PolylineTrailMaterialProperty.html',
             status: 'pending',
             statusTags: ['server-data', 'cesium-api'],
             statusReason: '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件'
           },
           {
             name: '面渐变填充',
-            image: '/examples/PolyGradientMaterialProperty.png',
+            image: '/examples/cesium/cards/PolyGradientMaterialProperty.png',
             type: 'html',
-            url: '/examples/PolyGradientMaterialProperty.html',
+            url: '/examples/cesium/html/PolyGradientMaterialProperty.html',
             status: 'pending',
             statusTags: ['server-data', 'cesium-api'],
             statusReason: '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件'
           },
           {
             name: '火焰粒子',
-            image: '/examples/Flame Particles System.gif',
+            image: '/examples/cesium/cards/Flame Particles System.gif',
             type: 'html',
-            url: '/examples/Flame Particles System.html'
+            url: '/examples/cesium/html/Flame Particles System.html'
           },
           {
             name: '喷泉粒子',
-            image: '/examples/Fountain Particle System.gif',
+            image: '/examples/cesium/cards/Fountain Particle System.gif',
             type: 'html',
-            url: '/examples/Fountain Particle System.html'
+            url: '/examples/cesium/html/Fountain Particle System.html'
           },
           {
             name: '柱状统计',
-            image: '/examples/Histogram.png',
+            image: '/examples/cesium/cards/Histogram.png',
             type: 'html',
-            url: '/examples/Histogram.html',
+            url: '/examples/cesium/html/Histogram.html',
             status: 'pending',
             statusTags: ['server-data', 'cesium-api'],
             statusReason: '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件'
           },
           {
             name: '天气粒子(雨、雾、雪)',
-            image: '/examples/weatherEffects.gif',
+            image: '/examples/cesium/cards/weatherEffects.gif',
             type: 'html',
-            url: '/examples/weatherEffects.html'
+            url: '/examples/cesium/html/weatherEffects.html'
           }
         ]
       },
@@ -691,60 +691,60 @@ const menu = [
         pages: [
           {
             name: '水面倒影',
-            image: '/examples/Reflector.png',
+            image: '/examples/cesium/cards/Reflector.png',
             type: 'html',
-            url: '/examples/Reflector.html',
+            url: '/examples/cesium/html/Reflector.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: 'MSAA抗锯齿',
-            image: '/examples/MSAA.png',
+            image: '/examples/cesium/cards/MSAA.png',
             type: 'html',
-            url: '/examples/MSAA.html',
+            url: '/examples/cesium/html/MSAA.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '视频投放',
-            image: '/examples/Video Delivery.gif',
+            image: '/examples/cesium/cards/Video Delivery.gif',
             type: 'html',
-            url: '/examples/Video Delivery.html',
+            url: '/examples/cesium/html/Video Delivery.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '夜视效果',
-            image: '/examples/NightVisionEffect.png',
+            image: '/examples/cesium/cards/NightVisionEffect.png',
             type: 'html',
-            url: '/examples/NightVisionEffect.html'
+            url: '/examples/cesium/html/NightVisionEffect.html'
           },
           {
             name: '景深效果',
-            image: '/examples/DepthOfFieldEfect.png',
+            image: '/examples/cesium/cards/DepthOfFieldEfect.png',
             type: 'html',
-            url: '/examples/DepthOfFieldEfect.html'
+            url: '/examples/cesium/html/DepthOfFieldEfect.html'
           },
           {
             name: '黑白效果',
-            image: '/examples/BlackAndWhiteEffect.png',
+            image: '/examples/cesium/cards/BlackAndWhiteEffect.png',
             type: 'html',
-            url: '/examples/BlackAndWhiteEffect.html'
+            url: '/examples/cesium/html/BlackAndWhiteEffect.html'
           },
           {
             name: '马赛克效果',
-            image: '/examples/MosaicEffect.png',
+            image: '/examples/cesium/cards/MosaicEffect.png',
             type: 'html',
-            url: '/examples/MosaicEffect.html'
+            url: '/examples/cesium/html/MosaicEffect.html'
           },
           {
             name: '日照阴影',
-            image: '/examples/SunlightShadow.gif',
+            image: '/examples/cesium/cards/SunlightShadow.gif',
             type: 'html',
-            url: '/examples/SunlightShadow.html',
+            url: '/examples/cesium/html/SunlightShadow.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
@@ -756,24 +756,24 @@ const menu = [
         pages: [
           {
             name: '热力图',
-            image: '/examples/HeatMap.png',
+            image: '/examples/cesium/cards/HeatMap.png',
             type: 'html',
-            url: '/examples/HeatMap.html',
+            url: '/examples/cesium/html/HeatMap.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '热力图3D',
-            image: '/examples/HeatMap3D.gif',
+            image: '/examples/cesium/cards/HeatMap3D.gif',
             type: 'html',
-            url: '/examples/HeatMap3D.html'
+            url: '/examples/cesium/html/HeatMap3D.html'
           },
           {
             name: '等高线',
-            image: '/examples/Contour Line.png',
+            image: '/examples/cesium/cards/Contour Line.png',
             type: 'html',
-            url: '/examples/Contour Line.html',
+            url: '/examples/cesium/html/Contour Line.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
@@ -790,27 +790,27 @@ const menu = [
         pages: [
           {
             name: 'GeoJson图层(POI数据)',
-            image: '/examples/geojson-PoiLayer.png',
+            image: '/examples/cesium/cards/geojson-PoiLayer.png',
             type: 'html',
-            url: '/examples/geojson-PoiLayer.html',
+            url: '/examples/cesium/html/geojson-PoiLayer.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '流动水域面',
-            image: '/examples/Water Surface Geojson.gif',
+            image: '/examples/cesium/cards/Water Surface Geojson.gif',
             type: 'html',
-            url: '/examples/Water Surface Geojson.html',
+            url: '/examples/cesium/html/Water Surface Geojson.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: 'KML图层',
-            image: '/examples/KML_data.png',
+            image: '/examples/cesium/cards/KML_data.png',
             type: 'html',
-            url: '/examples/KML_data.html'
+            url: '/examples/cesium/html/KML_data.html'
           }
         ]
       }
@@ -824,35 +824,35 @@ const menu = [
         pages: [
           {
             name: '倾斜摄影模型',
-            image: '/examples/3DTilesPicture.png',
+            image: '/examples/cesium/cards/3DTilesPicture.png',
             type: 'html',
-            url: '/examples/3DTile.html',
+            url: '/examples/cesium/html/3DTile.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
           },
           {
             name: '建筑白模',
-            image: '/examples/3DTile_building.png',
+            image: '/examples/cesium/cards/3DTile_building.png',
             type: 'html',
-            url: '/examples/3DTile_building.html',
+            url: '/examples/cesium/html/3DTile_building.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖第三方地图服务或 API Key'
           },
           {
             name: '建筑白模材质特效',
-            image: '/examples/3DTile_buildingMaterial.png',
+            image: '/examples/cesium/cards/3DTile_buildingMaterial.png',
             type: 'html',
-            url: '/examples/3DTile_buildingMaterial.html',
+            url: '/examples/cesium/html/3DTile_buildingMaterial.html',
             statusTags: ['hint'],
             statusHint: '使用 Cesium Ion 资产的建筑白模'
           },
           {
             name: '管道流向动态展示',
-            image: '/examples/3DTile_pipeline_uv_speed.png',
+            image: '/examples/cesium/cards/3DTile_pipeline_uv_speed.png',
             type: 'html',
-            url: '/examples/3DTile_pipeline_uv_speed.html',
+            url: '/examples/cesium/html/3DTile_pipeline_uv_speed.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'
@@ -869,27 +869,27 @@ const menu = [
         pages: [
           {
             name: '内置线材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
-            url: '/Material/OwnlineMaterial'
+            url: 'ownLine'
           },
           {
             name: '自定义线材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
-            url: '/Material/CustomlineMaterial'
+            url: 'customLine'
           },
           {
             name: '内置面材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
-            url: '/Material/OwnPolygonMaterial'
+            url: 'ownPolygon'
           },
           {
             name: '自定义面材质',
-            image: '/examples/development.png',
+            image: '/examples/cesium/cards/development.png',
             type: 'vue',
-            url: '/Material/CustomPolygonMaterial'
+            url: 'customPolygon'
           }
         ]
       },
@@ -898,9 +898,9 @@ const menu = [
         pages: [
           {
             name: '百度地图 (Vue)',
-            image: '/examples/baiduMap.png',
+            image: '/examples/cesium/cards/baiduMap.png',
             type: 'vue',
-            url: '/baiduLayer'
+            url: 'baiduLayer'
           }
         ]
       },
@@ -909,21 +909,25 @@ const menu = [
         pages: [
           {
             name: 'entity点',
-            image: '/examples/entityPoint.png',
+            image: '/examples/cesium/cards/entityPoint.png',
             type: 'vue',
-            url: '/entityData/point'
+            url: 'entityPoint'
           },
           {
             name: 'entity线',
-            image: '/examples/entityPolyline.png',
+            image: '/examples/cesium/cards/entityPolyline.png',
             type: 'vue',
-            url: '/entityData/line'
+            url: 'entityLine',
+            status: 'pending',
+            statusReason: '组件尚未实现'
           },
           {
             name: 'entity面',
-            image: '/examples/entityPolygon.png',
+            image: '/examples/cesium/cards/entityPolygon.png',
             type: 'vue',
-            url: '/entityData/rectangle'
+            url: 'entityRectangle',
+            status: 'pending',
+            statusReason: '组件尚未实现'
           }
         ]
       }

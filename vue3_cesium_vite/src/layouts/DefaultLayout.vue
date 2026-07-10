@@ -6,10 +6,7 @@
 
     <el-container class="app-shell__body">
       <AppSidebar v-if="showSidebar" @navigate="handleNavigate" />
-      <el-main
-        class="app-shell__main"
-        :class="{ 'app-shell__main--full': !showSidebar }"
-      >
+      <el-main class="app-shell__main" :class="{ 'app-shell__main--full': !showSidebar }">
         <router-view :key="engineStore.currentEngineId" />
       </el-main>
     </el-container>

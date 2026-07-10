@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>卷帘对比</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      #cesiumContainer {
+        position: relative;
+        overflow: hidden;
+      }
+
+      #slider {
+        position: absolute;
+        background-color: rgba(211, 211, 211, 0.95);
+        z-index: 9999;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+      }
+
+      #slider.horizontal {
+        left: 50%;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        cursor: ew-resize;
+      }
+
+      #slider.vertical {
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 5px;
+        cursor: ns-resize;
+      }
+
+      .split-label {
+        position: fixed;
+        z-index: 10000;
+        padding: 6px 10px;
+        border-radius: 4px;
+        background: rgba(42, 42, 42, 0.85);
+        color: #fff;
+        font:
+          13px/1.4 -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        pointer-events: none;
+        user-select: none;
+        display: none;
+      }
+
+      #labelLeft {
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      #labelRight {
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      #labelLeft.vertical-mode {
+        left: 50%;
+        top: 16px;
+        transform: translateX(-50%);
+      }
+
+      #labelRight.vertical-mode {
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: 16px;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer">
+      <div id="slider" class="horizontal"></div>
+    </div>
+    <div id="labelLeft" class="split-label">高德影像</div>
+    <div id="labelRight" class="split-label">ArcGIS 卫星影像</div>
+    <script type="text/javascript">
+      'use script'
+
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+            Cesium.ArcGisBaseMapType.SATELLITE,
+            {
+              enablePickFeatures: false
+            }
+          )
+        )
+      })
+
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 2500.0)
+      })
+
+      var scene = viewer.scene
+      var compareLayer = viewer.imageryLayers.addImageryProvider(
+        new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
+      )
+      compareLayer.splitDirection = Cesium.SplitDirection.LEFT
+      compareLayer.show = false
+
+      var slider = document.getElementById('slider')
+      var labelLeft = document.getElementById('labelLeft')
+      var labelRight = document.getElementById('labelRight')
+      var container = document.getElementById('cesiumContainer')
+      var moveActive = false
+      var comparisonEnabled = false
+
+      function isHorizontalSplit() {
+        return scene.splitOrientation === Cesium.SplitOrientation.HORIZONTAL
+      }
+
+      function updateSplitLabels(orientation) {
+        var vertical = orientation === Cesium.SplitOrientation.VERTICAL
+        labelLeft.classList.toggle('vertical-mode', vertical)
+        labelRight.classList.toggle('vertical-mode', vertical)
+
+        if (vertical) {
+          labelLeft.textContent = '高德影像（上）'
+          labelRight.textContent = 'ArcGIS 卫星影像（下）'
+        } else {
+          labelLeft.textContent = '高德影像（左）'
+          labelRight.textContent = 'ArcGIS 卫星影像（右）'
+        }
+      }
+
+      function setSplitPosition(splitPosition) {
+        splitPosition = Cesium.Math.clamp(splitPosition, 0.0, 1.0)
+        scene.splitPosition = splitPosition
+
+        if (isHorizontalSplit()) {
+          slider.style.left = 100.0 * splitPosition + '%'
+          slider.style.top = '0'
+        } else {
+          slider.style.left = '0'
+          slider.style.top = 100.0 * (1.0 - splitPosition) + '%'
+        }
+      }
+
+      function setSplitOrientation(orientation) {
+        scene.splitOrientation = orientation
+        slider.classList.remove('horizontal', 'vertical')
+        updateSplitLabels(orientation)
+
+        if (orientation === Cesium.SplitOrientation.HORIZONTAL) {
+          slider.classList.add('horizontal')
+        } else {
+          slider.classList.add('vertical')
+        }
+
+        setSplitPosition(0.5)
+      }
+
+      function move(movement) {
+        if (!moveActive) {
+          return
+        }
+
+        if (isHorizontalSplit()) {
+          var splitPosition = (slider.offsetLeft + movement.endPosition.x) / container.offsetWidth
+          setSplitPosition(splitPosition)
+          return
+        }
+
+        var splitPosition =
+          1.0 - (slider.offsetTop + movement.endPosition.y) / container.offsetHeight
+        setSplitPosition(splitPosition)
+      }
+
+      var handler = new Cesium.ScreenSpaceEventHandler(slider)
+
+      handler.setInputAction(function () {
+        moveActive = true
+      }, Cesium.ScreenSpaceEventType.LEFT_DOWN)
+      handler.setInputAction(function () {
+        moveActive = true
+      }, Cesium.ScreenSpaceEventType.PINCH_START)
+      handler.setInputAction(move, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
+      handler.setInputAction(move, Cesium.ScreenSpaceEventType.PINCH_MOVE)
+      handler.setInputAction(function () {
+        moveActive = false
+      }, Cesium.ScreenSpaceEventType.LEFT_UP)
+      handler.setInputAction(function () {
+        moveActive = false
+      }, Cesium.ScreenSpaceEventType.PINCH_END)
+
+      function setComparisonEnabled(enabled) {
+        comparisonEnabled = enabled
+        compareLayer.show = enabled
+        slider.style.display = enabled ? 'block' : 'none'
+        labelLeft.style.display = enabled ? 'block' : 'none'
+        labelRight.style.display = enabled ? 'block' : 'none'
+      }
+
+      setSplitOrientation(Cesium.SplitOrientation.HORIZONTAL)
+      setComparisonEnabled(true)
+
+      ExampleGui.addToggleButton('开启卷帘对比', true, function (checked) {
+        setComparisonEnabled(checked)
+      })
+
+      ExampleGui.addMenu([
+        {
+          text: '左右分屏',
+          onselect: function () {
+            setSplitOrientation(Cesium.SplitOrientation.HORIZONTAL)
+          }
+        },
+        {
+          text: '上下分屏',
+          onselect: function () {
+            setSplitOrientation(Cesium.SplitOrientation.VERTICAL)
+          }
+        }
+      ])
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

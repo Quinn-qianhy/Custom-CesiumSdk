@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>通视分析</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+  <script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<script type="text/javascript">
+    "use script";
+
+    var viewer = new Cesium.Viewer("cesiumContainer");
+
+    viewer.scene.globe.depthTestAgainstTerrain = true;
+
+    var tileset = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(75343),
+        maximumScreenSpaceError: 4,
+        appearanceGradientByHeight: true
+      })
+    );
+    const style = {
+      color: {
+        conditions: [
+          ["true", "color('aqua')"]
+        ]
+      }
+    };
+    tileset.style = new Cesium.Cesium3DTileStyle(style);
+
+    tileset.readyPromise
+      .then(function (tileset) {
+        viewer.flyTo(
+          tileset,
+          new Cesium.HeadingPitchRange(
+            0.0,
+            -0.5,
+            tileset.boundingSphere.radius * 2.0
+          )
+        );
+      })
+    //基础事件
+    const baseThing = new Cesium.BaseThing(viewer)
+    //通视分析事件
+    const lineOfSight = baseThing.VisibilityAnalysis()
+    
+    ExampleGui.addToolbarButton("通视分析", function () {
+      baseThing.addThing(lineOfSight)
+    })
+    ExampleGui.addToolbarButton("清除", function () {
+      baseThing.removeAllThing()
+    })
+
+  </script>
+</body>
+
+</html>

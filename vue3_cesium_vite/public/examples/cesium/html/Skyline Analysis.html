@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>天际线分析</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer"></div>
+<script type="text/javascript">
+    "use script";
+
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.ArcGisMapServerImageryProvider({
+        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+        show: true,
+      })
+        )
+    })
+    var tileset = new Cesium.Cesium3DTileset({
+      url: Cesium.IonResource.fromAssetId(75343),
+    });
+    tileset.readyPromise
+      .then(function (tileset) {
+        viewer.scene.primitives.add(tileset);
+        var cartographic = Cesium.Cartographic.fromCartesian(
+          tileset.boundingSphere.center
+        );
+        var surface = Cesium.Cartesian3.fromRadians(
+          cartographic.longitude,
+          cartographic.latitude,
+          0.0
+        );
+        var offset = Cesium.Cartesian3.fromRadians(
+          cartographic.longitude,
+          cartographic.latitude,
+          -450
+        );
+        var translation = Cesium.Cartesian3.subtract(
+          offset,
+          surface,
+          new Cesium.Cartesian3()
+        );
+        tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+        viewer.camera.flyTo({
+          destination: new Cesium.Cartesian3(
+            -1468524.594161727, 5185293.366438113, 3400084.7004299653
+          ),
+          orientation: {
+            heading: 4.405789166526505,
+            pitch: -0.13428411338061497,
+            roll: 6.280265393701883,
+          },
+        });
+      })
+      
+
+    const basething = new Cesium.BaseThing(viewer)
+    const newThing = basething.Skyline()
+
+    function addSkyline() {
+      basething.addThing(newThing)
+    }
+
+    function removeSkyline() {
+      basething.removeAllThing()
+    }
+
+    ExampleGui.addToolbarButton('添加天际线', () => {
+      addSkyline()
+    })
+    ExampleGui.addToolbarButton('删除天际线', () => {
+      removeSkyline()
+    })
+
+  </script>
+</body>
+
+</html>

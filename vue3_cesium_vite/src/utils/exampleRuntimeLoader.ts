@@ -5,6 +5,7 @@ import GUI from 'lil-gui'
 import * as Cesium from 'cesium'
 import { useExamplesStore } from '@/stores/examplesStore'
 import { useCommonImports } from '@/hooks/useCommonImports'
+import { useOlCommonImports } from '@/hooks/useOlCommonImports'
 
 const rawModuleLoaders = import.meta.glob<string>('/src/**/*.{js,vue,scss,ts}', {
   query: '?raw',
@@ -92,7 +93,9 @@ const sharedModuleCache: Record<string, unknown> = {
   '../stores/examplesStore': { useExamplesStore },
   '../../stores/examplesStore': { useExamplesStore },
   '@/hooks/useCommonImports': { useCommonImports },
-  '../../hooks/useCommonImports': { useCommonImports }
+  '../../hooks/useCommonImports': { useCommonImports },
+  '@/hooks/useOlCommonImports': { useOlCommonImports },
+  '../../hooks/useOlCommonImports': { useOlCommonImports }
 }
 
 /** 从编辑后的 SFC 源码动态加载示例组件 */
@@ -104,13 +107,7 @@ export async function loadExampleFromSource(
 
   const options = {
     moduleCache: sharedModuleCache,
-    pathResolve({
-      refPath,
-      relPath
-    }: {
-      refPath: string
-      relPath: string
-    }) {
+    pathResolve({ refPath, relPath }: { refPath: string; relPath: string }) {
       if (relPath.startsWith('@/')) {
         return normalizeAlias(relPath)
       }
@@ -133,11 +130,7 @@ export async function loadExampleFromSource(
       }
 
       const content = await loader()
-      const type = url.endsWith('.vue')
-        ? '.vue'
-        : url.endsWith('.scss')
-          ? '.scss'
-          : '.js'
+      const type = url.endsWith('.vue') ? '.vue' : url.endsWith('.scss') ? '.scss' : '.js'
 
       return {
         getContentData: () => content,

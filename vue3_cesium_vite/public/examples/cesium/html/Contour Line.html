@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="shortcut icon" type="image/x-icon" />
+  <title>等高线示例</title>
+<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+<script src="/cesium/Cesium.js"></script>
+<script src="/defaultAccessToken.js"> </script>
+  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      position: absolute
+    }
+</style>
+</head>
+
+<body class="dark">
+  <div id="cesiumContainer">
+</div>
+  <script type="text/javascript">
+    "use script";
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      terrain: new Cesium.Terrain(
+          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true, //Needed to visualize slope })
+        ),
+    });
+
+    viewer.camera.setView({
+      destination: new Cesium.Cartesian3(
+        -865077.7257373465,
+        5368435.802904336,
+        3334697.4669163083
+      ),
+      orientation: {
+        heading: 0.8200267433693478,
+        pitch: -0.39778806822544976,
+        roll: 0.002379477429482968,
+      },
+    });
+
+    var viewModel = {
+      gradient: false,
+      band1Position: 4950.0,
+      band2Position: 5200.0,
+      band3Position: 5400.0,
+      bandThickness: 70.0,
+      bandTransparency: 0.5,
+      backgroundTransparency: 0.75,
+    };
+
+    Cesium.knockout.track(viewModel);
+    // ExampleGui 参数面板
+    ExampleGui.addToggleButton('渐变曲率', false, function(checked) {
+      viewModel.gradient = checked;
+    });
+    ExampleGui.addSlider('色带1位置', 4950.0, 0, 10000, 100, function(value) {
+      viewModel.band1Position = value;
+    });
+    ExampleGui.addSlider('色带2位置', 5200.0, 0, 10000, 100, function(value) {
+      viewModel.band2Position = value;
+    });
+    ExampleGui.addSlider('色带3位置', 5400.0, 0, 10000, 100, function(value) {
+      viewModel.band3Position = value;
+    });
+    ExampleGui.addSlider('色带厚度', 70.0, 10, 1000, 10, function(value) {
+      viewModel.bandThickness = value;
+    });
+    ExampleGui.addSlider('色带透明度', 0.5, 0, 1, 0.01, function(value) {
+      viewModel.bandTransparency = value;
+    });
+    ExampleGui.addSlider('背景透明度', 0.75, 0, 1, 0.01, function(value) {
+      viewModel.backgroundTransparency = value;
+    });
+    ExampleGui.finishedLoading();
+for (var name in viewModel) {
+      if (viewModel.hasOwnProperty(name)) {
+        Cesium.knockout
+          .getObservable(viewModel, name)
+          .subscribe(updateMaterial);
+      }
+    }
+
+    function updateMaterial() {
+      var gradient = Boolean(viewModel.gradient);
+      var band1Position = Number(viewModel.band1Position);
+      var band2Position = Number(viewModel.band2Position);
+      var band3Position = Number(viewModel.band3Position);
+      var bandThickness = Number(viewModel.bandThickness);
+      var bandTransparency = Number(viewModel.bandTransparency);
+      var backgroundTransparency = Number(viewModel.backgroundTransparency);
+      var layers = [];
+      var backgroundLayer = {
+        entries: [{
+            height: 4200.0,
+            color: new Cesium.Color(0.0, 0.0, 0.2, backgroundTransparency),
+          },
+          {
+            height: 8000.0,
+            color: new Cesium.Color(1.0, 1.0, 1.0, backgroundTransparency),
+          },
+          {
+            height: 8500.0,
+            color: new Cesium.Color(1.0, 0.0, 0.0, backgroundTransparency),
+          },
+        ],
+        extendDownwards: true,
+        extendUpwards: true,
+      };
+      layers.push(backgroundLayer);
+
+      var gridStartHeight = 4200.0;
+      var gridEndHeight = 8848.0;
+      var gridCount = 50;
+      for (var i = 0; i < gridCount; i++) {
+        var lerper = i / (gridCount - 1);
+        var heightBelow = Cesium.Math.lerp(
+          gridStartHeight,
+          gridEndHeight,
+          lerper
+        );
+        var heightAbove = heightBelow + 10.0;
+        var alpha =
+          Cesium.Math.lerp(0.2, 0.4, lerper) * backgroundTransparency;
+        layers.push({
+          entries: [{
+              height: heightBelow,
+              color: new Cesium.Color(1.0, 1.0, 1.0, alpha),
+            },
+            {
+              height: heightAbove,
+              color: new Cesium.Color(1.0, 1.0, 1.0, alpha),
+            },
+          ],
+        });
+      }
+
+      var antialias = Math.min(10.0, bandThickness * 0.1);
+
+      if (!gradient) {
+        var band1 = {
+          entries: [{
+              height: band1Position - bandThickness * 0.5 - antialias,
+              color: new Cesium.Color(0.0, 0.0, 1.0, 0.0),
+            },
+            {
+              height: band1Position - bandThickness * 0.5,
+              color: new Cesium.Color(0.0, 0.0, 1.0, bandTransparency),
+            },
+            {
+              height: band1Position + bandThickness * 0.5,
+              color: new Cesium.Color(0.0, 0.0, 1.0, bandTransparency),
+            },
+            {
+              height: band1Position + bandThickness * 0.5 + antialias,
+              color: new Cesium.Color(0.0, 0.0, 1.0, 0.0),
+            },
+          ],
+        };
+
+        var band2 = {
+          entries: [{
+              height: band2Position - bandThickness * 0.5 - antialias,
+              color: new Cesium.Color(0.0, 1.0, 0.0, 0.0),
+            },
+            {
+              height: band2Position - bandThickness * 0.5,
+              color: new Cesium.Color(0.0, 1.0, 0.0, bandTransparency),
+            },
+            {
+              height: band2Position + bandThickness * 0.5,
+              color: new Cesium.Color(0.0, 1.0, 0.0, bandTransparency),
+            },
+            {
+              height: band2Position + bandThickness * 0.5 + antialias,
+              color: new Cesium.Color(0.0, 1.0, 0.0, 0.0),
+            },
+          ],
+        };
+
+        var band3 = {
+          entries: [{
+              height: band3Position - bandThickness * 0.5 - antialias,
+              color: new Cesium.Color(1.0, 0.0, 0.0, 0.0),
+            },
+            {
+              height: band3Position - bandThickness * 0.5,
+              color: new Cesium.Color(1.0, 0.0, 0.0, bandTransparency),
+            },
+            {
+              height: band3Position + bandThickness * 0.5,
+              color: new Cesium.Color(1.0, 0.0, 0.0, bandTransparency),
+            },
+            {
+              height: band3Position + bandThickness * 0.5 + antialias,
+              color: new Cesium.Color(1.0, 0.0, 0.0, 0.0),
+            },
+          ],
+        };
+
+        layers.push(band1);
+        layers.push(band2);
+        layers.push(band3);
+      } else {
+        var combinedBand = {
+          entries: [{
+              height: band1Position - bandThickness * 0.5,
+              color: new Cesium.Color(0.0, 0.0, 1.0, bandTransparency),
+            },
+            {
+              height: band2Position,
+              color: new Cesium.Color(0.0, 1.0, 0.0, bandTransparency),
+            },
+            {
+              height: band3Position + bandThickness * 0.5,
+              color: new Cesium.Color(1.0, 0.0, 0.0, bandTransparency),
+            },
+          ],
+        };
+
+        layers.push(combinedBand);
+      }
+
+      var material = Cesium.createElevationBandMaterial({
+        scene: viewer.scene,
+        layers: layers,
+      });
+      viewer.scene.globe.material = material;
+    }
+
+    updateMaterial();
+
+
+  </script>
+</body>
+
+</html>
