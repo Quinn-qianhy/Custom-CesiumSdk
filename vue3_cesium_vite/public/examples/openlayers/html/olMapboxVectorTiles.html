@@ -48,7 +48,8 @@
       import Text from 'ol/style/Text.js'
 
       const settings = {
-        accessToken: ''
+        accessToken:
+          'pk.eyJ1IjoicWh5MTEiLCJhIjoiY21pZzJxNXdiMDB2dzNlczYyY3c3d2ttdSJ9.UYAvZ7r6wzn4ujpe0omkfg'
       }
 
       let map = null
@@ -95,6 +96,9 @@
 
       ExampleGui.addTextInput('Access Token', settings, 'accessToken')
       ExampleGui.addToolbarButton('加载地图', loadMap)
+
+      // 默认 token 已内置，打开页面即加载
+      loadMap()
 
       ExampleGui.finishedLoading()
     </script>

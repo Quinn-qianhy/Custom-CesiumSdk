@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>地图导出</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #status {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        z-index: 10;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font: 13px/1.6 sans-serif;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+    <div id="status">点击「导出 PNG」将当前地图保存为图片</div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import TileLayer from 'ol/layer/Tile.js'
+      import OSM from 'ol/source/OSM.js'
+
+      const statusEl = document.getElementById('status')
+
+      // OSM 瓦片支持 CORS，导出时画布不会被浏览器安全策略污染
+      const map = new Map({
+        layers: [
+          new TileLayer({
+            source: new OSM()
+          })
+        ],
+        target: 'map',
+        view: new View({
+          center: [0, 0],
+          zoom: 1
+        })
+      })
+
+      let exporting = false
+
+      function exportPng() {
+        if (exporting) {
+          return
+        }
+        exporting = true
+        statusEl.textContent = '导出中...'
+
+        map.once('rendercomplete', function () {
+          const size = map.getSize()
+          const mapCanvas = document.createElement('canvas')
+          mapCanvas.width = size[0]
+          mapCanvas.height = size[1]
+          const mapContext = mapCanvas.getContext('2d')
+
+          Array.prototype.forEach.call(
+            document.querySelectorAll('.ol-layer canvas'),
+            function (canvas) {
+              if (canvas.width > 0) {
+                const opacity = canvas.parentNode.style.opacity
+                mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity)
+                const transform = canvas.style.transform
+                const matrix = transform
+                  .match(/^matrix\(([^(]*)\)$/)[1]
+                  .split(',')
+                  .map(Number)
+                CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix)
+                mapContext.drawImage(canvas, 0, 0)
+              }
+            }
+          )
+
+          const link = document.createElement('a')
+          link.download = 'map.png'
+          link.href = mapCanvas.toDataURL('image/png')
+          link.click()
+
+          statusEl.textContent = '已导出 map.png'
+          exporting = false
+        })
+
+        map.renderSync()
+      }
+
+      ExampleGui.addToolbarButton('导出 PNG', exportPng)
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

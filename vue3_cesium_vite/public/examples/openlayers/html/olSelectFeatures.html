@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>要素选择</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #status {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        z-index: 10;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font: 13px/1.6 sans-serif;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+    <div id="status">点击选择要素</div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Select from 'ol/interaction/Select.js'
+      import GeoJSON from 'ol/format/GeoJSON.js'
+      import VectorLayer from 'ol/layer/Vector.js'
+      import VectorSource from 'ol/source/Vector.js'
+
+      const vector = new VectorLayer({
+        source: new VectorSource({
+          url: 'https://openlayers.org/data/vector/ecoregions.json',
+          format: new GeoJSON()
+        }),
+        style: {
+          'fill-color': '#eeeeee',
+          'stroke-color': '#aaaaaa',
+          'stroke-width': 0.7
+        }
+      })
+
+      const map = new Map({
+        layers: [vector],
+        target: 'map',
+        view: new View({
+          center: [0, 0],
+          zoom: 1
+        })
+      })
+
+      const statusEl = document.getElementById('status')
+
+      const select = new Select({
+        style: {
+          'fill-color': '#f5b942',
+          'stroke-color': '#ff9800',
+          'stroke-width': 2
+        }
+      })
+      map.addInteraction(select)
+
+      select.on('select', function (e) {
+        statusEl.textContent = '已选 ' + e.selected.length + ' 个生态区域'
+      })
+
+      ExampleGui.addToolbarButton('清除选择', function () {
+        select.getFeatures().clear()
+        statusEl.textContent = '点击选择要素'
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

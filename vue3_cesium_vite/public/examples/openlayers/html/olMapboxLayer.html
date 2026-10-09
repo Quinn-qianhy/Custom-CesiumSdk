@@ -50,7 +50,8 @@
       const center = [-98.8, 37.9]
 
       const settings = {
-        accessToken: '',
+        accessToken:
+          'pk.eyJ1IjoicWh5MTEiLCJhIjoiY21pZzJxNXdiMDB2dzNlczYyY3c3d2ttdSJ9.UYAvZ7r6wzn4ujpe0omkfg',
         styleId: 'mapbox/light-v11'
       }
 
@@ -173,6 +174,9 @@
       )
 
       ExampleGui.addToolbarButton('加载地图', loadMap)
+
+      // 默认 token 已内置，打开页面即加载
+      loadMap()
 
       ExampleGui.finishedLoading()
     </script>

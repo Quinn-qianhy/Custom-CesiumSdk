@@ -1,4 +1,4 @@
-/** OpenLayers 示例菜单 */
+/** OpenLayers 示例菜单（分类风格对齐 Cesium 组） */
 const olMenu = [
   {
     subMenu: '基础地图',
@@ -17,37 +17,10 @@ const olMenu = [
     ]
   },
   {
-    subMenu: '官方示例',
+    subMenu: '图层服务',
     menuItem: [
       {
-        menuItemName: '矢量与交互',
-        pages: [
-          {
-            name: '矢量图层',
-            image: '/examples/openlayers/cards/olVectorLayer.png',
-            type: 'html',
-            url: '/examples/openlayers/html/olVectorLayer.html',
-            statusHint:
-              '数据来自 openlayers.org/data/vector/ecoregions.json，悬停或点击可查看区域名称。'
-          },
-          {
-            name: '交互绘制',
-            image: '/examples/openlayers/cards/olDrawFeatures.png',
-            type: 'html',
-            url: '/examples/openlayers/html/olDrawFeatures.html',
-            statusHint: '基于官方 Draw Features 示例改造，绘制类型通过左侧 GUI 菜单切换。'
-          },
-          {
-            name: '点击弹窗',
-            image: '/examples/openlayers/cards/olPopup.png',
-            type: 'html',
-            url: '/examples/openlayers/html/olPopup.html',
-            statusHint: '基于官方 Popup 示例改造，点击地图显示 HDMS 坐标弹窗。'
-          }
-        ]
-      },
-      {
-        menuItemName: '图层加载',
+        menuItemName: '在线瓦片',
         pages: [
           {
             name: 'XYZ',
@@ -62,20 +35,6 @@ const olMenu = [
             type: 'html',
             url: '/examples/openlayers/html/olWebglTiles.html',
             statusHint: '基于官方 WebGL Tiles 示例改造，WebGLTile 渲染栅格瓦片。'
-          },
-          {
-            name: 'Tiled WMS',
-            image: '/examples/openlayers/cards/olTiledWms.png',
-            type: 'html',
-            url: '/examples/openlayers/html/olTiledWms.html',
-            statusHint: '基于官方 Tiled WMS 示例改造，叠加 GeoServer WMS 州界图层。'
-          },
-          {
-            name: 'WMTS',
-            image: '/examples/openlayers/cards/olWmts.png',
-            type: 'html',
-            url: '/examples/openlayers/html/olWmts.html',
-            statusHint: '基于官方 WMTS 示例改造，叠加 USGS 地质 WMTS 图层。'
           },
           {
             name: 'XYZ Esri',
@@ -101,7 +60,26 @@ const olMenu = [
         ]
       },
       {
-        menuItemName: 'Mapbox图层加载',
+        menuItemName: 'OGC 瓦片服务',
+        pages: [
+          {
+            name: 'Tiled WMS',
+            image: '/examples/openlayers/cards/olTiledWms.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olTiledWms.html',
+            statusHint: '基于官方 Tiled WMS 示例改造，叠加 GeoServer WMS 州界图层。'
+          },
+          {
+            name: 'WMTS',
+            image: '/examples/openlayers/cards/olWmts.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olWmts.html',
+            statusHint: '基于官方 WMTS 示例改造，叠加 USGS 地质 WMTS 图层。'
+          }
+        ]
+      },
+      {
+        menuItemName: 'Mapbox 矢量瓦片',
         pages: [
           {
             name: 'Mapbox Vector Tiles',
@@ -109,7 +87,7 @@ const olMenu = [
             type: 'html',
             url: '/examples/openlayers/html/olMapboxVectorTiles.html',
             statusHint:
-              '基于官方 Mapbox Vector Tiles 示例改造，需填写 Mapbox Access Token 后点击「加载地图」。'
+              '基于官方 Mapbox Vector Tiles 示例改造，已内置 Access Token，可在左侧 GUI 更换。'
           },
           {
             name: 'Advanced Mapbox Vector Tiles',
@@ -145,6 +123,169 @@ const olMenu = [
           }
         ]
       },
+      {
+        menuItemName: '辅助图层',
+        pages: [
+          {
+            name: '经纬网',
+            image: '/examples/openlayers/cards/olGraticule.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olGraticule.html',
+            statusHint: '基于官方 Graticule 示例改造，经纬间隔随缩放级别自动调整。'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    subMenu: '绘制与交互',
+    menuItem: [
+      {
+        menuItemName: '矢量绘制',
+        pages: [
+          {
+            name: '交互绘制',
+            image: '/examples/openlayers/cards/olDrawFeatures.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olDrawFeatures.html',
+            statusHint: '基于官方 Draw Features 示例改造，绘制类型通过左侧 GUI 菜单切换。'
+          },
+          {
+            name: '矢量图层',
+            image: '/examples/openlayers/cards/olVectorLayer.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olVectorLayer.html',
+            statusHint:
+              '数据来自 openlayers.org/data/vector/ecoregions.json，悬停或点击可查看区域名称。'
+          }
+        ]
+      },
+      {
+        menuItemName: '选择与编辑',
+        pages: [
+          {
+            name: '要素选择',
+            image: '/examples/openlayers/cards/olSelectFeatures.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olSelectFeatures.html',
+            statusHint: '基于官方 Select Features 示例改造，点击选择生态区域并高亮。'
+          },
+          {
+            name: '要素编辑',
+            image: '/examples/openlayers/cards/olModifyFeatures.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olModifyFeatures.html',
+            statusHint: '基于官方 Modify Features 示例改造，拖动顶点编辑，绘制时自动捕捉。'
+          }
+        ]
+      },
+      {
+        menuItemName: '信息弹窗',
+        pages: [
+          {
+            name: '点击弹窗',
+            image: '/examples/openlayers/cards/olPopup.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olPopup.html',
+            statusHint: '基于官方 Popup 示例改造，点击地图显示 HDMS 坐标弹窗。'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    subMenu: '量算与工具',
+    menuItem: [
+      {
+        menuItemName: '量算',
+        pages: [
+          {
+            name: '测量',
+            image: '/examples/openlayers/cards/olMeasure.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olMeasure.html',
+            statusHint: '基于官方 Measure 示例改造，测地线算法计算长度与面积，结果标注在图上。'
+          }
+        ]
+      },
+      {
+        menuItemName: '地图导出',
+        pages: [
+          {
+            name: '导出图片',
+            image: '/examples/openlayers/cards/olExportMap.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olExportMap.html',
+            statusHint:
+              '基于官方 Map Export 示例改造，简化为 PNG 导出；底图为 OSM（支持跨域画布）。'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    subMenu: '可视化特效',
+    menuItem: [
+      {
+        menuItemName: '数据可视化',
+        pages: [
+          {
+            name: '点聚合',
+            image: '/examples/openlayers/cards/olCluster.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olCluster.html',
+            statusHint: '基于官方 Clustered Features 示例改造，随机点按距离聚合并分级着色。'
+          },
+          {
+            name: '热力图',
+            image: '/examples/openlayers/cards/olHeatmap.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olHeatmap.html',
+            statusHint:
+              '基于官方 Earthquakes Heatmap 示例改造，2012 年全球 M5+ 地震 KML 数据。'
+          },
+          {
+            name: '卷帘对比',
+            image: '/examples/openlayers/cards/olLayerSwipe.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olLayerSwipe.html',
+            statusHint:
+              '基于官方 Layer Swipe 示例改造，高德路网图与卫星影像双底图对比。'
+          }
+        ]
+      },
+      {
+        menuItemName: '视图与轨迹动画',
+        pages: [
+          {
+            name: '视图动画',
+            image: '/examples/openlayers/cards/olViewAnimation.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olViewAnimation.html',
+            statusHint: '基于官方 View Animation 示例改造，平移/旋转/缩放/飞行/弹跳缓动动画。'
+          },
+          {
+            name: '航线飞行',
+            image: '/examples/openlayers/cards/olFlightAnimation.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olFlightAnimation.html',
+            statusHint:
+              '基于官方 Flight Animation 示例改造，OpenFlights 数据大圆弧航线逐帧绘制。'
+          },
+          {
+            name: '沿线移动标记',
+            image: '/examples/openlayers/cards/olFeatureMove.png',
+            type: 'html',
+            url: '/examples/openlayers/html/olFeatureMove.html',
+            statusHint: '基于官方 Marker Animation 示例改造，标记沿演示路线循环移动。'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    subMenu: '控件配置',
+    menuItem: [
       {
         menuItemName: '内置控件',
         pages: [

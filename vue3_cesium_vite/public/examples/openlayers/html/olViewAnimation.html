@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>视图动画</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import { easeIn, easeOut } from 'ol/easing.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer()],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: 3
+        })
+      })
+
+      const view = map.getView()
+
+      // 官方 bounce 缓动：多段抛物线模拟落地弹跳
+      function bounce(t) {
+        const s = 7.5625
+        const p = 2.75
+        let l
+        if (t < 1 / p) {
+          l = s * t * t
+        } else {
+          if (t < 2 / p) {
+            t -= 1.5 / p
+            l = s * t * t + 0.75
+          } else {
+            if (t < 2.5 / p) {
+              t -= 2.25 / p
+              l = s * t * t + 0.9375
+            } else {
+              t -= 2.625 / p
+              l = s * t * t + 0.984375
+            }
+          }
+        }
+        return l
+      }
+
+      function rotateLeft() {
+        view.animate({ rotation: view.getRotation() + Math.PI / 2, anchor: view.getCenter(), duration: 300, easing: easeOut })
+      }
+
+      function rotateRight() {
+        view.animate({ rotation: view.getRotation() - Math.PI / 2, anchor: view.getCenter(), duration: 300, easing: easeOut })
+      }
+
+      function rotateNorth() {
+        view.animate({ rotation: 0, anchor: view.getCenter(), duration: 300, easing: easeOut })
+      }
+
+      function panBy(fx, fy) {
+        const size = view.getSize()
+        const delta = view.getResolution()
+        const centerPoint = view.getCenter().slice()
+        centerPoint[0] += delta * fx * (size[0] / 4)
+        centerPoint[1] += delta * fy * (size[1] / 4)
+        view.animate({ center: centerPoint, duration: 300, easing: easeOut })
+      }
+
+      function flyTo(location) {
+        const duration = 2000
+        const zoom = view.getZoom()
+        view.animate({ center: location, duration: duration })
+        view.animate(
+          { zoom: zoom - 1, duration: duration / 2, easing: easeIn },
+          { zoom: zoom, duration: duration / 2, easing: easeOut }
+        )
+      }
+
+      function bounceTo(location) {
+        view.animate({ center: location, duration: 2000, easing: bounce })
+      }
+
+      ExampleGui.addToolbarButton('左旋 90°', rotateLeft)
+      ExampleGui.addToolbarButton('右旋 90°', rotateRight)
+      ExampleGui.addToolbarButton('转向正北', rotateNorth)
+      ExampleGui.addToolbarButton('上移', function () { panBy(0, 1) })
+      ExampleGui.addToolbarButton('下移', function () { panBy(0, -1) })
+      ExampleGui.addToolbarButton('左移', function () { panBy(-1, 0) })
+      ExampleGui.addToolbarButton('右移', function () { panBy(1, 0) })
+      ExampleGui.addToolbarButton('放大', function () { view.animate({ zoom: view.getZoom() + 1, duration: 300, easing: easeOut }) })
+      ExampleGui.addToolbarButton('缩小', function () { view.animate({ zoom: view.getZoom() - 1, duration: 300, easing: easeOut }) })
+
+      ExampleGui.addMenu([
+        { text: '回北京', onselect: function () { bounceTo(fromLonLat(DEFAULT_LON_LAT)) } },
+        { text: '飞往莫斯科', onselect: function () { flyTo(fromLonLat([37.62, 55.75])) } },
+        { text: '飞往伦敦', onselect: function () { flyTo(fromLonLat([-0.13, 51.51])) } },
+        { text: '弹跳到巴黎', onselect: function () { bounceTo(fromLonLat([2.35, 48.86])) } }
+      ])
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

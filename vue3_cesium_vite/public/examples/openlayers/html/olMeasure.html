@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>测量</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #status {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        z-index: 10;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font: 13px/1.6 sans-serif;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+    <div id="status">绘制中实时显示测量结果</div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Draw from 'ol/interaction/Draw.js'
+      import VectorLayer from 'ol/layer/Vector.js'
+      import VectorSource from 'ol/source/Vector.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import { getArea, getLength } from 'ol/sphere.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT,
+        DEFAULT_ZOOM
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      const source = new VectorSource({ wrapX: false })
+
+      const statusEl = document.getElementById('status')
+
+      const vector = new VectorLayer({
+        source: source,
+        style: {
+          'stroke-color': '#3fb1e3',
+          'stroke-width': 2,
+          'fill-color': 'rgba(63, 177, 227, 0.25)'
+        }
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), vector],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: DEFAULT_ZOOM
+        })
+      })
+
+      let draw = null
+      let measureType = 'length'
+
+      function formatLength(geometry) {
+        const meters = getLength(geometry)
+        return meters > 1000 ? (meters / 1000).toFixed(2) + ' km' : meters.toFixed(1) + ' m'
+      }
+
+      function formatArea(geometry) {
+        const squareMeters = getArea(geometry)
+        return squareMeters > 1e6
+          ? (squareMeters / 1e6).toFixed(2) + ' km²'
+          : squareMeters.toFixed(0) + ' m²'
+      }
+
+      function measureText(geometry) {
+        return measureType === 'length' ? formatLength(geometry) : formatArea(geometry)
+      }
+
+      function removeDrawInteraction() {
+        if (draw) {
+          map.removeInteraction(draw)
+          draw = null
+        }
+      }
+
+      function addDrawInteraction() {
+        removeDrawInteraction()
+        draw = new Draw({
+          source: source,
+          type: measureType === 'length' ? 'LineString' : 'Polygon'
+        })
+
+        draw.on('drawstart', function (e) {
+          e.feature.getGeometry().on('change', function (evt) {
+            statusEl.textContent =
+              (measureType === 'length' ? '当前长度：' : '当前面积：') + measureText(evt.target)
+          })
+        })
+
+        draw.on('drawend', function (e) {
+          const text = measureText(e.feature.getGeometry())
+          e.feature.setStyle({
+            'stroke-color': '#3fb1e3',
+            'stroke-width': 2,
+            'fill-color': 'rgba(63, 177, 227, 0.25)',
+            'text-value': text,
+            'text-font': 'bold 14px sans-serif',
+            'text-fill-color': '#fff',
+            'text-stroke-color': '#000',
+            'text-stroke-width': 3,
+            'text-offset-y': -16
+          })
+          statusEl.textContent = '上次测量：' + text
+        })
+
+        map.addInteraction(draw)
+      }
+
+      ExampleGui.addMenu([
+        {
+          text: '测长度',
+          onselect: function () {
+            measureType = 'length'
+            addDrawInteraction()
+          }
+        },
+        {
+          text: '测面积',
+          onselect: function () {
+            measureType = 'area'
+            addDrawInteraction()
+          }
+        },
+        {
+          text: '停止绘制',
+          onselect: removeDrawInteraction
+        }
+      ])
+
+      ExampleGui.addToolbarButton('清除全部', function () {
+        source.clear()
+        statusEl.textContent = '绘制中实时显示测量结果'
+      })
+
+      addDrawInteraction()
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

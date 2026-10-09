@@ -12,16 +12,19 @@ export { GAODE_IMAGERY_MAX_ZOOM }
 /** 高德影像版权信息 */
 export const GAODE_ATTRIBUTION = '© 高德地图'
 
-/** 创建高德在线影像底图图层（EPSG:3857，OpenLayers 10 直接使用 URL 模板） */
-export function createGaodeImageryLayer() {
+/**
+ * 创建高德在线底图图层（EPSG:3857，OpenLayers 10 直接使用 URL 模板）
+ * @param {6|7|8} style 6=卫星影像，7=路网图，8=路网+注记
+ */
+export function createGaodeImageryLayer(style = 6) {
   return new TileLayer({
     source: new XYZ({
-      url: GAODE_IMAGERY_URL,
+      url: `https://webst0{1-4}.is.autonavi.com/appmaptile?style=${style}&x={x}&y={y}&z={z}`,
       maxZoom: GAODE_IMAGERY_MAX_ZOOM,
       crossOrigin: 'anonymous'
     }),
     properties: {
-      name: 'gaode-imagery'
+      name: `gaode-style-${style}`
     }
   })
 }

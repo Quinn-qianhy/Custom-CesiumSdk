@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>沿线移动标记</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Feature from 'ol/Feature.js'
+      import LineString from 'ol/geom/LineString.js'
+      import Point from 'ol/geom/Point.js'
+      import VectorLayer from 'ol/layer/Vector.js'
+      import VectorSource from 'ol/source/Vector.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      // 演示路线：北京长安街一带
+      const routeCoords = [
+        [116.391, 39.907],
+        [116.42, 39.907],
+        [116.43, 39.916],
+        [116.445, 39.916],
+        [116.452, 39.928]
+      ].map(function (item) {
+        return fromLonLat(item)
+      })
+
+      const route = new LineString(routeCoords)
+
+      const routeLayer = new VectorLayer({
+        source: new VectorSource({
+          features: [new Feature(route)]
+        }),
+        style: {
+          'stroke-color': '#3fb1e3',
+          'stroke-width': 4,
+          'stroke-dash': [10, 8]
+        }
+      })
+
+      const markerGeom = new Point(route.getFirstCoordinate())
+      const markerFeature = new Feature(markerGeom)
+
+      const markerLayer = new VectorLayer({
+        source: new VectorSource({ features: [markerFeature] }),
+        style: {
+          'circle-radius': 9,
+          'circle-fill-color': '#e74c3c',
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 3
+        }
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), routeLayer, markerLayer],
+        target: 'map',
+        view: new View({
+          center: fromLonLat([116.422, 39.917]),
+          zoom: 13
+        })
+      })
+
+      // 一轮动画时长（毫秒），由速度滑块控制
+      let duration = 12000
+      let startTime = Date.now()
+
+      markerLayer.on('postrender', function () {
+        const progress = ((Date.now() - startTime) % duration) / duration
+        markerGeom.setCoordinates(route.getCoordinateAt(progress))
+      })
+
+      ExampleGui.addSlider(
+        '单轮时长(秒)',
+        12,
+        3,
+        30,
+        1,
+        function (value) {
+          duration = value * 1000
+        }
+      )
+
+      ExampleGui.addToolbarButton('重新开始', function () {
+        startTime = Date.now()
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

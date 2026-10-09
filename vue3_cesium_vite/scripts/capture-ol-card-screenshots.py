@@ -35,11 +35,22 @@ EXAMPLES = [
     {"name": "olXyzEsri", "path": "/examples/openlayers/html/olXyzEsri.html", "interact": None},
     {"name": "olCanvasTiles", "path": "/examples/openlayers/html/olCanvasTiles.html", "interact": None},
     {"name": "olTileLoadEvents", "path": "/examples/openlayers/html/olTileLoadEvents.html", "interact": None},
-    {"name": "olMapboxVectorTiles", "path": "/examples/openlayers/html/olMapboxVectorTiles.html", "interact": None, "wait_selector": "#map"},
-    {"name": "olMapboxVectorTilesAdvanced", "path": "/examples/openlayers/html/olMapboxVectorTilesAdvanced.html", "interact": None, "wait_selector": "#map"},
-    {"name": "olMapboxVectorLayer", "path": "/examples/openlayers/html/olMapboxVectorLayer.html", "interact": None, "wait_selector": "#map"},
-    {"name": "olMapboxStyle", "path": "/examples/openlayers/html/olMapboxStyle.html", "interact": None, "wait_selector": "#map"},
-    {"name": "olMapboxLayer", "path": "/examples/openlayers/html/olMapboxLayer.html", "interact": None, "wait_selector": "#map"},
+    {"name": "olMapboxVectorTiles", "path": "/examples/openlayers/html/olMapboxVectorTiles.html", "interact": None},
+    {"name": "olMapboxVectorTilesAdvanced", "path": "/examples/openlayers/html/olMapboxVectorTilesAdvanced.html", "interact": None},
+    {"name": "olMapboxVectorLayer", "path": "/examples/openlayers/html/olMapboxVectorLayer.html", "interact": None},
+    {"name": "olMapboxStyle", "path": "/examples/openlayers/html/olMapboxStyle.html", "interact": None},
+    {"name": "olMapboxLayer", "path": "/examples/openlayers/html/olMapboxLayer.html", "interact": None},
+    {"name": "olMeasure", "path": "/examples/openlayers/html/olMeasure.html", "interact": "draw_polygon"},
+    {"name": "olSelectFeatures", "path": "/examples/openlayers/html/olSelectFeatures.html", "interact": "click_map"},
+    {"name": "olModifyFeatures", "path": "/examples/openlayers/html/olModifyFeatures.html", "interact": None},
+    {"name": "olCluster", "path": "/examples/openlayers/html/olCluster.html", "interact": None},
+    {"name": "olHeatmap", "path": "/examples/openlayers/html/olHeatmap.html", "interact": None},
+    {"name": "olLayerSwipe", "path": "/examples/openlayers/html/olLayerSwipe.html", "interact": None},
+    {"name": "olViewAnimation", "path": "/examples/openlayers/html/olViewAnimation.html", "interact": None},
+    {"name": "olFlightAnimation", "path": "/examples/openlayers/html/olFlightAnimation.html", "interact": None, "extra_wait": 8000},
+    {"name": "olFeatureMove", "path": "/examples/openlayers/html/olFeatureMove.html", "interact": None},
+    {"name": "olExportMap", "path": "/examples/openlayers/html/olExportMap.html", "interact": None},
+    {"name": "olGraticule", "path": "/examples/openlayers/html/olGraticule.html", "interact": None},
 ]
 
 
@@ -85,7 +96,7 @@ async def capture_example(page, example: dict, tmp_dir: Path, base_url: str) -> 
     await page.goto(url, wait_until="networkidle")
     wait_selector = example.get("wait_selector", "#map canvas")
     await page.wait_for_selector(wait_selector, timeout=30000)
-    await page.wait_for_timeout(2000)
+    await page.wait_for_timeout(example.get("extra_wait", 2000))
 
     await interact(page, example.get("interact"))
 
@@ -100,6 +111,7 @@ async def capture_example(page, example: dict, tmp_dir: Path, base_url: str) -> 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="截取 OpenLayers 示例缩略图")
     parser.add_argument("--name", help="仅截取指定示例（如 olPopup）")
+    parser.add_argument("--names", help="逗号分隔的多个示例名（如 olPopup,olXyz）")
     parser.add_argument("--base-url", default=BASE_URL, help=f"开发服务器地址，默认 {BASE_URL}")
     return parser.parse_args()
 
@@ -109,9 +121,12 @@ async def main() -> None:
     targets = EXAMPLES
     if args.name:
         targets = [e for e in EXAMPLES if e["name"] == args.name]
-        if not targets:
-            names = ", ".join(e["name"] for e in EXAMPLES)
-            raise SystemExit(f"未找到示例 {args.name!r}，可选: {names}")
+    elif args.names:
+        wanted = set(args.names.split(","))
+        targets = [e for e in EXAMPLES if e["name"] in wanted]
+    if not targets:
+        names = ", ".join(e["name"] for e in EXAMPLES)
+        raise SystemExit(f"未匹配到示例，可选: {names}")
 
     CARDS_DIR.mkdir(parents=True, exist_ok=True)
     tmp_dir = CARDS_DIR / ".tmp"

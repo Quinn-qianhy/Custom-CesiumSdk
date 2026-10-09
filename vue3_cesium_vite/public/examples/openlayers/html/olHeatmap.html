@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>热力图</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import KML from 'ol/format/KML.js'
+      import HeatmapLayer from 'ol/layer/Heatmap.js'
+      import VectorSource from 'ol/source/Vector.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      // 2012 年全球 M5+ 地震数据（openlayers.org 官方 CDN）
+      const vector = new HeatmapLayer({
+        source: new VectorSource({
+          url: 'https://openlayers.org/en/latest/examples/data/kml/2012_Earthquakes_Mag5.kml',
+          format: new KML()
+        }),
+        blur: 30,
+        radius: 8,
+        weight: function (feature) {
+          const magnitude = parseFloat(feature.get('magnitude'))
+          if (Number.isNaN(magnitude)) {
+            return 0.5
+          }
+          return Math.min(1, Math.max(0, (magnitude - 4.5) / 3))
+        }
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), vector],
+        target: 'map',
+        view: new View({
+          center: fromLonLat([150, 15]),
+          zoom: 2.5
+        })
+      })
+
+      ExampleGui.addSlider(
+        '模糊度',
+        30,
+        0,
+        50,
+        1,
+        function (value) {
+          vector.setBlur(value)
+        }
+      )
+
+      ExampleGui.addSlider(
+        '半径',
+        8,
+        1,
+        30,
+        1,
+        function (value) {
+          vector.setRadius(value)
+        }
+      )
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

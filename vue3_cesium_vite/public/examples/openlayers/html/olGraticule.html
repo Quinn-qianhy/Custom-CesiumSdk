@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>经纬网</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "ol/": "https://esm.sh/ol@10.9.0/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="dark">
+    <div id="map"></div>
+
+    <script type="module">
+      import Map from 'ol/Map.js'
+      import View from 'ol/View.js'
+      import Graticule from 'ol/layer/Graticule.js'
+      import Stroke from 'ol/style/Stroke.js'
+      import { fromLonLat } from 'ol/proj.js'
+      import {
+        createGaodeImageryLayer,
+        DEFAULT_LON_LAT
+      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+
+      // 经纬网间隔随缩放级别自动调整，showLabels 在边缘标注度数
+      const graticule = new Graticule({
+        strokeStyle: new Stroke({
+          color: 'rgba(255, 255, 255, 0.85)',
+          width: 1.2,
+          lineDash: [6, 8]
+        }),
+        showLabels: true,
+        wrapX: false
+      })
+
+      const map = new Map({
+        layers: [createGaodeImageryLayer(), graticule],
+        target: 'map',
+        view: new View({
+          center: fromLonLat(DEFAULT_LON_LAT),
+          zoom: 4
+        })
+      })
+
+      ExampleGui.addToolbarButton('显示 / 隐藏', function () {
+        graticule.setVisible(!graticule.getVisible())
+      })
+
+      ExampleGui.finishedLoading()
+    </script>
+  </body>
+</html>

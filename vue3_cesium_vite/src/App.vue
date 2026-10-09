@@ -1,3 +1,11 @@
+<!--
+ * @Author: qianhy
+ * @Date: 2026-06-23 08:54:26
+ * @LastEditTime: 2026-07-13 16:40:00
+ * @LastEditors: qianhy
+ * @Description: 文件修改
+ * @FilePath: \trae-cesium-demo\vue3_cesium_vite\src\App.vue
+-->
 <template>
   <div id="app-root" :class="themeClass">
     <ErrorBoundary>
@@ -7,10 +15,7 @@
         </transition>
       </router-view>
     </ErrorBoundary>
-    <GlobalLoading
-      :visible="globalLoading"
-      :message="loadingMessage"
-    />
+    <GlobalLoading :visible="globalLoading" :message="loadingMessage" />
   </div>
 </template>
 
