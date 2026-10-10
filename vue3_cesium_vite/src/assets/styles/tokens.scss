@@ -6,6 +6,10 @@
 .dark-theme {
   color-scheme: dark;
 
+  --font-sans: 'Space Grotesk Variable', 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans',
+    'Microsoft YaHei UI', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  --el-font-family: var(--font-sans);
+
   --tech-primary: #409eff;
   --tech-primary-light: #66b1ff;
   --tech-primary-dark: #2c5364;
@@ -14,11 +18,13 @@
   --glass-bg-light: rgba(26, 44, 68, 0.7);
   --glass-border: rgba(64, 158, 255, 0.3);
   --glass-blur: blur(10px);
+  --hairline: rgba(255, 255, 255, 0.08);
   --content-bg: rgba(15, 25, 40, 0.5);
   --sidebar-width: 13.75rem;
   --sidebar-collapsed-width: 3.75rem;
   --header-height: 60px;
-  --nav-bg: rgba(12, 22, 38, 0.96);
+  --nav-bg: rgba(12, 22, 38, 0.72);
+  --nav-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 32px rgba(0, 0, 0, 0.28);
   --footer-height: 50px;
   --example-header-height: 40px;
   --panel-min-width: 280px;
@@ -30,11 +36,13 @@
   --shadow-glow: 0 0 10px rgba(64, 158, 255, 0.5);
   --scrollbar-thumb: linear-gradient(180deg, #409eff, #2c5364);
   --scrollbar-track: rgba(15, 25, 40, 0.3);
-  --card-radius: 15px;
+  --card-radius: 20px;
+  --card-shell-bg: rgba(255, 255, 255, 0.04);
   --card-hover-bg: rgba(32, 58, 67, 0.9);
   --card-hover-text: #ffffff;
-  --card-shadow: 0 0 15px rgba(0, 120, 255, 0.1);
-  --card-hover-shadow: 0 0 20px rgba(64, 158, 255, 0.5);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 8px 24px rgba(0, 0, 0, 0.28);
+  --card-hover-shadow: 0 2px 4px rgba(0, 0, 0, 0.24), 0 16px 40px rgba(64, 158, 255, 0.16);
+  --inset-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.06);
   --sidebar-text: #d0d7e2;
   --sidebar-text-muted: #8b95a8;
   --sidebar-bg: rgba(12, 22, 38, 0.92);
@@ -43,8 +51,9 @@
   --sidebar-item-active: rgba(64, 158, 255, 0.22);
   --sidebar-input-bg: rgba(8, 16, 28, 0.65);
   --sidebar-icon-size: 18px;
-  --transition-base: 0.2s ease;
-  --divider-glow: 0 0 10px rgba(64, 158, 255, 0.7);
+  --transition-base: 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  --transition-spring: 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --reveal-curve: 0.7s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .light-theme {
@@ -54,8 +63,10 @@
   --glass-bg: rgba(255, 255, 255, 0.92);
   --glass-bg-light: rgba(255, 255, 255, 0.96);
   --glass-border: rgba(64, 158, 255, 0.22);
+  --hairline: rgba(15, 23, 42, 0.08);
   --content-bg: rgba(240, 245, 250, 0.85);
-  --nav-bg: rgba(255, 255, 255, 0.98);
+  --nav-bg: rgba(255, 255, 255, 0.72);
+  --nav-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 32px rgba(15, 23, 42, 0.1);
   --text-primary: #0f172a;
   --text-accent: #2563eb;
   --text-inverse: #0f172a;
@@ -63,10 +74,12 @@
   --shadow-glow: 0 0 10px rgba(37, 99, 235, 0.15);
   --scrollbar-thumb: linear-gradient(180deg, #60a5fa, #93c5fd);
   --scrollbar-track: rgba(226, 232, 240, 0.8);
+  --card-shell-bg: rgba(255, 255, 255, 0.55);
   --card-hover-bg: rgba(255, 255, 255, 1);
   --card-hover-text: #0f172a;
-  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
-  --card-hover-shadow: 0 8px 24px rgba(37, 99, 235, 0.18);
+  --card-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
+  --card-hover-shadow: 0 2px 4px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(37, 99, 235, 0.14);
+  --inset-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.9);
   --sidebar-bg: rgba(255, 255, 255, 0.96);
   --sidebar-header-bg: rgba(248, 250, 252, 0.98);
   --sidebar-item-hover: rgba(37, 99, 235, 0.08);
@@ -74,12 +87,11 @@
   --sidebar-input-bg: rgba(241, 245, 249, 0.95);
   --sidebar-text: #0f172a;
   --sidebar-text-muted: #475569;
-  --divider-glow: none;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .fade-enter-from,
