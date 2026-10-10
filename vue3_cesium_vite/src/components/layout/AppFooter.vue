@@ -40,8 +40,8 @@ const currentYear = computed(() => new Date().getFullYear())
   padding: 0 16px;
   font-size: 12px;
   color: var(--text-muted);
-  background: var(--glass-bg);
-  border-top: 1px solid var(--glass-border);
+  background: transparent;
+  box-shadow: inset 0 1px 0 var(--hairline);
 
   &__content {
     display: flex;
@@ -59,7 +59,8 @@ const currentYear = computed(() => new Date().getFullYear())
   }
 
   &__version {
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-sans);
+    letter-spacing: 0.04em;
   }
 
   &__sep {

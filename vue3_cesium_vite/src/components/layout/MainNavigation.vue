@@ -3,7 +3,7 @@
     <div class="main-navigation__start">
       <button type="button" class="main-navigation__brand" @click="goHome">
         <el-icon class="main-navigation__logo" aria-hidden="true">
-          <MapLocation />
+          <PhGlobeHemisphereWest weight="light" />
         </el-icon>
         <span class="main-navigation__title">{{ site.brandShort }}</span>
       </button>
@@ -56,7 +56,7 @@
           title="API 文档"
           @click="goToAPIPage"
         >
-          <el-icon aria-hidden="true"><Document /></el-icon>
+          <el-icon aria-hidden="true"><PhBookOpen weight="light" /></el-icon>
           <span>API 文档</span>
         </button>
         <button
@@ -65,7 +65,7 @@
           title="友情链接"
           @click="goToLinksPage"
         >
-          <el-icon aria-hidden="true"><Link /></el-icon>
+          <el-icon aria-hidden="true"><PhLinkSimple weight="light" /></el-icon>
           <span>友情链接</span>
         </button>
         <button
@@ -75,8 +75,8 @@
           @click="toggleTheme"
         >
           <el-icon aria-hidden="true">
-            <Moon v-if="isDarkMode" />
-            <Sunny v-else />
+            <PhMoon v-if="isDarkMode" weight="light" />
+            <PhSun v-else weight="light" />
           </el-icon>
           <span>{{ isDarkMode ? '亮色' : '暗色' }}</span>
         </button>
@@ -89,7 +89,13 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { Document, Link, Moon, Sunny, MapLocation } from '@element-plus/icons-vue'
+import {
+  PhGlobeHemisphereWest,
+  PhBookOpen,
+  PhLinkSimple,
+  PhMoon,
+  PhSun
+} from '@phosphor-icons/vue'
 import site from '@/config/site'
 import { useAppStore } from '@/stores/appStore'
 import { useEngineStore } from '@/stores/engineStore'

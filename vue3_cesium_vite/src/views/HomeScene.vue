@@ -1,7 +1,7 @@
 <template>
   <div class="home-scene">
     <el-main ref="examplesListPanel" class="home-scene__content">
-      <div v-if="stats.total" class="home-scene__stats">
+      <div v-if="stats.total" v-reveal class="home-scene__stats">
         <span class="home-scene__stats-item">
           共 <strong>{{ stats.total }}</strong> 个示例
         </span>
@@ -36,55 +36,56 @@
             {{ _item.menuItemName }}
           </el-divider>
           <div class="home-scene__card-grid">
-            <el-card
-              :body-style="{ padding: '0px' }"
-              shadow="hover"
+            <div
               v-for="entry in _item.pages"
               :key="entry.page.name"
-              class="home-scene__card glow-effect"
-              :class="{ 'home-scene__card--pending': entry.statusMeta?.isPending }"
+              v-reveal
+              class="home-scene__card-shell"
+              :class="{ 'home-scene__card-shell--pending': entry.statusMeta?.isPending }"
               tabindex="0"
               role="button"
               @click="openPage(entry.page)"
               @keydown.enter="openPage(entry.page)"
             >
-              <div class="home-scene__card-media">
-                <img
-                  :src="resolveExampleImageUrl(entry.page.image)"
-                  class="home-scene__card-image"
-                  :alt="entry.page.name"
-                  loading="lazy"
-                />
-                <div v-if="entry.statusMeta" class="home-scene__card-badges">
-                  <el-tooltip
-                    v-if="entry.statusMeta.isPending"
-                    :content="entry.statusMeta.reason"
-                    placement="top"
-                  >
-                    <el-tag size="small" type="warning" effect="dark">待修复</el-tag>
-                  </el-tooltip>
-                  <el-tag
-                    v-for="label in entry.statusMeta.labels"
-                    :key="label"
-                    size="small"
-                    :type="getStatusTagType(label)"
-                    effect="plain"
-                  >
-                    {{ label }}
-                  </el-tag>
-                  <el-tooltip
-                    v-if="entry.statusMeta.hasHint"
-                    :content="entry.statusMeta.hint || '查看示例使用说明'"
-                    placement="top"
-                  >
-                    <el-tag size="small" type="success" effect="dark">示例说明</el-tag>
-                  </el-tooltip>
+              <el-card class="home-scene__card" :body-style="{ padding: '0px' }" shadow="never">
+                <div class="home-scene__card-media">
+                  <img
+                    :src="resolveExampleImageUrl(entry.page.image)"
+                    class="home-scene__card-image"
+                    :alt="entry.page.name"
+                    loading="lazy"
+                  />
+                  <div v-if="entry.statusMeta" class="home-scene__card-badges">
+                    <el-tooltip
+                      v-if="entry.statusMeta.isPending"
+                      :content="entry.statusMeta.reason"
+                      placement="top"
+                    >
+                      <el-tag size="small" type="warning" effect="dark">待修复</el-tag>
+                    </el-tooltip>
+                    <el-tag
+                      v-for="label in entry.statusMeta.labels"
+                      :key="label"
+                      size="small"
+                      :type="getStatusTagType(label)"
+                      effect="plain"
+                    >
+                      {{ label }}
+                    </el-tag>
+                    <el-tooltip
+                      v-if="entry.statusMeta.hasHint"
+                      :content="entry.statusMeta.hint || '查看示例使用说明'"
+                      placement="top"
+                    >
+                      <el-tag size="small" type="success" effect="dark">示例说明</el-tag>
+                    </el-tooltip>
+                  </div>
                 </div>
-              </div>
-              <div class="home-scene__card-name">
-                <span>{{ entry.page.name }}</span>
-              </div>
-            </el-card>
+                <div class="home-scene__card-name">
+                  <span>{{ entry.page.name }}</span>
+                </div>
+              </el-card>
+            </div>
           </div>
         </div>
       </section>
@@ -93,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useEngineStore } from '@/stores/engineStore'
@@ -140,6 +141,41 @@ const menuWithMeta = computed<MenuSectionWithMeta[]>(() =>
 )
 
 const stats = computed(() => countExampleStats(menuData.value))
+
+let revealObserver: IntersectionObserver | null = null
+
+// 元素进入视口后做带 stagger 延迟的 fade-up 揭示
+const vReveal: Directive<HTMLElement> = {
+  mounted(el) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+    revealObserver ??= new IntersectionObserver(
+      (entries, observer) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) {
+            continue
+          }
+          const target = entry.target as HTMLElement
+          const siblings = target.parentElement ? Array.from(target.parentElement.children) : []
+          const index = siblings.indexOf(target)
+          target.style.transitionDelay = `${Math.min(index, 7) * 60}ms`
+          target.classList.remove('reveal-pending')
+          observer.unobserve(target)
+          window.setTimeout(() => {
+            target.style.transitionDelay = ''
+          }, 1200)
+        }
+      },
+      { threshold: 0.15 }
+    )
+    el.classList.add('reveal-pending')
+    revealObserver.observe(el)
+  },
+  unmounted(el) {
+    revealObserver?.unobserve(el)
+  }
+}
 
 const buildHtmlQuery = (page: ExamplePage) => {
   const query: Record<string, string> = { title: page.name }

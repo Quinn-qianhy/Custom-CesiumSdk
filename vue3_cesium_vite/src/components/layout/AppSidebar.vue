@@ -4,7 +4,7 @@
       <div class="app-sidebar__brand">
         <div class="app-sidebar__logo" aria-hidden="true">
           <el-icon>
-            <MapLocation />
+            <PhGlobeHemisphereWest weight="light" />
           </el-icon>
         </div>
         <div v-show="!isSidebarCollapsed" class="app-sidebar__title">
@@ -20,8 +20,8 @@
         @click="toggleSidebar"
       >
         <el-icon>
-          <ArrowRight v-if="isSidebarCollapsed" />
-          <ArrowLeft v-else />
+          <PhCaretDoubleRight v-if="isSidebarCollapsed" weight="light" />
+          <PhCaretDoubleLeft v-else weight="light" />
         </el-icon>
       </button>
     </header>
@@ -37,7 +37,7 @@
         >
           <template #prefix>
             <el-icon>
-              <Search />
+              <PhMagnifyingGlass weight="light" />
             </el-icon>
           </template>
         </el-input>
@@ -61,6 +61,7 @@
               <component
                 :is="data.icon"
                 v-if="data.icon && node.level === 1"
+                weight="light"
                 class="app-sidebar__node-icon"
               />
               <span
@@ -86,20 +87,20 @@ import { ref, computed, nextTick, markRaw } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useEngineStore } from '@/stores/engineStore'
 import {
-  ArrowLeft,
-  ArrowRight,
-  Search,
-  MapLocation,
-  Location,
-  Edit,
-  Setting,
-  MagicStick,
-  Pointer,
-  DataAnalysis,
-  TrendCharts,
-  Grid,
-  Files
-} from '@element-plus/icons-vue'
+  PhCaretDoubleLeft,
+  PhCaretDoubleRight,
+  PhMagnifyingGlass,
+  PhGlobeHemisphereWest,
+  PhCrosshair,
+  PhSquaresFour,
+  PhCursor,
+  PhPencilSimpleLine,
+  PhGearSix,
+  PhMagicWand,
+  PhChartBar,
+  PhChartLine,
+  PhFiles
+} from '@phosphor-icons/vue'
 
 const emit = defineEmits(['navigate'])
 
@@ -111,23 +112,23 @@ const treeRef = ref<InstanceType<(typeof import('element-plus'))['ElTree']> | nu
 const searchKeyword = ref('')
 
 const iconMap: Record<string, ReturnType<typeof markRaw>> = {
-  场景控制: markRaw(Location),
-  地图与地形服务: markRaw(Grid),
-  图层加载: markRaw(Grid),
-  交互控制: markRaw(Pointer),
-  绘制与加载: markRaw(Edit),
-  图形绘制: markRaw(Edit),
-  控件配置: markRaw(Setting),
-  材质Material: markRaw(MagicStick),
-  可视化特效: markRaw(DataAnalysis),
-  量算与分析: markRaw(TrendCharts),
-  空间分析: markRaw(TrendCharts),
-  矢量数据: markRaw(Files),
-  三维模型: markRaw(Grid),
-  'Vue 组件示例': markRaw(MagicStick),
-  矢量图形绘制: markRaw(Edit),
-  控件: markRaw(Setting),
-  默认: markRaw(Files)
+  场景控制: markRaw(PhCrosshair),
+  地图与地形服务: markRaw(PhSquaresFour),
+  图层加载: markRaw(PhSquaresFour),
+  交互控制: markRaw(PhCursor),
+  绘制与加载: markRaw(PhPencilSimpleLine),
+  图形绘制: markRaw(PhPencilSimpleLine),
+  控件配置: markRaw(PhGearSix),
+  材质Material: markRaw(PhMagicWand),
+  可视化特效: markRaw(PhChartBar),
+  量算与分析: markRaw(PhChartLine),
+  空间分析: markRaw(PhChartLine),
+  矢量数据: markRaw(PhFiles),
+  三维模型: markRaw(PhSquaresFour),
+  'Vue 组件示例': markRaw(PhMagicWand),
+  矢量图形绘制: markRaw(PhPencilSimpleLine),
+  控件: markRaw(PhGearSix),
+  默认: markRaw(PhFiles)
 }
 
 const treeData = computed(() =>
