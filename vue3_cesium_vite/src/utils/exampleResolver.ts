@@ -33,7 +33,7 @@ export function resolveExampleType(page: Pick<ExamplePage, 'type' | 'url'>): Exa
     return 'external'
   }
 
-  if (url.endsWith('.html') || url.startsWith('/static/examples') || url.startsWith('/examples/')) {
+  if (url.endsWith('.html') || url.startsWith('/examples/')) {
     return 'html'
   }
 
@@ -42,17 +42,7 @@ export function resolveExampleType(page: Pick<ExamplePage, 'type' | 'url'>): Exa
 
 /** 将菜单 url 规范化为 public 下的 HTML 路径（不含 leading slash） */
 export function normalizeHtmlExamplePath(url: string): string {
-  let path = url
-
-  if (path.startsWith('/static/examples/')) {
-    path = path.replace('/static/examples/', '/examples/')
-  }
-
-  if (path.startsWith('/')) {
-    path = path.slice(1)
-  }
-
-  return path
+  return url.startsWith('/') ? url.slice(1) : url
 }
 
 /** 从菜单 url 或路由参数解析 HTML 相对路径（保留引擎子目录，如 cesium/html/viewer.html） */

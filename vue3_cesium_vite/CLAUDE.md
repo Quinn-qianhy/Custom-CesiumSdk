@@ -64,4 +64,4 @@ const { onMounted, GUI, getViewer, useExamplesStore } = useCommonImports()
 - **HTML 示例目录**：按引擎分目录 — `public/examples/cesium/`、`public/examples/openlayers/`、`public/examples/shared/`
 - **HTML 示例工具栏**：嵌入宿主时由父页面 `htmlExampleGuiBridge` 代理创建 `lil-gui`（避免 iframe window 与父页面 DOM 错位）；独立打开 HTML 时仍用页面内 `example-gui.js`
 - **DrawTool**：`entityPoint.vue` 使用静态方法 `DrawTool.startDraw / stopDrawing`
-- **菜单占位**：部分 url 仍指向 `globe-for-webgl` 静态 HTML；Vue 示例的 `url` 即 componentId（见 `CONTEXT.md`）
+- **菜单 url**：HTML 示例的 `url` 指向 `/examples/<engine>/html/*.html` 静态文件；Vue 示例的 `url` 即 componentId（见 `CONTEXT.md`）
