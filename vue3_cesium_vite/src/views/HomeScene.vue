@@ -8,13 +8,17 @@
         <span class="home-scene__stats-item home-scene__stats-item--ok">
           可直接体验 <strong>{{ stats.ok }}</strong>
         </span>
-        <span class="home-scene__stats-item home-scene__stats-item--pending">
-          待修复 <strong>{{ stats.pending }}</strong>
-        </span>
-        <el-tag size="small" type="warning" effect="plain"
-          >需服务器数据 {{ stats.serverData }}</el-tag
-        >
-        <el-tag size="small" type="danger" effect="plain">Cesium API {{ stats.cesiumApi }}</el-tag>
+        <el-tooltip placement="bottom">
+          <template #content>
+            <div>待修复：{{ stats.pending }}</div>
+            <div>需服务器数据：{{ stats.serverData }}</div>
+            <div>依赖 Cesium API：{{ stats.cesiumApi }}</div>
+          </template>
+          <span class="home-scene__stats-more">
+            <el-icon aria-hidden="true"><PhInfo weight="light" /></el-icon>
+            维护状态
+          </span>
+        </el-tooltip>
       </div>
 
       <section v-for="(item, index) in menuWithMeta" :key="index" class="home-scene__section">
@@ -97,6 +101,7 @@
 import { computed, type Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import { PhInfo } from '@phosphor-icons/vue'
 import { useEngineStore } from '@/stores/engineStore'
 import {
   resolveComponentId,
@@ -132,10 +137,13 @@ const menuWithMeta = computed<MenuSectionWithMeta[]>(() =>
     subMenu: section.subMenu,
     menuItem: section.menuItem.map((group) => ({
       menuItemName: group.menuItemName,
-      pages: group.pages.map((page) => ({
-        page,
-        statusMeta: getPageStatusMeta(page)
-      }))
+      // 待修复示例排到组末，避免占位卡打断可用示例的浏览动线
+      pages: group.pages
+        .map((page) => ({ page, statusMeta: getPageStatusMeta(page) }))
+        .sort(
+          (a, b) =>
+            Number(a.statusMeta?.isPending ?? false) - Number(b.statusMeta?.isPending ?? false)
+        )
     }))
   }))
 )

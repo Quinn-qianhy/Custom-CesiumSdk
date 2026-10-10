@@ -34,23 +34,24 @@
 
   &__divider {
     border-color: var(--hairline);
-    margin: 24px 0 16px;
+    margin: 20px 0 12px;
 
     :deep(.el-divider__text) {
-      font-weight: 700;
-      color: var(--text-accent);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-muted);
       background: var(--content-bg);
     }
   }
 
   &__divider--category {
     :deep(.el-divider__text) {
-      height: 22px;
+      height: 24px;
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.02em;
-      color: var(--text-accent);
-      line-height: 22px;
+      color: var(--text-primary);
+      line-height: 24px;
       background: none;
     }
   }
@@ -84,14 +85,29 @@
     &--ok strong {
       color: #67c23a;
     }
+  }
 
-    &--pending strong {
-      color: #e6a23c;
+  &__stats-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    color: var(--text-muted);
+    cursor: help;
+    transition: color var(--transition-base);
+
+    &:hover {
+      color: var(--text-accent);
+    }
+
+    .el-icon {
+      font-size: 14px;
     }
   }
 
   /* 外壳：金属托盘质感，负责抬升与阴影 */
   &__card-shell {
+    height: 100%;
     padding: 5px;
     border-radius: calc(var(--card-radius) + 5px);
     background: var(--card-shell-bg);
@@ -109,7 +125,7 @@
 
       .home-scene__card {
         background: var(--card-hover-bg);
-        border-color: rgba(64, 158, 255, 0.4);
+        border-color: rgba(34, 211, 238, 0.45);
         color: var(--card-hover-text);
       }
 
@@ -171,7 +187,7 @@
 
   &__card-image {
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 16 / 10;
     object-fit: cover;
     display: block;
     transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1),
@@ -182,6 +198,11 @@
     padding: 12px 12px 14px;
     text-align: center;
     font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
   }
 }
 

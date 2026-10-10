@@ -37,7 +37,7 @@ const siteConfig: SiteConfig = {
   authorLabel: '开发者',
   email: '',
   github: '',
-  icp: '湘ICP备00000000号',
+  icp: '',
   icpLink: 'https://beian.miit.gov.cn/',
   copyright: 'HY 3D API Showcase',
   license: 'MIT',
