@@ -190,12 +190,8 @@
       display: none;
     }
 
-    &__link span {
-      display: none;
-    }
-
     &__link {
-      padding: 0 12px;
+      padding: 0 10px;
     }
 
     &__tool span {
@@ -211,7 +207,11 @@
 @media (max-width: 640px) {
   .main-navigation {
     &__divider {
-      margin: 0 10px;
+      display: none;
+    }
+
+    &__link {
+      padding: 0 8px;
     }
 
     &__tools {
@@ -219,8 +219,13 @@
       border-left: none;
     }
 
-    &__engine {
+    &__tool--aux {
       display: none;
+    }
+
+    /* 引擎切换是核心功能，窄屏只收窄不隐藏 */
+    &__engine {
+      width: 108px;
     }
   }
 }

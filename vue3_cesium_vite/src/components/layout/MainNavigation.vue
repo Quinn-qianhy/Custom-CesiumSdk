@@ -52,22 +52,26 @@
       <div class="main-navigation__tools">
         <button
           type="button"
-          class="main-navigation__tool"
+          class="main-navigation__tool main-navigation__tool--aux"
           title="API 文档"
           @click="goToAPIPage"
         >
           <el-icon aria-hidden="true"><PhBookOpen weight="light" /></el-icon>
           <span>API 文档</span>
         </button>
-        <button
-          type="button"
-          class="main-navigation__tool"
-          title="友情链接"
-          @click="goToLinksPage"
-        >
-          <el-icon aria-hidden="true"><PhLinkSimple weight="light" /></el-icon>
-          <span>友情链接</span>
-        </button>
+        <el-dropdown trigger="click" @command="handleOpenLink">
+          <button type="button" class="main-navigation__tool main-navigation__tool--aux" title="友情链接">
+            <el-icon aria-hidden="true"><PhLinkSimple weight="light" /></el-icon>
+            <span>友情链接</span>
+          </button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="link in site.links" :key="link.url" :command="link.url">
+                {{ link.label }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <button
           type="button"
           class="main-navigation__tool"
@@ -125,8 +129,8 @@ const goToAPIPage = () => {
   window.open('/Documentation/index.html', '_blank')
 }
 
-const goToLinksPage = () => {
-  window.open('https://cesium.com/', '_blank')
+const handleOpenLink = (url: string) => {
+  window.open(url, '_blank', 'noopener')
 }
 
 const toggleTheme = () => {

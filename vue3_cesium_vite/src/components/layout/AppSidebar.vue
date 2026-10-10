@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, markRaw } from 'vue'
+import { ref, computed, nextTick, markRaw, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useEngineStore } from '@/stores/engineStore'
 import {
@@ -92,13 +92,17 @@ import {
   PhMagnifyingGlass,
   PhGlobeHemisphereWest,
   PhCrosshair,
-  PhSquaresFour,
+  PhMapTrifold,
+  PhStack,
+  PhCube,
   PhCursor,
   PhPencilSimpleLine,
   PhGearSix,
   PhMagicWand,
+  PhDrop,
   PhChartBar,
   PhChartLine,
+  PhRuler,
   PhFiles
 } from '@phosphor-icons/vue'
 
@@ -111,20 +115,31 @@ const isSidebarCollapsed = ref(false)
 const treeRef = ref<InstanceType<(typeof import('element-plus'))['ElTree']> | null>(null)
 const searchKeyword = ref('')
 
+// 窄屏下侧边栏是 fixed 覆盖层，进入该断点必须自动收起，避免挡住内容
+const mobileMedia = window.matchMedia('(max-width: 992px)')
+const syncCollapsedWithViewport = (event: MediaQueryList | MediaQueryListEvent) => {
+  isSidebarCollapsed.value = event.matches
+}
+syncCollapsedWithViewport(mobileMedia)
+mobileMedia.addEventListener('change', syncCollapsedWithViewport)
+onBeforeUnmount(() => {
+  mobileMedia.removeEventListener('change', syncCollapsedWithViewport)
+})
+
 const iconMap: Record<string, ReturnType<typeof markRaw>> = {
   场景控制: markRaw(PhCrosshair),
-  地图与地形服务: markRaw(PhSquaresFour),
-  图层加载: markRaw(PhSquaresFour),
+  地图与地形服务: markRaw(PhMapTrifold),
+  图层加载: markRaw(PhStack),
   交互控制: markRaw(PhCursor),
   绘制与加载: markRaw(PhPencilSimpleLine),
   图形绘制: markRaw(PhPencilSimpleLine),
   控件配置: markRaw(PhGearSix),
-  材质Material: markRaw(PhMagicWand),
+  材质Material: markRaw(PhDrop),
   可视化特效: markRaw(PhChartBar),
-  量算与分析: markRaw(PhChartLine),
+  量算与分析: markRaw(PhRuler),
   空间分析: markRaw(PhChartLine),
   矢量数据: markRaw(PhFiles),
-  三维模型: markRaw(PhSquaresFour),
+  三维模型: markRaw(PhCube),
   'Vue 组件示例': markRaw(PhMagicWand),
   矢量图形绘制: markRaw(PhPencilSimpleLine),
   控件: markRaw(PhGearSix),
