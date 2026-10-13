@@ -5,9 +5,7 @@
   display: flex;
   flex-direction: column;
   background: var(--sidebar-bg);
-  backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--glass-border);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+  border-right: 1px solid var(--hairline);
   transition: width var(--transition-base), min-width var(--transition-base);
   position: relative;
   z-index: 20;
@@ -45,7 +43,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.25), rgba(44, 83, 100, 0.4));
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.22), rgba(21, 94, 117, 0.4));
     border: 1px solid var(--glass-border);
     color: var(--tech-primary-light);
 
@@ -64,7 +62,7 @@
   &__title-main {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--text-accent);
+    color: var(--sidebar-text);
     letter-spacing: 0.02em;
   }
 
@@ -83,14 +81,16 @@
     justify-content: center;
     border: 1px solid var(--glass-border);
     border-radius: 8px;
-    background: rgba(64, 158, 255, 0.08);
-    color: var(--text-accent);
+    background: transparent;
+    color: var(--sidebar-text-muted);
     cursor: pointer;
-    transition: background var(--transition-base), border-color var(--transition-base);
+    transition: background var(--transition-base), border-color var(--transition-base),
+      color var(--transition-base);
 
     &:hover {
-      background: rgba(64, 158, 255, 0.18);
-      border-color: rgba(64, 158, 255, 0.55);
+      background: rgba(34, 211, 238, 0.14);
+      border-color: rgba(34, 211, 238, 0.55);
+      color: var(--text-accent);
     }
 
     &:focus-visible {
@@ -115,7 +115,7 @@
     .el-input {
       --el-input-bg-color: var(--sidebar-input-bg);
       --el-input-border-color: var(--glass-border);
-      --el-input-hover-border-color: rgba(64, 158, 255, 0.55);
+      --el-input-hover-border-color: rgba(34, 211, 238, 0.55);
       --el-input-focus-border-color: var(--tech-primary);
       --el-input-text-color: var(--sidebar-text);
       --el-input-placeholder-color: var(--sidebar-text-muted);
@@ -130,8 +130,8 @@
 
       &:hover,
       &.is-focus {
-        border-color: rgba(64, 158, 255, 0.55) !important;
-        box-shadow: 0 0 0 1px rgba(64, 158, 255, 0.15) !important;
+        border-color: rgba(34, 211, 238, 0.55) !important;
+        box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.15) !important;
       }
     }
 
@@ -140,7 +140,7 @@
     }
 
     .el-input__prefix .el-icon {
-      color: var(--text-accent);
+      color: var(--sidebar-text-muted);
     }
   }
 
@@ -167,7 +167,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(64, 158, 255, 0.35);
+      background: rgba(34, 211, 238, 0.3);
       border-radius: 3px;
     }
 
@@ -188,6 +188,10 @@
     .el-tree-node.is-current > .el-tree-node__content {
       background: var(--sidebar-item-active) !important;
       box-shadow: inset 3px 0 0 var(--tech-primary);
+    }
+
+    .el-tree-node.is-current .app-sidebar__node-icon {
+      color: var(--tech-primary-light);
     }
 
     .el-tree-node__expand-icon {
@@ -217,10 +221,11 @@
     flex-shrink: 0;
     width: var(--sidebar-icon-size);
     height: var(--sidebar-icon-size);
-    color: var(--text-accent);
+    color: var(--sidebar-text-muted);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: color var(--transition-base);
 
     svg {
       width: 100%;
@@ -249,7 +254,7 @@
     height: 20px;
     padding: 0 6px;
     border-radius: 10px;
-    background: rgba(64, 158, 255, 0.15);
+    background: rgba(34, 211, 238, 0.12);
     color: var(--text-accent);
     font-size: 11px;
     line-height: 20px;
@@ -340,7 +345,7 @@
         width: 24px;
         height: 24px;
         margin: 0;
-        color: var(--text-accent);
+        color: var(--sidebar-text-muted);
 
         svg {
           width: 24px;
@@ -350,7 +355,6 @@
 
       .el-tree-node.is-current .app-sidebar__node-icon {
         color: var(--tech-primary-light);
-        filter: drop-shadow(0 0 4px rgba(64, 158, 255, 0.6));
       }
     }
   }
@@ -362,6 +366,8 @@
     left: 0;
     top: var(--header-height);
     height: calc(100vh - var(--header-height) - var(--footer-height));
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
 
     &:not(.is-collapsed) {
       box-shadow: 8px 0 32px rgba(0, 0, 0, 0.35);

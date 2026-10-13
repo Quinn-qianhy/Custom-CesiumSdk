@@ -30,9 +30,12 @@ const engineStore = useEngineStore()
 
 const showSidebar = computed(() => route.meta.showSidebar !== false)
 
+/** 锚点定位时在分区标题上方预留的呼吸间距 */
+const ANCHOR_OFFSET = 100
+
 const handleNavigate = (sectionId: string) => {
   const target = document.getElementById(sectionId)
-  const scrollContainer = document.querySelector('.home-scene__content')
+  const scrollContainer = document.querySelector<HTMLElement>('.home-scene__content')
 
   if (!target || !scrollContainer) {
     return
@@ -41,9 +44,11 @@ const handleNavigate = (sectionId: string) => {
   const top =
     target.getBoundingClientRect().top -
     scrollContainer.getBoundingClientRect().top +
-    scrollContainer.scrollTop
+    scrollContainer.scrollTop -
+    ANCHOR_OFFSET
 
-  scrollContainer.scrollTop = top - 100
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  scrollContainer.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
 }
 </script>
 

@@ -57,7 +57,7 @@ const switchTheme = () => {
     border-radius: 4px;
 
     &:hover {
-      background: rgba(64, 158, 255, 0.2);
+      background: rgba(34, 211, 238, 0.16);
       box-shadow: var(--shadow-glow);
     }
 

@@ -3,7 +3,7 @@
     <div class="main-navigation__start">
       <button type="button" class="main-navigation__brand" @click="goHome">
         <el-icon class="main-navigation__logo" aria-hidden="true">
-          <MapLocation />
+          <PhGlobeHemisphereWest weight="light" />
         </el-icon>
         <span class="main-navigation__title">{{ site.brandShort }}</span>
       </button>
@@ -52,22 +52,26 @@
       <div class="main-navigation__tools">
         <button
           type="button"
-          class="main-navigation__tool"
+          class="main-navigation__tool main-navigation__tool--aux"
           title="API 文档"
           @click="goToAPIPage"
         >
-          <el-icon aria-hidden="true"><Document /></el-icon>
+          <el-icon aria-hidden="true"><PhBookOpen weight="light" /></el-icon>
           <span>API 文档</span>
         </button>
-        <button
-          type="button"
-          class="main-navigation__tool"
-          title="友情链接"
-          @click="goToLinksPage"
-        >
-          <el-icon aria-hidden="true"><Link /></el-icon>
-          <span>友情链接</span>
-        </button>
+        <el-dropdown trigger="click" @command="handleOpenLink">
+          <button type="button" class="main-navigation__tool main-navigation__tool--aux" title="友情链接">
+            <el-icon aria-hidden="true"><PhLinkSimple weight="light" /></el-icon>
+            <span>友情链接</span>
+          </button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="link in site.links" :key="link.url" :command="link.url">
+                {{ link.label }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <button
           type="button"
           class="main-navigation__tool"
@@ -75,8 +79,8 @@
           @click="toggleTheme"
         >
           <el-icon aria-hidden="true">
-            <Moon v-if="isDarkMode" />
-            <Sunny v-else />
+            <PhMoon v-if="isDarkMode" weight="light" />
+            <PhSun v-else weight="light" />
           </el-icon>
           <span>{{ isDarkMode ? '亮色' : '暗色' }}</span>
         </button>
@@ -89,7 +93,13 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { Document, Link, Moon, Sunny, MapLocation } from '@element-plus/icons-vue'
+import {
+  PhGlobeHemisphereWest,
+  PhBookOpen,
+  PhLinkSimple,
+  PhMoon,
+  PhSun
+} from '@phosphor-icons/vue'
 import site from '@/config/site'
 import { useAppStore } from '@/stores/appStore'
 import { useEngineStore } from '@/stores/engineStore'
@@ -119,8 +129,8 @@ const goToAPIPage = () => {
   window.open('/Documentation/index.html', '_blank')
 }
 
-const goToLinksPage = () => {
-  window.open('https://cesium.com/', '_blank')
+const handleOpenLink = (url: string) => {
+  window.open(url, '_blank', 'noopener')
 }
 
 const toggleTheme = () => {
