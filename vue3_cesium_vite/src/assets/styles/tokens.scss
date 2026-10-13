@@ -51,6 +51,14 @@
   --card-shell-bg: rgba(255, 255, 255, 0.04);
   --card-hover-bg: rgba(32, 58, 67, 0.9);
   --card-hover-text: #ffffff;
+  --card-title-text: #ffffff;
+  --card-title-scrim: linear-gradient(
+    to top,
+    rgba(6, 14, 24, 0.82) 0%,
+    rgba(6, 14, 24, 0.52) 62%,
+    rgba(6, 14, 24, 0) 100%
+  );
+  --card-title-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.24), 0 8px 24px rgba(0, 0, 0, 0.28);
   --card-hover-shadow: 0 2px 4px rgba(0, 0, 0, 0.24), 0 16px 40px rgba(34, 211, 238, 0.14);
   --inset-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.06);
@@ -97,6 +105,14 @@
   --card-shell-bg: rgba(255, 255, 255, 0.55);
   --card-hover-bg: rgba(255, 255, 255, 1);
   --card-hover-text: #0f172a;
+  --card-title-text: #0f172a;
+  --card-title-scrim: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.62) 62%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  --card-title-shadow: none;
   --card-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
   --card-hover-shadow: 0 2px 4px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(14, 116, 144, 0.14);
   --inset-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.9);

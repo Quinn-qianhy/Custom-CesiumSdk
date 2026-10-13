@@ -50,6 +50,7 @@
               role="button"
               @click="openPage(entry.page)"
               @keydown.enter="openPage(entry.page)"
+              @keydown.space.prevent="openPage(entry.page)"
             >
               <el-card class="home-scene__card" :body-style="{ padding: '0px' }" shadow="never">
                 <div class="home-scene__card-media">
@@ -102,6 +103,7 @@ import { computed, type Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { PhInfo } from '@phosphor-icons/vue'
+import { ElMessage } from 'element-plus'
 import { useEngineStore } from '@/stores/engineStore'
 import {
   resolveComponentId,
@@ -205,11 +207,16 @@ const buildHtmlQuery = (page: ExamplePage) => {
 }
 
 const openPage = (page: ExamplePage) => {
+  if (page.status === 'pending') {
+    ElMessage.warning(page.statusReason?.trim() || '该示例待修复，暂不可用')
+    return
+  }
+
   const { url, name } = page
   const exampleType = resolveExampleType(page)
 
   if (exampleType === 'external') {
-    window.open(url, '_blank')
+    window.open(url, '_blank', 'noopener,noreferrer')
     return
   }
 
@@ -220,7 +227,7 @@ const openPage = (page: ExamplePage) => {
       params: { examplePath },
       query: buildHtmlQuery(page)
     })
-    window.open(routeUrl.href, '_blank')
+    window.open(routeUrl.href, '_blank', 'noopener')
     return
   }
 
@@ -236,7 +243,7 @@ const openPage = (page: ExamplePage) => {
     query: { title: name, engine: currentEngineId.value }
   })
 
-  window.open(routeUrl.href, '_blank')
+  window.open(routeUrl.href, '_blank', 'noopener')
 }
 </script>
 

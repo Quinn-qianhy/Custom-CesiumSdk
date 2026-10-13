@@ -124,9 +124,7 @@
       box-shadow: var(--card-hover-shadow);
 
       .home-scene__card {
-        background: var(--card-hover-bg);
         border-color: rgba(34, 211, 238, 0.45);
-        color: var(--card-hover-text);
       }
 
       .home-scene__card-image {
@@ -152,6 +150,7 @@
 
   /* 内核：玻璃卡面 + 内高光 */
   &__card {
+    position: relative;
     height: 100%;
     text-align: center;
     background: var(--glass-bg-light);
@@ -187,17 +186,25 @@
 
   &__card-image {
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1;
     object-fit: cover;
     display: block;
     transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1),
       opacity var(--transition-base);
   }
 
+  /* 标题叠加在图片底部，卡片高度即图片高度 */
   &__card-name {
-    padding: 12px 12px 14px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 12px;
     text-align: center;
     font-size: 0.875rem;
+    color: var(--card-title-text);
+    background: var(--card-title-scrim);
+    text-shadow: var(--card-title-shadow);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
