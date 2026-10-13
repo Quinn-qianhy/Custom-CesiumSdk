@@ -32,9 +32,9 @@ const layerVisibility = {
   polygon: true
 }
 
-let pointLayer = null
-let lineLayer = null
-let polygonLayer = null
+let pointLayer: OlVectorLayer | null = null
+let lineLayer: OlVectorLayer | null = null
+let polygonLayer: OlVectorLayer | null = null
 
 const pointStyle = new Style({
   image: new CircleStyle({
@@ -123,22 +123,22 @@ onMounted(() => {
   gui
     .add(layerVisibility, 'point')
     .name('显示点要素')
-    .onChange((value: boolean) => {
-      pointLayer?.setVisible(value)
+    .onChange((value) => {
+      pointLayer?.setVisible(Boolean(value))
     })
 
   gui
     .add(layerVisibility, 'line')
     .name('显示线要素')
-    .onChange((value: boolean) => {
-      lineLayer?.setVisible(value)
+    .onChange((value) => {
+      lineLayer?.setVisible(Boolean(value))
     })
 
   gui
     .add(layerVisibility, 'polygon')
     .name('显示面要素')
-    .onChange((value: boolean) => {
-      polygonLayer?.setVisible(value)
+    .onChange((value) => {
+      polygonLayer?.setVisible(Boolean(value))
     })
 })
 </script>
