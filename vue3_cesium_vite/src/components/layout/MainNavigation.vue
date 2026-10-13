@@ -60,7 +60,11 @@
           <span>API 文档</span>
         </button>
         <el-dropdown trigger="click" @command="handleOpenLink">
-          <button type="button" class="main-navigation__tool main-navigation__tool--aux" title="友情链接">
+          <button
+            type="button"
+            class="main-navigation__tool main-navigation__tool--aux"
+            title="友情链接"
+          >
             <el-icon aria-hidden="true"><PhLinkSimple weight="light" /></el-icon>
             <span>友情链接</span>
           </button>
@@ -93,13 +97,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import {
-  PhGlobeHemisphereWest,
-  PhBookOpen,
-  PhLinkSimple,
-  PhMoon,
-  PhSun
-} from '@phosphor-icons/vue'
+import { PhGlobeHemisphereWest, PhBookOpen, PhLinkSimple, PhMoon, PhSun } from '@phosphor-icons/vue'
 import site from '@/config/site'
 import { useAppStore } from '@/stores/appStore'
 import { useEngineStore } from '@/stores/engineStore'

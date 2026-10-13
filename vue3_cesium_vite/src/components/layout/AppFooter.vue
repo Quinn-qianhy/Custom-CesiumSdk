@@ -1,9 +1,7 @@
 <template>
   <footer class="app-footer">
     <div class="app-footer__content">
-      <span class="app-footer__copyright">
-        © {{ currentYear }} {{ site.copyright }}
-      </span>
+      <span class="app-footer__copyright"> © {{ currentYear }} {{ site.copyright }} </span>
       <span class="app-footer__sep">|</span>
       <span class="app-footer__version">v{{ site.version }}</span>
       <span v-if="site.icp" class="app-footer__sep">|</span>
