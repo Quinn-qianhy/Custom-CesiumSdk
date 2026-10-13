@@ -1,6 +1,6 @@
 <template>
   <div class="home-scene">
-    <el-main ref="examplesListPanel" class="home-scene__content">
+    <el-main ref="examplesListPanel" class="home-scene__content" @scroll="handleScroll">
       <div v-if="stats.total" v-reveal class="home-scene__stats">
         <span class="home-scene__stats-item">
           共 <strong>{{ stats.total }}</strong> 个示例
@@ -19,6 +19,16 @@
             维护状态
           </span>
         </el-tooltip>
+        <el-input
+          v-model="searchKeyword"
+          class="home-scene__search"
+          placeholder="搜索示例名称"
+          clearable
+        >
+          <template #prefix>
+            <el-icon aria-hidden="true"><PhMagnifyingGlass weight="light" /></el-icon>
+          </template>
+        </el-input>
       </div>
 
       <section v-for="(item, index) in menuWithMeta" :key="index" class="home-scene__section">
@@ -59,6 +69,8 @@
                     class="home-scene__card-image"
                     :alt="entry.page.name"
                     loading="lazy"
+                    @load="markImageLoaded"
+                    @error="markImageLoaded"
                   />
                   <div v-if="entry.statusMeta" class="home-scene__card-badges">
                     <el-tooltip
@@ -94,15 +106,30 @@
           </div>
         </div>
       </section>
+
+      <div v-if="!menuWithMeta.length" class="home-scene__empty">
+        <el-icon aria-hidden="true"><PhMagnifyingGlass weight="light" /></el-icon>
+        <p>{{ emptyHint }}</p>
+      </div>
     </el-main>
+
+    <button
+      v-show="showBackToTop"
+      type="button"
+      class="home-scene__to-top"
+      aria-label="回到顶部"
+      @click="scrollToTop"
+    >
+      <el-icon aria-hidden="true"><PhArrowUp weight="light" /></el-icon>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, type Directive } from 'vue'
+import { computed, ref, type Directive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { PhInfo } from '@phosphor-icons/vue'
+import { PhArrowUp, PhInfo, PhMagnifyingGlass } from '@phosphor-icons/vue'
 import { ElMessage } from 'element-plus'
 import { useEngineStore } from '@/stores/engineStore'
 import {
@@ -134,23 +161,60 @@ interface MenuSectionWithMeta {
   menuItem: MenuGroupWithMeta[]
 }
 
-const menuWithMeta = computed<MenuSectionWithMeta[]>(() =>
-  menuData.value.map((section) => ({
-    subMenu: section.subMenu,
-    menuItem: section.menuItem.map((group) => ({
-      menuItemName: group.menuItemName,
-      // 待修复示例排到组末，避免占位卡打断可用示例的浏览动线
-      pages: group.pages
-        .map((page) => ({ page, statusMeta: getPageStatusMeta(page) }))
-        .sort(
-          (a, b) =>
-            Number(a.statusMeta?.isPending ?? false) - Number(b.statusMeta?.isPending ?? false)
-        )
+const searchKeyword = ref('')
+
+const menuWithMeta = computed<MenuSectionWithMeta[]>(() => {
+  const keyword = searchKeyword.value.trim().toLowerCase()
+
+  return menuData.value
+    .map((section) => ({
+      subMenu: section.subMenu,
+      menuItem: section.menuItem
+        .map((group) => ({
+          menuItemName: group.menuItemName,
+          // 待修复示例排到组末，避免占位卡打断可用示例的浏览动线
+          pages: group.pages
+            .map((page) => ({ page, statusMeta: getPageStatusMeta(page) }))
+            .filter((entry) => !keyword || entry.page.name.toLowerCase().includes(keyword))
+            .sort(
+              (a, b) =>
+                Number(a.statusMeta?.isPending ?? false) - Number(b.statusMeta?.isPending ?? false)
+            )
+        }))
+        .filter((group) => group.pages.length > 0)
     }))
-  }))
-)
+    .filter((section) => section.menuItem.length > 0)
+})
 
 const stats = computed(() => countExampleStats(menuData.value))
+
+const emptyHint = computed(() =>
+  searchKeyword.value.trim()
+    ? `没有匹配「${searchKeyword.value.trim()}」的示例`
+    : '暂无可展示的示例'
+)
+
+const showBackToTop = ref(false)
+
+const handleScroll = (event: Event) => {
+  showBackToTop.value = (event.target as HTMLElement).scrollTop > 400
+}
+
+const scrollToTop = () => {
+  const container = document.querySelector<HTMLElement>('.home-scene__content')
+  if (!container) {
+    return
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  container.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+}
+
+// 加载失败时同样解除占位，避免图片一直不可见
+const markImageLoaded = (event: Event) => {
+  const image = event.target as HTMLImageElement
+  image.classList.add('is-loaded')
+}
 
 let revealObserver: IntersectionObserver | null = null
 
@@ -162,20 +226,18 @@ const vReveal: Directive<HTMLElement> = {
     }
     revealObserver ??= new IntersectionObserver(
       (entries, observer) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) {
-            continue
-          }
-          const target = entry.target as HTMLElement
-          const siblings = target.parentElement ? Array.from(target.parentElement.children) : []
-          const index = siblings.indexOf(target)
-          target.style.transitionDelay = `${Math.min(index, 7) * 60}ms`
-          target.classList.remove('reveal-pending')
-          observer.unobserve(target)
-          window.setTimeout(() => {
-            target.style.transitionDelay = ''
-          }, 1200)
-        }
+        // 按同一批进入视口的次序错峰，避免大分组整片同时出现
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry, index) => {
+            const target = entry.target as HTMLElement
+            target.style.transitionDelay = `${Math.min(index, 7) * 60}ms`
+            target.classList.remove('reveal-pending')
+            observer.unobserve(target)
+            window.setTimeout(() => {
+              target.style.transitionDelay = ''
+            }, 1200)
+          })
       },
       { threshold: 0.15 }
     )
