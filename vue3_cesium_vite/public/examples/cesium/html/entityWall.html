@@ -52,7 +52,7 @@
             104.043733, 30.666011, 500,
             104.043733, 30.675891, 500
           ]),
-        material: new Cesium.PolylineFlowMaterialProperty({
+        material: new Cesium.PolylineFlowImageMaterialProperty({
           image: "/examples/cesium/assets/material/wallMaterial.png",
           color: Cesium.Color.CHARTREUSE,
           repeat: new Cesium.Cartesian2(1, 3),
@@ -72,10 +72,11 @@
             104.053733, 30.686011, 500,
             104.053733, 30.695891, 500
           ]),
-        material: new Cesium.PolylineFlowMaterialProperty({
+        material: new Cesium.PolylineFlowImageMaterialProperty({
           image: "/examples/cesium/assets/material/arrow2.png",
           color: Cesium.Color.fromCssColorString("#ffff00"),
           repeat: new Cesium.Cartesian2(30, 1),
+          axisY: false,
           speed: 10
         })
       }
@@ -98,7 +99,7 @@
           104.050691, 30.7416,500,
           104.051215, 30.744734,500,
           104.054815, 30.753495,500,]),
-        material: new Cesium.PolylineFlowMaterialProperty({
+        material: new Cesium.PolylineFlowImageMaterialProperty({
           image: "/examples/cesium/assets/material/wallMaterial.png",
           color: Cesium.Color.fromCssColorString("#ff0000"),
           repeat: new Cesium.Cartesian2(1, 1),
@@ -116,7 +117,7 @@
             104.089107, 30.662437, 500,
           ]),
         material: new Cesium.ImageMaterialProperty({
-          image: "/examples/cesium/assets/material/movingRiver.png",
+          image: "/cesium/Assets/Textures/waterNormals.jpg",
           repeat: new Cesium.Cartesian2(10, 1)
         })
       }
