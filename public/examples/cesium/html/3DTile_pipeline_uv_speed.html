@@ -43,6 +43,8 @@
 
 
   <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
     // Power Plant design model provided by Bentley Systems
     Cesium.ExperimentalFeatures.enableModelExperimental = true;
@@ -50,8 +52,7 @@
     const scene = viewer.scene;
 
     const tileset = scene.primitives.add(
-      new Cesium.Cesium3DTileset({
-        url: "http://172.20.16.213:8888/3dtiles/pipeline_arrow/tileset.json",debugShowBoundingVolume:true,
+      await Cesium.Cesium3DTileset.fromUrl("http://172.20.16.213:8888/3dtiles/pipeline_arrow/tileset.json", {debugShowBoundingVolume:true,
         customShader: new Cesium.CustomShader({
           lightingModel: Cesium.LightingModel.UNLIT,
           uniforms: {
@@ -74,10 +75,9 @@
                 }
             }
             `,
-        }),
-      })
+        })})
     );
-    tileset.readyPromise
+    Promise.resolve(tileset)
       .then(function (tileset) {
         viewer.zoomTo(
           tileset,
@@ -90,7 +90,9 @@
       })
 
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>

@@ -34,14 +34,13 @@
     </video>
   </div>
   <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        //ARCGIS蓝色底图
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
         ),
       showRenderLoopErrors: false,
       shouldAnimate: true,
@@ -55,13 +54,10 @@
     viewer.scene.brightness.uniforms.brightness = 1.5;
 
     var tileset = viewer.scene.primitives.add(
-      new Cesium.Cesium3DTileset({
-        url: Cesium.IonResource.fromAssetId(75343),
-        maximumScreenSpaceError: 4
-      })
+      await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(75343), {maximumScreenSpaceError: 4})
     );
 
-    tileset.readyPromise
+    Promise.resolve(tileset)
       .then(function (tileset) {
         viewer.zoomTo(
           tileset,
@@ -127,7 +123,9 @@
       }
     })
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>

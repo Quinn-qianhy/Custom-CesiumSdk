@@ -32,10 +32,7 @@
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        //ARCGIS蓝色底图
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
         )
     })
 

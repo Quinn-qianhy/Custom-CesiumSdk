@@ -43,6 +43,8 @@
 
 
   <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
 
     var viewer = new Cesium.Viewer("cesiumContainer", {
@@ -69,9 +71,7 @@
     });
 
     // Load the NYC buildings tileset
-    var tileset = new Cesium.Cesium3DTileset({
-      url: Cesium.IonResource.fromAssetId(75343),
-    });
+    var tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(75343));
     viewer.scene.primitives.add(tileset);
 
     // HTML overlay for showing feature name on mouseover
@@ -312,7 +312,9 @@
         Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>

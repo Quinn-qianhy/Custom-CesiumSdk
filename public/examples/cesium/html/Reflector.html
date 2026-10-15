@@ -28,15 +28,13 @@
 
 
     <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer", {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-          url:
-            "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-          show: true
-        })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
         ),
         orderIndependentTranslucency: false,
         contextOptions: {
@@ -68,13 +66,10 @@
       });
       scene.primitives.add(Cesium.createOsmBuildings());
       var tileset_nanpu = scene.primitives.add(
-        new Cesium.Cesium3DTileset({
-          url: "http://180.167.213.122:18000/model/nanpudaqiao/tileset.json",
-          skipLevelOfDetail: true,
-          maximumScreenSpaceError: 24
-        })
+        await Cesium.Cesium3DTileset.fromUrl("http://180.167.213.122:18000/model/nanpudaqiao/tileset.json", {skipLevelOfDetail: true,
+          maximumScreenSpaceError: 24})
       );
-      tileset_nanpu.readyPromise
+      Promise.resolve(tileset_nanpu)
         .then(function(tileset) {
           viewer.scene.primitives.add(tileset);
           var surface = Cesium.Cartesian3.fromDegrees(121.5009, 31.2075, -5.7); //-5.7
@@ -224,6 +219,8 @@ Cesium.knockout.getObservable(viewModel, "x").subscribe(function(_z) {
         // viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
         viewer.scene._useMSAA = !viewer.scene._useMSAA;
       });
-    </script>
+    
+})();
+</script>
   </body>
 </html>

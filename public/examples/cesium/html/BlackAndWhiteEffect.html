@@ -25,6 +25,8 @@
 <body class="dark">
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer")
     viewer.scene.globe.baseColor = Cesium.Color.DARKOLIVEGREEN
@@ -53,9 +55,7 @@
       duration: 3
     })
 
-    var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
-      url: Cesium.IonResource.fromAssetId(75343),
-    }));
+    var tileset = viewer.scene.primitives.add(await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(75343)));
 
     const viewModel = {
       blackAndWhiteShow: false,
@@ -83,7 +83,9 @@
     }
     updatePostProcess()
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>

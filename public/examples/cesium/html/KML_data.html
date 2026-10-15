@@ -39,10 +39,7 @@
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        //ARCGIS蓝色底图
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
         ),
     });
 
@@ -71,7 +68,7 @@
     function addKMZ_gdp() {
       viewer.dataSources.add(
         Cesium.KmlDataSource.load(
-          "static/examples/cesium/assets/sampleData/kml/gdpPerCapita2008.kmz",
+          "/examples/cesium/assets/sampleData/kml/gdpPerCapita2008.kmz",
           options
         )
       );
@@ -80,7 +77,7 @@
     function addScience() {
       viewer.dataSources.add(
         Cesium.KmlDataSource.load(
-          "static/examples/cesium/assets/sampleData/kml/facilities/facilities.kml",
+          "/examples/cesium/assets/sampleData/kml/facilities/facilities.kml",
           options
         )
       )

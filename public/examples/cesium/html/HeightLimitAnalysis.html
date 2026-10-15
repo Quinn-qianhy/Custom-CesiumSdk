@@ -36,9 +36,7 @@
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
         ),
     });
     var tileslimitHeight;
@@ -82,7 +80,7 @@ Cesium.knockout
       },
     };
 
-    function loadTileset(url) {
+    async function loadTileset(url) {
       const clippingPlanes = new Cesium.ClippingPlaneCollection({
         planes: [
           new Cesium.ClippingPlane(
@@ -94,14 +92,12 @@ Cesium.knockout
         limitHeight: true,
       });
 
-      tileset = viewer.scene.primitives.add(
-        new Cesium.Cesium3DTileset({
-          url: url,
-          clippingPlanes: clippingPlanes,
-        })
-      );
-      return tileset.readyPromise
-        .then(function () {
+      // 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建
+      tileset = await Cesium.Cesium3DTileset.fromUrl(url, {
+        clippingPlanes: clippingPlanes,
+      });
+      viewer.scene.primitives.add(tileset);
+      try {
           const boundingSphere = tileset.boundingSphere;
           const radius = boundingSphere.radius;
           if (
@@ -188,10 +184,9 @@ Cesium.knockout
           }
           viewer.flyTo(tileset);
           return tileset;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     loadTileset(paramObj.url);

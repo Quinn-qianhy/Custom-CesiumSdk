@@ -29,7 +29,7 @@
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
       terrain: new Cesium.Terrain(
-          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true, //Needed to visualize slope })
+          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true }) //Needed to visualize slope
         ),
     });
 

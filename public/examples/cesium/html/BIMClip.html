@@ -24,16 +24,16 @@
   <body class="dark">
     <div id="cesiumContainer"></div>
 <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
       "use script";
 
       var viewer = new Cesium.Viewer("cesiumContainer", { baseLayerPicker: true});
       viewer.scene.globe.depthTestAgainstTerrain = true;
 
-      var tileset = new Cesium.Cesium3DTileset({
-        url: "http://180.167.213.122:18000/fangjianmodel/tileset.json",
-      });
+      var tileset = await Cesium.Cesium3DTileset.fromUrl("http://180.167.213.122:18000/fangjianmodel/tileset.json");
 
-      tileset.readyPromise
+      Promise.resolve(tileset)
         .then(function (tileset) {
           viewer.scene.primitives.add(tileset);
           viewer.zoomTo(
@@ -160,6 +160,8 @@ Cesium.knockout
         })
         tileset.clippingPlanes = clippingPlanes
       });
-    </script>
+    
+})();
+</script>
   </body>
 </html>

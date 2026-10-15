@@ -26,21 +26,18 @@
 <body class="dark">
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
 
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
-        show: true,
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
         )
     })
-    var tileset = new Cesium.Cesium3DTileset({
-      url: Cesium.IonResource.fromAssetId(75343),
-    });
-    tileset.readyPromise
+    var tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(75343));
+    Promise.resolve(tileset)
       .then(function (tileset) {
         viewer.scene.primitives.add(tileset);
         var cartographic = Cesium.Cartographic.fromCartesian(
@@ -93,7 +90,9 @@
       removeSkyline()
     })
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>

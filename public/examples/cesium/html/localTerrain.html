@@ -35,9 +35,7 @@
     var viewer = new Cesium.Viewer("cesiumContainer", {
       baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.ArcGisMapServerImageryProvider({
-        url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-      })
+          Cesium.ArcGisMapServerImageryProvider.fromUrl('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
         ),
       terrain: new Cesium.Terrain(
           Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestMetadata: true,

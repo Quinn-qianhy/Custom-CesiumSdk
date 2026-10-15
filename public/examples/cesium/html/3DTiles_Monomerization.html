@@ -28,6 +28,8 @@
 <body class="dark">
   <div id="cesiumContainer"></div>
 <script type="text/javascript">
+// 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
+(async function () {
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
       terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1))
@@ -130,9 +132,7 @@
       }));
     }
 
-    var tileset = new Cesium.Cesium3DTileset({
-      url: Cesium.IonResource.fromAssetId(6074)
-    });
+    var tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(6074));
     scene.primitives.add(tileset);
 
     var currentObjectId;
@@ -180,7 +180,9 @@
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
-  </script>
+  
+})();
+</script>
 </body>
 
 </html>
