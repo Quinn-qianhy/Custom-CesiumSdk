@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>反选遮罩</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -38,14 +38,14 @@
           })
         )
       })
-      // viewer.scene.globe.depthTestAgainstTerrain = false
+      / viewer.scene.globe.depthTestAgainstTerrain = false
 
-      // 可调参数：GUI 面板实时生效
+      / 可调参数：GUI 面板实时生效
       var params = {
-        mode: 'entity', // entity = 极地楔形挖洞；clip = 官方反向裁剪
-        step: 4, // 洞坐标抽稀步长，越大越快、边界越粗
-        height: 0, // 遮罩高度
-        alpha: 0.8, // 遮罩不透明度
+        mode: 'entity', / entity = 极地楔形挖洞；clip = 官方反向裁剪
+        step: 4, / 洞坐标抽稀步长，越大越快、边界越粗
+        height: 0, / 遮罩高度
+        alpha: 0.8, / 遮罩不透明度
         showBorder: true,
         clipInverse: true,
         lonBreaks: [
@@ -55,13 +55,13 @@
         ]
       }
 
-      var geo = [] // 原始扁平坐标 [lon, lat, lon, lat, ...]
+      var geo = [] / 原始扁平坐标 [lon, lat, lon, lat, ...]
       var maskEntities = []
       var borderEntity = null
       var clippingCollection = null
       var rebuildTimer = null
 
-      fetch('/data/geojson/siChuanPolygon.json')
+      fetch('../../../data/geojson/siChuanPolygon.json')
         .then(function (response) {
           return response.json()
         })
@@ -143,7 +143,7 @@
         var hole = holeCartesians()
 
         if (params.mode === 'clip') {
-          // 官方方案：直接裁掉几何体（四川之外会变成没有地球，不是盖一层黑布）
+          / 官方方案：直接裁掉几何体（四川之外会变成没有地球，不是盖一层黑布）
           clippingCollection = new Cesium.ClippingPolygonCollection({
             polygons: [new Cesium.ClippingPolygon({ positions: hole })],
             inverse: params.clipInverse

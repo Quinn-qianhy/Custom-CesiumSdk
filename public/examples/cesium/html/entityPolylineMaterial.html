@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>实体线材质加载</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -65,7 +65,7 @@
               color: Cesium.Color.fromCssColorString('#a6d96a'),
               repeat: 4.0,
               percent: 1.0,
-              image: '/examples/cesium/assets/material/arrow_1.png',
+              image: '../../../examples/cesium/assets/material/arrow_1.png',
               speed: 20
             })
           },
@@ -76,7 +76,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: Cesium.Color.AQUA,
-              image: '/examples/cesium/assets/material/arrow2.png',
+              image: '../../../examples/cesium/assets/material/arrow2.png',
               repeat: 20,
               percent: 1.0,
               speed: 30
@@ -89,7 +89,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: Cesium.Color.fromCssColorString('#66bd63'),
-              image: '/examples/cesium/assets/material/line.png',
+              image: '../../../examples/cesium/assets/material/line.png',
               repeat: 2.0,
               percent: 1.0,
               speed: 25
@@ -102,7 +102,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: Cesium.Color.fromCssColorString('#1a9850'),
-              image: '/examples/cesium/assets/material/lineAarrow.png',
+              image: '../../../examples/cesium/assets/material/lineAarrow.png',
               speed: 20,
               repeat: 5,
               percent: 1.0
@@ -115,7 +115,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: Cesium.Color.CHARTREUSE,
-              image: '/examples/cesium/assets/material/lineClr.png',
+              image: '../../../examples/cesium/assets/material/lineClr.png',
               percent: 1.0,
               speed: 25
             })
@@ -126,7 +126,7 @@
           name: '纯纹理流动',
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
-              image: '/examples/cesium/assets/material/lineClr2.png',
+              image: '../../../examples/cesium/assets/material/lineClr2.png',
               percent: 1.0,
               speed: 10
             })
@@ -138,7 +138,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: new Cesium.Color(89 / 255, 249 / 255, 255 / 255, 0.8),
-              image: '/examples/cesium/assets/material/LineDataTrans.png',
+              image: '../../../examples/cesium/assets/material/LineDataTrans.png',
               percent: 1.0,
               speed: 8
             })
@@ -150,7 +150,7 @@
           createMaterial: function () {
             return new Cesium.PolylineFlowMaterialProperty({
               color: Cesium.Color.fromCssColorString('#00ff00'),
-              image: '/examples/cesium/assets/material/LinkPulse.png',
+              image: '../../../examples/cesium/assets/material/LinkPulse.png',
               percent: 1.0,
               speed: 3
             })
@@ -173,7 +173,7 @@
       function addMaterialLine(catalogItem, index) {
         var polylineOptions = {
           positions: getLinePositions(index),
-          // width: catalogItem.clampToGround ? GROUND_LINE_WIDTH : DEFAULT_LINE_WIDTH,
+          / width: catalogItem.clampToGround ? GROUND_LINE_WIDTH : DEFAULT_LINE_WIDTH,
           width: 10,
           material: catalogItem.createMaterial()
         }

@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>喷泉粒子</title>
-  <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-  <script src="/examples/shared/example-gui.js"></script>
-  <script src="/cesium/Cesium.js"></script>
-  <script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+  <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+  <script src="../../../examples/shared/example-gui.js"></script>
+  <script src="../../../cesium/Cesium.js"></script>
+  <script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -86,7 +86,7 @@
         endScale: 20.0,
       };
       Cesium.knockout.track(viewModel);
-      // ExampleGui 参数面板
+      / ExampleGui 参数面板
       ExampleGui.addSlider('emissionRate', 40.0, 0, 100, 1, function (value) {
         viewModel.emissionRate = value;
       });
@@ -160,7 +160,7 @@
         }
       })
       var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
-        image: '/examples/cesium/assets/sampleData/image/fountain.png',
+        image: '../../../examples/cesium/assets/sampleData/image/fountain.png',
         scale: viewModel.scale,
         startColor: new Cesium.Color(1, 1, 1, 0.6),
         endColor: new Cesium.Color(0.8, 0.86, 1, 0.4),
@@ -183,7 +183,7 @@
       const gravityScratch = new Cesium.Cartesian3();
 
       function applyGravity(p, dt) {
-        // We need to compute a local up vector for each particle in geocentric space.
+        / We need to compute a local up vector for each particle in geocentric space.
         const position = p.position;
 
         Cesium.Cartesian3.normalize(position, gravityScratch);
@@ -203,7 +203,7 @@
       viewer.scene.preUpdate.addEventListener(function (scene, time) {
         particleSystem.modelMatrix = computeModelMatrix(entity, time);
 
-        // Account for any changes to the emitter model matrix.
+        / Account for any changes to the emitter model matrix.
         particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
       });
 

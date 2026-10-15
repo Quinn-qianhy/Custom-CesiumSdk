@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>流动飞线</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -87,24 +87,24 @@
         });
       }
       var promise = Cesium.GeoJsonDataSource.load(
-        '/data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
+        '../../../data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
       );
       promise
         .then(function(dataSource) {
           viewer.dataSources.add(dataSource);
 
-          //Get the array of entities
+          /Get the array of entities
           var entities = dataSource.entities.values;
 
           var colorHash = {};
           for (var i = 0; i < entities.length; i++) {
-            //For each entity, create a random color based on the state name.
-            //Some states have multiple entities, so we store the color in a
-            //hash so that we use the same color for the entire state.
+            /For each entity, create a random color based on the state name.
+            /Some states have multiple entities, so we store the color in a
+            /hash so that we use the same color for the entire state.
             var entity = entities[i];
             var name = entity.name;
 
-            //Set the polygon material to our random color.
+            /Set the polygon material to our random color.
             entity.polyline.material = new Cesium.PolylineTrailMaterialProperty(
               {
                 speed: 16 * Math.random(),
@@ -116,7 +116,7 @@
           }
         })
         .catch(function(error) {
-          //Display any errrors encountered while loading.
+          /Display any errrors encountered while loading.
           window.alert(error);
         });
     

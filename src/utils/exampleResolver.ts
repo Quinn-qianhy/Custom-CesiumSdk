@@ -1,4 +1,5 @@
 import type { ExamplePage, ExampleType } from '@/types/example'
+import { withBase } from '@/utils/withBase'
 
 /** 从菜单页解析 Vue 组件 ID（type=vue 时 url 即 componentId） */
 export function resolveComponentId(
@@ -57,18 +58,18 @@ export function resolveHtmlExampleRouteParam(urlOrPath: string): string {
 export function getHtmlExampleFetchPath(examplePath: string): string {
   const relative = resolveHtmlExampleRouteParam(examplePath)
   if (!relative) {
-    return '/examples/'
+    return withBase('/examples/')
   }
 
   if (relative.startsWith('cesium/') || relative.startsWith('openlayers/')) {
-    return `/examples/${relative}`
+    return withBase(`/examples/${relative}`)
   }
 
   // 兼容旧路由：仅文件名时按前缀推断引擎
   const fileName = relative.split('/').pop() ?? relative
   if (fileName.toLowerCase().startsWith('ol')) {
-    return `/examples/openlayers/html/${fileName}`
+    return withBase(`/examples/openlayers/html/${fileName}`)
   }
 
-  return `/examples/cesium/html/${fileName}`
+  return withBase(`/examples/cesium/html/${fileName}`)
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
+import { withBase } from '../../utils/withBase'
 const { onMounted, GUI, Cesium, useExamplesStore, getViewer, getGuiMount } = useCommonImports()
 const store = useExamplesStore()
 
@@ -59,7 +60,7 @@ onMounted(() => {
         color: Cesium.Color.fromCssColorString("#a6d96a"),
         repeat: 4.0,
         percent: 1.0,
-        image: "/examples/cesium/assets/material/arrow_1.png",
+        image: withBase("/examples/cesium/assets/material/arrow_1.png"),
         speed: 20
       })
     }
@@ -78,7 +79,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: Cesium.Color.AQUA,
-        image: "/examples/cesium/assets/material/arrow2.png",
+        image: withBase("/examples/cesium/assets/material/arrow2.png"),
         repeat: 20,
         percent: 1.0,
         speed: 30
@@ -99,7 +100,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: Cesium.Color.fromCssColorString("#66bd63"),
-        image: "/examples/cesium/assets/material/line.png",
+        image: withBase("/examples/cesium/assets/material/line.png"),
         repeat: 2.0,
         percent: 1.0,
         speed: 25
@@ -119,7 +120,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: Cesium.Color.fromCssColorString("#1a9850"),
-        image: "/examples/cesium/assets/material/lineAarrow.png",
+        image: withBase("/examples/cesium/assets/material/lineAarrow.png"),
         speed: 20,
         repeat: 5,
         percent: 1.0
@@ -139,7 +140,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: Cesium.Color.CHARTREUSE,
-        image: "/examples/cesium/assets/material/lineClr.png",
+        image: withBase("/examples/cesium/assets/material/lineClr.png"),
         percent: 1.0,
         speed: 25
       })
@@ -158,7 +159,7 @@ onMounted(() => {
       width: 10,
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
-        image: "/examples/cesium/assets/material/lineClr2.png",
+        image: withBase("/examples/cesium/assets/material/lineClr2.png"),
         percent: 1.0,
         speed: 10
       })
@@ -177,7 +178,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: new Cesium.Color(89 / 255, 249 / 255, 255 / 255, 0.8),
-        image: "/examples/cesium/assets/material/LineDataTrans.png",
+        image: withBase("/examples/cesium/assets/material/LineDataTrans.png"),
         percent: 1.0,
         speed: 8
       })
@@ -196,7 +197,7 @@ onMounted(() => {
       arcType: Cesium.ArcType.NONE,
       material: new Cesium.PolylineFlowMaterialProperty({
         color: Cesium.Color.fromCssColorString("#00ff00"),
-        image: "/examples/cesium/assets/material/LinkPulse.png",
+        image: withBase("/examples/cesium/assets/material/LinkPulse.png"),
         percent: 1.0,
         speed: 3
       })

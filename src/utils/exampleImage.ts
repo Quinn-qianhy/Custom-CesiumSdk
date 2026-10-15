@@ -1,3 +1,5 @@
+import { withBase } from './withBase'
+
 /** 解析示例卡片缩略图 URL（支持 /examples/{engine}/cards/ 路径，编码空格） */
 export function resolveExampleImageUrl(imagePath: string): string {
   if (!imagePath) {
@@ -27,5 +29,5 @@ export function resolveExampleImageUrl(imagePath: string): string {
   const dir = normalized.slice(0, slashIndex + 1)
   const fileName = normalized.slice(slashIndex + 1)
 
-  return dir + encodeURIComponent(fileName).replace(/%2F/g, '/')
+  return withBase(dir + encodeURIComponent(fileName).replace(/%2F/g, '/'))
 }

@@ -4,15 +4,15 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>测试</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <script src="/examples/shared/pluginJs/cesium-viewshed.js"></script>
-  <!-- <script src="/examples/shared/pluginJs/ViewShed3D.js"></script> -->
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <script src="../../../examples/shared/pluginJs/cesium-viewshed.js"></script>
+  <!-- <script src="../../../examples/shared/pluginJs/ViewShed3D.js"></script> -->
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
 
   <style>
     html,
@@ -67,13 +67,13 @@
       })
     var arrViewField = [];
     var viewModel = {
-      verticalAngle: 90, //垂直夹角
-      horizontalAngle: 120, //水平夹角
-      distance: 10, //观测距离
-      alpha: 0.5, //透明度
+      verticalAngle: 90, /垂直夹角
+      horizontalAngle: 120, /水平夹角
+      distance: 10, /观测距离
+      alpha: 0.5, /透明度
     };
     Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
+    / ExampleGui 参数面板
     ExampleGui.addSlider('水平夹角', 120, 1, 180, 1, function(value) {
       viewModel.horizontalAngle = value;
     });
@@ -89,7 +89,7 @@ Cesium.knockout
       .subscribe(function (newValue) {
         if (Number(newValue)) {
           viewModel.horizontalAngle = newValue;
-          // clearAllViewField()
+          / clearAllViewField()
         }
       });
     Cesium.knockout
@@ -97,7 +97,7 @@ Cesium.knockout
       .subscribe(function (newValue) {
         if (Number(newValue)) {
           viewModel.verticalAngle = newValue;
-          // clearAllViewField()
+          / clearAllViewField()
         }
       });
     Cesium.knockout
@@ -105,7 +105,7 @@ Cesium.knockout
       .subscribe(function (newValue) {
         if (Number(newValue)) {
           viewModel.alpha = newValue;
-          // clearAllViewField()
+          / clearAllViewField()
         }
       });
 
@@ -121,7 +121,7 @@ Cesium.knockout
       });
       arrViewField.push(e)
     }
-    // 清除可视域
+    / 清除可视域
     function clearAllViewField() {
       for (var e = 0, i = arrViewField.length; e < i; e++) {
         arrViewField[e].destroy()

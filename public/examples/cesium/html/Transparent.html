@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>地表透明</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -46,7 +46,7 @@
       globe.translucency.frontFaceAlphaByDistance = alphaByDistance
       globe.translucency.backFaceAlphaByDistance = new Cesium.NearFarScalar(400.0, 0.0, 800.0, 1.0)
 
-      var modelUrl = '/examples/cesium/assets/sampleData/models/ParcLeadMine.glb'
+      var modelUrl = '../../../examples/cesium/assets/sampleData/models/ParcLeadMine.glb'
       var position = Cesium.Cartesian3.fromDegrees(-3.82518, 53.11728, 50)
 
       viewer.entities.add({

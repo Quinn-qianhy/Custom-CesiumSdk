@@ -4,10 +4,10 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>管道流向动态展示</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -46,7 +46,7 @@
 // 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
 (async function () {
     "use script";
-    // Power Plant design model provided by Bentley Systems
+    / Power Plant design model provided by Bentley Systems
     Cesium.ExperimentalFeatures.enableModelExperimental = true;
     const viewer = new Cesium.Viewer("cesiumContainer",{timeline:true});
     const scene = viewer.scene;
@@ -64,7 +64,7 @@
             }
           },
           fragmentShaderText: `
-            // Color tiles by distance to the camera
+            / Color tiles by distance to the camera
             void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material)
             {
                 float alpha = texture2D(u_mapmap, vec2(fract(fsInput.attributes.texCoord_0.s - czm_frameNumber/100.0),fsInput.attributes.texCoord_0.t)).a;

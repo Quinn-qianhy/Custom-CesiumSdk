@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>视角记录</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -33,7 +33,7 @@
       updateViews: true
     }
     var startView = {
-      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), //四川省政府、
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), /四川省政府、
     }
     var viewer = new Cesium.Viewer("cesiumContainer", {
       scene3Donly: true,

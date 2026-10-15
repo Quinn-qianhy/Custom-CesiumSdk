@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>Primitive大量点</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -34,11 +34,11 @@
           }),
         )
       });
-      //定义 点 的属性
+      /定义 点 的属性
       var primitive = new Cesium.PointPrimitiveCollection();
       var points = viewer.scene.primitives.add(primitive);
 
-      // 添加单个点
+      / 添加单个点
       function addPoint() {
         points.add({
           position: new Cesium.Cartesian3.fromDegrees(104.08, 30.65, 0),
@@ -50,7 +50,7 @@
         });
       }
 
-      // 添加大量点
+      / 添加大量点
       function addPoints() {
         for (var longitude = 0; longitude < 90; longitude++) {
           var color = Cesium.Color.PINK;
@@ -65,7 +65,7 @@
           }
         }
         viewer.camera.setView({
-          destination: Cesium.Cartesian3.fromDegrees(54.08, 30.65, 20000000.0), //四川省政府
+          destination: Cesium.Cartesian3.fromDegrees(54.08, 30.65, 20000000.0), /四川省政府
         });
       }
 

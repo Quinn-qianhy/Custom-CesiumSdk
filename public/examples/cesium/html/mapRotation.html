@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>自定义天空盒</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -35,7 +35,7 @@
               enablePickFeatures: false,
             },
           ),
-        ), // 初始化使用 ArcGIS 卫星图
+        ), / 初始化使用 ArcGIS 卫星图
       });
 
     selectImage(1)
@@ -44,36 +44,36 @@
         case 1:
           viewer.scene.skyBox = new Cesium.SkyBox({
             sources: {
-              negativeX: "/examples/cesium/assets/SkyBox/img1/mx.jpg",
-              negativeY: "/examples/cesium/assets/SkyBox/img1/my.jpg",
-              negativeZ: "/examples/cesium/assets/SkyBox/img1/mz.jpg",
-              positiveX: "/examples/cesium/assets/SkyBox/img1/px.jpg",
-              positiveY: "/examples/cesium/assets/SkyBox/img1/py.jpg",
-              positiveZ: "/examples/cesium/assets/SkyBox/img1/pz.jpg",
+              negativeX: "../../../examples/cesium/assets/SkyBox/img1/mx.jpg",
+              negativeY: "../../../examples/cesium/assets/SkyBox/img1/my.jpg",
+              negativeZ: "../../../examples/cesium/assets/SkyBox/img1/mz.jpg",
+              positiveX: "../../../examples/cesium/assets/SkyBox/img1/px.jpg",
+              positiveY: "../../../examples/cesium/assets/SkyBox/img1/py.jpg",
+              positiveZ: "../../../examples/cesium/assets/SkyBox/img1/pz.jpg",
             }
           })
           break
         case 2:
         viewer.scene.skyBox = new Cesium.SkyBox({
             sources: {
-              negativeX: "/examples/cesium/assets/SkyBox/img2/mx.jpg",
-              negativeY: "/examples/cesium/assets/SkyBox/img2/my.jpg",
-              negativeZ: "/examples/cesium/assets/SkyBox/img2/mz.jpg",
-              positiveX: "/examples/cesium/assets/SkyBox/img2/px.jpg",
-              positiveY: "/examples/cesium/assets/SkyBox/img2/py.jpg",
-              positiveZ: "/examples/cesium/assets/SkyBox/img2/pz.jpg",
+              negativeX: "../../../examples/cesium/assets/SkyBox/img2/mx.jpg",
+              negativeY: "../../../examples/cesium/assets/SkyBox/img2/my.jpg",
+              negativeZ: "../../../examples/cesium/assets/SkyBox/img2/mz.jpg",
+              positiveX: "../../../examples/cesium/assets/SkyBox/img2/px.jpg",
+              positiveY: "../../../examples/cesium/assets/SkyBox/img2/py.jpg",
+              positiveZ: "../../../examples/cesium/assets/SkyBox/img2/pz.jpg",
             }
           })
           break
         case 3:
         viewer.scene.skyBox = new Cesium.SkyBox({
             sources: {
-              negativeX: "/examples/cesium/assets/SkyBox/img3/mx.jpg",
-              negativeY: "/examples/cesium/assets/SkyBox/img3/my.jpg",
-              negativeZ: "/examples/cesium/assets/SkyBox/img3/mz.jpg",
-              positiveX: "/examples/cesium/assets/SkyBox/img3/px.jpg",
-              positiveY: "/examples/cesium/assets/SkyBox/img3/py.jpg",
-              positiveZ: "/examples/cesium/assets/SkyBox/img3/pz.jpg",
+              negativeX: "../../../examples/cesium/assets/SkyBox/img3/mx.jpg",
+              negativeY: "../../../examples/cesium/assets/SkyBox/img3/my.jpg",
+              negativeZ: "../../../examples/cesium/assets/SkyBox/img3/mz.jpg",
+              positiveX: "../../../examples/cesium/assets/SkyBox/img3/px.jpg",
+              positiveY: "../../../examples/cesium/assets/SkyBox/img3/py.jpg",
+              positiveZ: "../../../examples/cesium/assets/SkyBox/img3/pz.jpg",
             }
           })
           break

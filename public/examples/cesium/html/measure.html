@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>量算</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -42,7 +42,7 @@
       })
       viewer.scene.globe.depthTestAgainstTerrain = true
 
-      // 山地场景，便于高度/角度量算观察地形拾取效果
+      / 山地场景，便于高度/角度量算观察地形拾取效果
       viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(103.484, 29.556, 6000),
         orientation: {

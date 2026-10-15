@@ -4,10 +4,10 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>局部地形(本地自制地形)加载</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -43,7 +43,7 @@
         )
     })
 
-    //初始地球色调
+    /初始地球色调
     var layer = viewer.imageryLayers.get(0)
     layer.saturation = 0.5
     layer.hue = 0.56

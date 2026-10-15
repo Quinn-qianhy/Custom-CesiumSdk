@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>百度地图（偏移）</title>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -26,7 +26,7 @@
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
           new Cesium.BaiDuMapImageryProvider({
-            // url: "http://online{s}.map.bdimg.com/tile/?x={x}&y={y}&z={z}&qt=vtile&styles=ph&showtext=1&scaler=1&v=083",
+            / url: "http://online{s}.map.bdimg.com/tile/?x={x}&y={y}&z={z}&qt=vtile&styles=ph&showtext=1&scaler=1&v=083",
             url: "http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1",
           }),
         ),

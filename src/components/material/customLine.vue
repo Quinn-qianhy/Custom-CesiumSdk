@@ -2,6 +2,7 @@
 // @ts-nocheck
 import { useCommonImports } from '../../hooks/useCommonImports'
 import CustomMaterialLine from '../../utils/customMaterial/polylineFlow'
+import { withBase } from '../../utils/withBase'
 
 const { onMounted, GUI, Cesium, useExamplesStore, getViewer, getGuiMount } = useCommonImports()
 const store = useExamplesStore()
@@ -34,7 +35,7 @@ onMounted(() => {
   viewer.zoomTo(viewer.entities);
   // CustomMaterialLine 是工厂函数，需传入贴图与颜色生成流动线材质
   redLine.polyline.material = CustomMaterialLine({
-    image: '/examples/cesium/assets/material/arrow_1.png',
+    image: withBase('/examples/cesium/assets/material/arrow_1.png'),
     color: Cesium.Color.RED
   })
 

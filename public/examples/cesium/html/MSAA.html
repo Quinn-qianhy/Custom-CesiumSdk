@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>水面倒影</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -68,7 +68,7 @@
       Promise.resolve(tileset_nanpu)
         .then(function(tileset) {
           viewer.scene.primitives.add(tileset);
-          var surface = Cesium.Cartesian3.fromDegrees(121.5009, 31.2075, -5.7); //-5.7
+          var surface = Cesium.Cartesian3.fromDegrees(121.5009, 31.2075, -5.7); /-5.7
           var mat = Cesium.Transforms.eastNorthUpToFixedFrame(surface);
           var rotationZ = Cesium.Matrix4.fromRotationTranslation(
             Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(-22.33))
@@ -79,10 +79,10 @@
         .catch(function(error) {
           console.log(error);
         });
-      // http://180.167.213.122:18000/model/nanpudaqiao/
+      / http://180.167.213.122:18000/model/nanpudaqiao/
       let water;
       Cesium.GeoJsonDataSource.load(
-        '/data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
+        '../../../data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
       ).then(source => {
         let entities = source.entities.values;
         for (let i = 0; i < entities.length; i++) {
@@ -100,10 +100,10 @@
             scene: scene,
             materialsOptions: {
               reflector: true,
-              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), //水的颜色
-              frequency: 1000, // 控制波数的数字
-              animationSpeed: 0.005, // 水流速度
-              amplitude: 35, //控制水波振幅的数字
+              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), /水的颜色
+              frequency: 1000, / 控制波数的数字
+              animationSpeed: 0.005, / 水流速度
+              amplitude: 35, /控制水波振幅的数字
               distortionScale: 8
             }
           });
@@ -124,7 +124,7 @@
           new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(120), 0, 0)
         ),
         model: {
-          uri: "/examples/cesium/assets/sampleData/models/a.glb",
+          uri: "../../../examples/cesium/assets/sampleData/models/a.glb",
           scale: 0.001
         }
       });
@@ -139,14 +139,14 @@
           new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(70), 0, 0)
         ),
         model: {
-          uri: "/examples/cesium/assets/sampleData/models/b.glb",
+          uri: "../../../examples/cesium/assets/sampleData/models/b.glb",
           scale: 1
         }
       });
       
       viewer.scene._useMSAA = true;
       ExampleGui.addToolbarButton("msaa", function() {
-        // viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
+        / viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
         viewer.scene._useMSAA = !viewer.scene._useMSAA;
       });
     

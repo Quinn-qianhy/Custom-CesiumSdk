@@ -163,3 +163,8 @@ declare module 'cesium' {
 
   export function defined(value: unknown): boolean
 }
+
+// Vue 侧 Cesium 打进 bundle 后需显式指定静态资源根（src/main.ts 赋值）
+interface Window {
+  CESIUM_BASE_URL?: string
+}

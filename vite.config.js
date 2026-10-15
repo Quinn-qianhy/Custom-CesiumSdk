@@ -43,6 +43,9 @@ const buildVersions = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // 部署到 GitHub Pages 项目页时在 CI 里注入 VITE_BASE=/Custom-CesiumSdk/，
+  // 本地开发与构建保持 / 不受影响
+  base: process.env.VITE_BASE || '/',
   plugins: [vue()],
   define: {
     __BUILD_VERSIONS__: JSON.stringify(buildVersions)

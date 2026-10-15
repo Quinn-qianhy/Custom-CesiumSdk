@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>等高线示例</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -29,7 +29,7 @@
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer", {
       terrain: new Cesium.Terrain(
-          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true }) //Needed to visualize slope
+          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestVertexNormals: true }) /Needed to visualize slope
         ),
     });
 
@@ -57,7 +57,7 @@
     };
 
     Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
+    / ExampleGui 参数面板
     ExampleGui.addToggleButton('渐变曲率', false, function(checked) {
       viewModel.gradient = checked;
     });

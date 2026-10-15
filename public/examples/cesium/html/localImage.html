@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>本地图片加载</title>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -27,9 +27,9 @@
         baseLayerPicker: false,
       });
 
-      //添加本地影像
+      /添加本地影像
       var localImage = new Cesium.SingleTileImageryProvider({
-        url: "/examples/cesium/assets/singlePicture/南河片区.png",
+        url: "../../../examples/cesium/assets/singlePicture/南河片区.png",
         rectangle: Cesium.Rectangle.fromDegrees(
           105.81524848937988,
           32.41387367248535,
@@ -39,7 +39,7 @@
       });
       viewer.scene.imageryLayers.addImageryProvider(localImage);
 
-      //初始定位位置
+      /初始定位位置
       viewer.camera.flyTo({
         destination: {
           x: -1470798.012489264,

@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>地形夸张</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -38,7 +38,7 @@
         new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain")),
       );
       viewer.scene.verticalExaggeration = 3;
-      viewer.scene.verticalExaggerationRelativeHeight = 0.0; // 默认相对椭球面
+      viewer.scene.verticalExaggerationRelativeHeight = 0.0; / 默认相对椭球面
 
       var scene = viewer.scene;
       var viewModel = {
@@ -47,7 +47,7 @@
 
       Cesium.knockout.track(viewModel);
 
-      // ExampleGui 参数面板
+      / ExampleGui 参数面板
       ExampleGui.addSlider(
         "地形夸张",
         viewModel.verticalExaggeration || 3,
@@ -67,7 +67,7 @@
           scene.verticalExaggeration = viewModel.verticalExaggeration;
         });
 
-      //初始定位位置
+      /初始定位位置
       viewer.camera.setView({
         destination: {
           x: -1135832.2500233247,

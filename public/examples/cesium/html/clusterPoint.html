@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>聚合点</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -34,7 +34,7 @@
     })
 
     viewer.scene.globe.depthTestAgainstTerrain = false
-    //初始定位位置
+    /初始定位位置
     viewer.camera.flyTo({
       destination: {
         x: -1296496.9471364329,
@@ -56,29 +56,29 @@
       }
     })
 
-    //entity方式自定义billboard
+    /entity方式自定义billboard
     function addPoint(lat, lon) {
       cluster.entities.add({
         position: Cesium.Cartesian3.fromDegrees(lat, lon),
         billboard: {
-          image: '/examples/cesium/assets/clusterPicture/billBoardIcon.png',
+          image: '../../../examples/cesium/assets/clusterPicture/billBoardIcon.png',
           show: true,
           scale: 0.6
-          // pixelOffset: new Cesium.Cartesian2(0, -20),
+          / pixelOffset: new Cesium.Cartesian2(0, -20),
         }
       })
     }
 
-    //根据差值随机生成值
+    /根据差值随机生成值
     function randomRange(myMin, myMax) {
       return Math.random() * (myMax - myMin + 1) + myMin;
     }
 
-    //entity方式添加大量billboard点 
+    /entity方式添加大量billboard点 
     function addPoints(num) {
       for (let i = 0; i < num; i++) {
-        const lat = randomRange(98.33, 105.05) //根据经度差生成随机值
-        const lon = randomRange(28.51, 32.33) //根据纬度差生成随机值
+        const lat = randomRange(98.33, 105.05) /根据经度差生成随机值
+        const lon = randomRange(28.51, 32.33) /根据纬度差生成随机值
         addPoint(lat, lon)
       }
     }
@@ -101,17 +101,17 @@
 
         cluster.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER
         if (clusteredEntities.length >= 100) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/100+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/100+.png'
         } else if (clusteredEntities.length >= 50) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/50+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/50+.png'
         } else if (clusteredEntities.length >= 40) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/40+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/40+.png'
         } else if (clusteredEntities.length >= 30) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/30+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/30+.png'
         } else if (clusteredEntities.length >= 20) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/20+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/20+.png'
         } else if (clusteredEntities.length >= 10) {
-          cluster.billboard.image = '/examples/cesium/assets/clusterPicture/10+.png'
+          cluster.billboard.image = '../../../examples/cesium/assets/clusterPicture/10+.png'
         } else {
           var singleDigitPins = new Array(8);
           cluster.billboard.image =
@@ -120,7 +120,7 @@
       });
 
      
-      //聚合开关
+      /聚合开关
       function clusterEnable() {
         dataSource.clustering.enabled = !dataSource.clustering.enabled
       }

@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>天气粒子特效</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -35,7 +35,7 @@
     var tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(40866));
 
     viewer.scene.primitives.add(tileset);
-    //初始定位位置
+    /初始定位位置
     viewer.camera.setView({
       destination: new Cesium.Cartesian3(
         1216356.033078094,
@@ -51,7 +51,7 @@
     })
     var snowSystem;
     var rainSystem;
-    //Rain
+    /Rain
     function rain() {
       var rainParticleSize = 15.0;
       var rainRadius = 100000.0;
@@ -98,7 +98,7 @@
         emitter: new Cesium.SphereEmitter(rainRadius),
         startScale: 1.0,
         endScale: 0.0,
-        image: "/examples/cesium/assets/sampleData/image/circular_particle.png",
+        image: "../../../examples/cesium/assets/sampleData/image/circular_particle.png",
         emissionRate: 9000.0,
         startColor: new Cesium.Color(0.27, 0.5, 0.7, 0.0),
         endColor: new Cesium.Color(0.27, 0.5, 0.7, 0.98),
@@ -106,7 +106,7 @@
         updateCallback: rainUpdate,
       });
     }
-    //Snow
+    /Snow
     function snow() {
       var snowParticleSize = 12.0;
       var snowRadius = 100000.0;
@@ -156,7 +156,7 @@
         emitter: new Cesium.SphereEmitter(snowRadius),
         startScale: 0.5,
         endScale: 1.0,
-        image:'/examples/cesium/assets/sampleData/image/snowflake_particle.png' ,
+        image:'../../../examples/cesium/assets/sampleData/image/snowflake_particle.png' ,
         emissionRate: 7000.0,
         startColor: Cesium.Color.WHITE.withAlpha(0.0),
         endColor: Cesium.Color.WHITE.withAlpha(1.0),

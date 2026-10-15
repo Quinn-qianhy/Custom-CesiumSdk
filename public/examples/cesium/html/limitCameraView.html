@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>限制视角范围</title>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -31,7 +31,7 @@
         )
       });
 
-      //初始定位位置
+      /初始定位位置
       function flyDefault() {
         viewer.camera.flyTo({
           destination: {
@@ -58,7 +58,7 @@
 
       var centerPosition = Cesium.Cartesian3.fromDegrees(104.08, 30.65);
 
-      //创建视角范围
+      /创建视角范围
       var entity = viewer.entities.add({
         name: "Dome",
         position: centerPosition,
@@ -83,7 +83,7 @@
         return distance;
       }
 
-      //相机移动事件
+      /相机移动事件
       function cameraMove() {
         if (viewer && centerPosition) {
           var distance = getDistance();
@@ -93,7 +93,7 @@
         }
       }
 
-      //注册 监听相机移动事件
+      /注册 监听相机移动事件
       viewer.camera.changed.addEventListener(cameraMove);
     </script>
   </body>

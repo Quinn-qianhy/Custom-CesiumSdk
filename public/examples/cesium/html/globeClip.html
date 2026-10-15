@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>地形开挖</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -48,7 +48,7 @@
             result.shift();
             var points = result;
             var pointsLength = points.length;
-            // Create center points for each clipping plane
+            / Create center points for each clipping plane
             var clippingPlanes = [];
             for (var i = 0; i < pointsLength; ++i) {
               var nextIndex = (i + 1) % pointsLength;
@@ -81,7 +81,7 @@
               );
               normal = Cesium.Cartesian3.normalize(normal, normal);
 
-              // Compute distance by pretending the plane is at the origin
+              / Compute distance by pretending the plane is at the origin
               var originCenteredPlane = new Cesium.Plane(normal, 0.0);
               var distance = Cesium.Plane.getPointDistance(
                 originCenteredPlane,
@@ -98,14 +98,14 @@
                 enabled: true
               }
             );
-            // viewer.entities.add({
-            //   name: "Green extruded polygon",
-            //   polygon: {
-            //     hierarchy: points,
-            //     height: -50.0,
-            //     material: Cesium.Color.GREEN
-            //   }
-            // });
+            / viewer.entities.add({
+            /   name: "Green extruded polygon",
+            /   polygon: {
+            /     hierarchy: points,
+            /     height: -50.0,
+            /     material: Cesium.Color.GREEN
+            /   }
+            / });
 
             points.push(points[0]);
             var excavationregion_bottom = viewer.scene.primitives.add(
@@ -128,14 +128,14 @@
                   diffuseMaterial: {
                     type: "DiffuseMap",
                     uniforms: {
-                      image: "/examples/cesium/assets/terrainClip/excavationregion_top.jpg"
+                      image: "../../../examples/cesium/assets/terrainClip/excavationregion_top.jpg"
                     }
                   },
                   bumpMaterial: {
                     type: "BumpMap",
                     uniforms: {
                       image:
-                        "/examples/cesium/assets/terrainClip/excavationregion_top_Normal.jpg",
+                        "../../../examples/cesium/assets/terrainClip/excavationregion_top_Normal.jpg",
                       strength: 0.8
                     }
                   }
@@ -176,14 +176,14 @@
                   diffuseMaterial: {
                     type: "DiffuseMap",
                     uniforms: {
-                      image: "/examples/cesium/assets/terrainClip/excavationregion_side.jpg"
+                      image: "../../../examples/cesium/assets/terrainClip/excavationregion_side.jpg"
                     }
                   },
                   bumpMaterial: {
                     type: "BumpMap",
                     uniforms: {
                       image:
-                        "/examples/cesium/assets/terrainClip/excavationregion_side_Normal.jpg",
+                        "../../../examples/cesium/assets/terrainClip/excavationregion_side_Normal.jpg",
                       strength: 0.8
                     }
                   }

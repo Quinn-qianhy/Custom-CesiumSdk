@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>航线飞行动画</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -43,7 +43,7 @@
       import Style from 'ol/style/Style.js'
       import VectorSource from 'ol/source/Vector.js'
       import { getWidth } from 'ol/extent.js'
-      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+      import { createGaodeImageryLayer } from '../../../examples/openlayers/ol/gaodeImageryLayer.js'
 
       const FLIGHTS_URL =
         'https://openlayers.org/en/latest/examples/data/openflights/flights.json'
@@ -80,10 +80,10 @@
         })
       )
 
-      // 每帧绘制飞行进度线（只注册一次，重新播放时复用）
+      / 每帧绘制飞行进度线（只注册一次，重新播放时复用）
       tileLayer.on('postrender', animateFlights)
 
-      // 每毫秒绘制的弧线点数，控制飞行动画速度
+      / 每毫秒绘制的弧线点数，控制飞行动画速度
       let pointsPerMs = 0.02
 
       function loadFlights() {

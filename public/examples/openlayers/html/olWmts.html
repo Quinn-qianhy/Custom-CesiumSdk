@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>WMTS</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -38,7 +38,7 @@
       import { get as getProjection } from 'ol/proj.js'
       import WMTS from 'ol/source/WMTS.js'
       import WMTSTileGrid from 'ol/tilegrid/WMTS.js'
-      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+      import { createGaodeImageryLayer } from '../../../examples/openlayers/ol/gaodeImageryLayer.js'
 
       const projection = getProjection('EPSG:3857')
       const projectionExtent = projection.getExtent()

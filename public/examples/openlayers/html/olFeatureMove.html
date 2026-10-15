@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>沿线移动标记</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -42,9 +42,9 @@
       import {
         createGaodeImageryLayer,
         DEFAULT_LON_LAT
-      } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+      } from '../../../examples/openlayers/ol/gaodeImageryLayer.js'
 
-      // 演示路线：北京长安街一带
+      / 演示路线：北京长安街一带
       const routeCoords = [
         [116.391, 39.907],
         [116.42, 39.907],
@@ -90,7 +90,7 @@
         })
       })
 
-      // 一轮动画时长（毫秒），由速度滑块控制
+      / 一轮动画时长（毫秒），由速度滑块控制
       let duration = 12000
       let startTime = Date.now()
 

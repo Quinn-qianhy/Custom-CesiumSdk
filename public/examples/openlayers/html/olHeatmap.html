@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>热力图</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -37,9 +37,9 @@
       import HeatmapLayer from 'ol/layer/Heatmap.js'
       import VectorSource from 'ol/source/Vector.js'
       import { fromLonLat } from 'ol/proj.js'
-      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+      import { createGaodeImageryLayer } from '../../../examples/openlayers/ol/gaodeImageryLayer.js'
 
-      // 2012 年全球 M5+ 地震数据（openlayers.org 官方 CDN）
+      / 2012 年全球 M5+ 地震数据（openlayers.org 官方 CDN）
       const vector = new HeatmapLayer({
         source: new VectorSource({
           url: 'https://openlayers.org/en/latest/examples/data/kml/2012_Earthquakes_Mag5.kml',

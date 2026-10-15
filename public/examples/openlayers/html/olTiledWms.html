@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Tiled WMS</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -35,7 +35,7 @@
       import View from 'ol/View.js'
       import TileLayer from 'ol/layer/WebGLTile.js'
       import TileWMS from 'ol/source/TileWMS.js'
-      import { createGaodeImageryLayer } from '/examples/openlayers/ol/gaodeImageryLayer.js'
+      import { createGaodeImageryLayer } from '../../../examples/openlayers/ol/gaodeImageryLayer.js'
 
       const wmsLayer = new TileLayer({
         extent: [-13884991, 2870341, -7455066, 6338219],

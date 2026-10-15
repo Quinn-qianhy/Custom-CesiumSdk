@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>建筑白模材质特效</title>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -36,7 +36,7 @@
           )
         )
       })
-      // viewer.scene.globe.show = false
+      / viewer.scene.globe.show = false
       viewer.scene.globe.depthTestAgainstTerrain = false
 
       Cesium.Cesium3DTileset.fromIonAssetId(75343, {
@@ -45,7 +45,7 @@
         .then(function (tileset) {
           viewer.scene.primitives.add(tileset)
 
-          // 旧版 appearanceGradientByHeight 已移除，改用 3D Tiles 样式按建筑高度渐变着色
+          / 旧版 appearanceGradientByHeight 已移除，改用 3D Tiles 样式按建筑高度渐变着色
           tileset.style = new Cesium.Cesium3DTileStyle({
             color: {
               conditions: [

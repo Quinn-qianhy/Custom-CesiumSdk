@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>测试</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
 
   <style>
     html,
@@ -68,7 +68,7 @@
     function addKMZ_gdp() {
       viewer.dataSources.add(
         Cesium.KmlDataSource.load(
-          "/examples/cesium/assets/sampleData/kml/gdpPerCapita2008.kmz",
+          "../../../examples/cesium/assets/sampleData/kml/gdpPerCapita2008.kmz",
           options
         )
       );
@@ -77,7 +77,7 @@
     function addScience() {
       viewer.dataSources.add(
         Cesium.KmlDataSource.load(
-          "/examples/cesium/assets/sampleData/kml/facilities/facilities.kml",
+          "../../../examples/cesium/assets/sampleData/kml/facilities/facilities.kml",
           options
         )
       )

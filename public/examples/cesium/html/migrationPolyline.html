@@ -3,10 +3,10 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>迁徙线效果</title>
-    <script src="/cesium/Cesium.js"></script>
-    <script src="/defaultAccessToken.js"></script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../cesium/Cesium.js"></script>
+    <script src="../../../defaultAccessToken.js"></script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -128,7 +128,7 @@
         viewer.entities.add({
           position: endPosition,
           billboard: {
-            image: '/examples/cesium/assets/clusterPicture/icon-addr.png',
+            image: '../../../examples/cesium/assets/clusterPicture/icon-addr.png',
             show: true,
             scale: 1.0
           }
@@ -141,7 +141,7 @@
         endPositions: endPositions,
         material: new Cesium.PolylineFlowMaterialProperty({
           color: Cesium.Color.CHARTREUSE,
-          image: '/examples/cesium/assets/material/lineClr.png',
+          image: '../../../examples/cesium/assets/material/lineClr.png',
           percent: 1.0,
           speed: 10
         })

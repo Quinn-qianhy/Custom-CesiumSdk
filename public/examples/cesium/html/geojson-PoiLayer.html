@@ -4,10 +4,10 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>geojson图层(POI数据)加载</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -46,7 +46,7 @@
 
       for (var o = 0; o < entities.length; o++) {
         var entity = entities[o];
-        entity._billboard.color = Cesium.Color.ORANGERED.withAlpha(.9), //添加默认样式
+        entity._billboard.color = Cesium.Color.ORANGERED.withAlpha(.9), /添加默认样式
         entity._billboard.scale = 0.5
       }
     })

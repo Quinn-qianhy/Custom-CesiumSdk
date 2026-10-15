@@ -4,10 +4,10 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>柱状统计示例</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -40,7 +40,7 @@
     viewer.scene.brightness.enabled = true;
     viewer.scene.brightness.uniforms.brightness = 1.5;
 
-    const promise = Cesium.GeoJsonDataSource.load('/data/geojson/' + encodeURIComponent('中国(省级).geojson'))
+    const promise = Cesium.GeoJsonDataSource.load('../../../data/geojson/' + encodeURIComponent('中国(省级).geojson'))
     promise.then(function (dataSource) {
         viewer.dataSources.add(dataSource);
         const entities = dataSource.entities.values

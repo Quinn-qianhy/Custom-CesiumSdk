@@ -3,13 +3,13 @@
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
     <title>倾斜摄影开挖</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+    <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <style>
       html,
       body,
@@ -79,10 +79,10 @@
       result.shift();
       var points = result;
       console.log(result);
-      tileset.flatten = true;//是否进行压平。值为true时执行压平
-      tileset.flattenHeight = 0;//将高度压到0
+      tileset.flatten = true;/是否进行压平。值为true时执行压平
+      tileset.flattenHeight = 0;/将高度压到0
       tileset.flattenPositions = result;
-      //场景渲染（渲染最新的压平效果）
+      /场景渲染（渲染最新的压平效果）
       viewer.scene.requestRender();
             })
         }
@@ -93,7 +93,7 @@
         height: 0,
       };
       Cesium.knockout.track(viewModel);
-    // ExampleGui 参数面板
+    / ExampleGui 参数面板
     ExampleGui.addSlider('Flatten Height', 0, 1, 1000, 0.1, function(value) {
       viewModel.height = value;
     });
@@ -101,7 +101,7 @@
 Cesium.knockout
         .getObservable(viewModel, "height")
         .subscribe(function (height) {
-          tileset.flattenHeight = height;//将高度压到0
+          tileset.flattenHeight = height;/将高度压到0
         }); 
     
 })();

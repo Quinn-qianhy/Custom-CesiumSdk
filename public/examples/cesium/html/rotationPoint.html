@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>绕点旋转</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -38,7 +38,7 @@
     var primitive = new Cesium.PointPrimitiveCollection()
     var points = viewer.scene.primitives.add(primitive)
 
-    // 添加单个点
+    / 添加单个点
     function addPoint() {
       points.add({
         position: new Cesium.Cartesian3.fromDegrees(104.08, 30.65, 0),
@@ -46,7 +46,7 @@
         pixelSize: 10
       })
       viewer.camera.setView({
-        // destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000.0),
+        / destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000.0),
         destination: {
           x: -1339648.3917152071,
           y: 5336854.133361579,
@@ -68,7 +68,7 @@
     }
     addPoint()
     viewer.camera.setView({
-        // destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000.0),
+        / destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000.0),
         destination: {
           x: -1339648.3917152071,
           y: 5336854.133361579,

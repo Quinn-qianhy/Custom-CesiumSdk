@@ -4,13 +4,13 @@
 <head>
   <link rel="shortcut icon" type="image/x-icon" />
   <title>景深效果</title>
-<script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+<script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+<script src="../../../cesium/Cesium.js"></script>
+<script src="../../../defaultAccessToken.js"> </script>
+  <link href="../../../cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+  <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
   <style>
     html,
     body,
@@ -33,7 +33,7 @@
     if (viewer.scene.imageryLayers.length > 0) {
       viewer.scene.imageryLayers.get(0).alpha = 0.35
     }
-    //初始定位位置
+    /初始定位位置
     viewer.camera.flyTo({
       destination: {
         x: -1469200.109729519,
@@ -65,7 +65,7 @@
       stepSize: 2.46,
     };
 
-    // ExampleGui 参数面板
+    / ExampleGui 参数面板
     ExampleGui.addToggleButton('是否开启', true, function(checked) {
       viewModel.show = checked;
       updatePostProcess();

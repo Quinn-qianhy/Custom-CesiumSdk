@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>地图导出</title>
-    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
-    <script src="/examples/shared/example-gui.js"></script>
-    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
-    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <script src="../../../vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="../../../examples/shared/example-gui.js"></script>
+    <link href="../../../vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="../../../examples/shared/example-gui.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css" rel="stylesheet" />
     <style>
       html,
@@ -51,7 +51,7 @@
 
       const statusEl = document.getElementById('status')
 
-      // OSM 瓦片支持 CORS，导出时画布不会被浏览器安全策略污染
+      / OSM 瓦片支持 CORS，导出时画布不会被浏览器安全策略污染
       const map = new Map({
         layers: [
           new TileLayer({
