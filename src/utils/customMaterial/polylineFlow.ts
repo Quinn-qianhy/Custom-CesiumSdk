@@ -10,7 +10,6 @@ import * as Cesium from "cesium"
 
 function CustomMaterialLine(options) {
   let Color = Cesium.Color,
-    defaultValue = Cesium.defaultValue,
     defined = Cesium.defined,
     Event = Cesium.Event,
     createPropertyDescriptor = Cesium.createPropertyDescriptor,
@@ -22,7 +21,8 @@ function CustomMaterialLine(options) {
 
   class PolylineCustomMaterialProperty {
     constructor(options) {
-      options = defaultValue(options, defaultValue.EMPTY_OBJECT);
+      // Cesium 1.107 起移除了 defaultValue，这里直接判空兜底
+      options = options || {};
       this._definitionChanged = new Event();
       this._color = undefined;
       this._colorSubscription = undefined;

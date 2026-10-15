@@ -254,7 +254,7 @@ const menu = [
           },
           {
             name: 'TMS服务',
-            image: '/examples/cesium/cards/3DTile_buildingMaterial.png',
+            image: '/examples/cesium/cards/geoserverTMS.png',
             type: 'html',
             url: '/examples/cesium/html/geoserverTMS.html',
             statusTags: ['hint'],
@@ -531,9 +531,8 @@ const menu = [
             type: 'html',
             url: '/examples/cesium/html/Viewshed Analysis.html',
             status: 'pending',
-            statusTags: ['server-data', 'cesium-api'],
-            statusReason:
-              '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件；缺少插件: ViewShed3D.js'
+            statusTags: ['cesium-api'],
+            statusReason: '使用定制 Cesium API 或扩展插件（cesium-viewshed.js）'
           }
         ]
       },

@@ -32,7 +32,11 @@ onMounted(() => {
     }
   });
   viewer.zoomTo(viewer.entities);
-  redLine.polyline.material = CustomMaterialLine
+  // CustomMaterialLine 是工厂函数，需传入贴图与颜色生成流动线材质
+  redLine.polyline.material = CustomMaterialLine({
+    image: '/examples/cesium/assets/material/arrow_1.png',
+    color: Cesium.Color.RED
+  })
 
   const typeOptions = {
 
