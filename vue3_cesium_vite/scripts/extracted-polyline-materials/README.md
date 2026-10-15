@@ -1,11 +1,11 @@
 # 线材质源码提取（globe-for-webgl → 对比用）
 
-从 `globe-for-webgl` 定制 Cesium 中提取的**箭头贴图流动**与**流动线**相关源码，供与 `vue3_cesium_vite` 或其他仓库对比。
+从 `globe-for-webgl` 定制 Cesium 中提取的**箭头贴图流动**与**流动线**相关源码，作为参考素材存放，供与 `vue3_cesium_vite` 的 Cesium 实现对比。
 
 ## 目录结构
 
 ```
-extracted-polyline-materials/
+vue3_cesium_vite/scripts/extracted-polyline-materials/
 ├── README.md
 └── globe-for-webgl/
     ├── PolylineFlowMaterialProperty.js    # 箭头/纹理贴图流动（核心）

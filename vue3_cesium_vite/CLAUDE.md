@@ -50,6 +50,11 @@ src/
 1. `src/config/config.js`（或 `olMenu.js`）添加菜单项；Vue 示例的 `url` 填组件 ID（与 `.vue` 文件名一致）
 2. `src/components/<category>/<name>.vue` 创建组件（`<script setup lang="ts">`）
 
+HTML 示例的完整流程（示例页 → 菜单注册与状态标记 → 缩略图截图 → 画廊验收）见项目 skill：
+
+- Cesium：`.cursor/skills/add-cesium-example/SKILL.md`
+- OpenLayers：`.cursor/skills/adapt-openlayers-official-example/SKILL.md`
+
 示例组件惯例：
 
 ```ts

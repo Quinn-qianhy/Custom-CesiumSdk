@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>气泡弹窗</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+
+    <script type="text/javascript">
+      "use script";
+      var CITIES = {
+        北京: [116.4, 39.9],
+        上海: [121.47, 31.23],
+        纽约: [-74.0, 40.71],
+      };
+
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          }),
+        ),
+      });
+
+      // 北京落在画面右下，便于观察固定世界坐标弹窗
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(114.5, 41.5, 1600000.0),
+      });
+
+      viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(116.4, 39.9),
+        point: {
+          pixelSize: 9,
+          color: Cesium.Color.CYAN,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 2,
+        },
+      });
+
+      var prompt = null;
+      var moveHandler = null;
+
+      function buildContent(name) {
+        var lonLat = CITIES[name];
+        return (
+          '<div style="min-width:120px;padding:2px 6px;">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:6px;">' +
+          name +
+          "</div>" +
+          '<div style="font-size:12px;line-height:1.7;">经度：' +
+          lonLat[0] +
+          "</div>" +
+          '<div style="font-size:12px;line-height:1.7;">纬度：' +
+          lonLat[1] +
+          "</div>" +
+          '<div style="font-size:12px;line-height:1.7;color:#7fd4ff;">点击内容可触发回调</div>' +
+          "</div>"
+        );
+      }
+
+      function destroyPrompt() {
+        if (moveHandler) {
+          moveHandler.destroy();
+          moveHandler = null;
+        }
+        if (prompt) {
+          prompt.destroy();
+          prompt = null;
+        }
+      }
+
+      // type=2 固定世界坐标：锚定在地图上，随地球转动
+      function createFixedPrompt(name) {
+        destroyPrompt();
+        var lonLat = CITIES[name];
+        prompt = new Cesium.Prompt(viewer.container, viewer.scene, {
+          type: 2,
+          position: Cesium.Cartesian3.fromDegrees(lonLat[0], lonLat[1]),
+          content: buildContent(name),
+          click: function () {
+            console.log("弹窗内容被点击：" + name);
+          },
+          close: function () {
+            prompt = null;
+          },
+        });
+      }
+
+      // type=1 跟随屏幕坐标：弹窗跟随鼠标位置
+      function createFollowPrompt() {
+        destroyPrompt();
+        prompt = new Cesium.Prompt(viewer.container, viewer.scene, {
+          type: 1,
+          position: new Cesium.Cartesian2(
+            viewer.canvas.clientWidth / 2,
+            viewer.canvas.clientHeight / 2,
+          ),
+          content: buildContent("北京"),
+        });
+        moveHandler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        moveHandler.setInputAction(
+          function (movement) {
+            if (prompt) {
+              prompt.update(movement.endPosition);
+            }
+          },
+          Cesium.ScreenSpaceEventType.MOUSE_MOVE,
+        );
+      }
+
+      function flyTo(name) {
+        var lonLat = CITIES[name];
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(lonLat[0], lonLat[1], 1200000.0),
+        });
+      }
+
+      // 暴露 API：new Cesium.Prompt(viewer.container, viewer.scene, opt)
+      ExampleGui.addDefaultButton("new Cesium.Prompt(viewer, opt)", function () {
+        createFixedPrompt("北京");
+      });
+      ExampleGui.addButton("创建固定弹窗：上海", function () {
+        createFixedPrompt("上海");
+      });
+      ExampleGui.addButton("创建固定弹窗：纽约", function () {
+        createFixedPrompt("纽约");
+      });
+      ExampleGui.addButton("创建跟随弹窗 type=1", createFollowPrompt);
+      ExampleGui.addButton("更新内容 setContent", function () {
+        if (prompt) {
+          prompt.setContent(buildContent("上海"));
+        }
+      });
+      ExampleGui.addButton("显示 show", function () {
+        if (prompt) {
+          prompt.show();
+        }
+      });
+      ExampleGui.addButton("隐藏 hide", function () {
+        if (prompt) {
+          prompt.hide();
+        }
+      });
+      ExampleGui.addButton("销毁弹窗 destroy", destroyPrompt);
+      ExampleGui.addButton("飞往北京", function () {
+        flyTo("北京");
+      });
+      ExampleGui.addButton("飞往纽约", function () {
+        flyTo("纽约");
+      });
+      ExampleGui.addButton("检测视野 isInView", function () {
+        console.log("isInView:", prompt ? prompt.isInView() : false);
+      });
+
+      ExampleGui.finishedLoading();
+    </script>
+  </body>
+</html>

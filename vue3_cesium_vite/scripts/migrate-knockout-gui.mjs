@@ -8,7 +8,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples/cesium/cards')
+const EXAMPLES_DIR = path.resolve(__dirname, '../public/examples/cesium/html')
 
 const LIL_GUI_CSS =
   '<link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />'

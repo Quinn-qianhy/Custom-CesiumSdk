@@ -1,3 +1,5 @@
+import pkg from '../../package.json'
+
 export interface SiteLink {
   label: string
   url: string
@@ -31,7 +33,7 @@ export interface SiteConfig {
 const siteConfig: SiteConfig = {
   siteName: 'HY 3D API 示例中心',
   brandShort: 'HY 3D API',
-  version: '0.0.0',
+  version: pkg.version,
   buildDate: '20260623',
   author: 'qianhy',
   authorLabel: '开发者',

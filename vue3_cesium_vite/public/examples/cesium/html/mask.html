@@ -1,111 +1,277 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <title>反选遮罩</title>
+    <script src="/vendor/lil-gui/lil-gui.umd.min.js"></script>
+    <script src="/examples/shared/example-gui.js"></script>
+    <script src="/cesium/Cesium.js"></script>
+    <script src="/defaultAccessToken.js"></script>
+    <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
+    <link href="/vendor/lil-gui/lil-gui.min.css" rel="stylesheet" />
+    <link href="/examples/shared/example-gui.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
 
-<head>
-  <link rel="shortcut icon" type="image/x-icon" />
-  <title>反选遮罩</title>
-<script src="/cesium/Cesium.js"></script>
-<script src="/defaultAccessToken.js"> </script>
-  <link href="/cesium/Widgets/widgets.css" rel="stylesheet" />
-  <link href="/examples/shared/example-gui.css" rel="stylesheet" />
-  <style>
-    html,
-    body,
-    #cesiumContainer {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-    }
+      #toolbar {
+        left: 5px;
+        top: 5px;
+      }
+    </style>
+  </head>
 
-    #toolbar {
-      left: 5px;
-      top: 5px;
-    }
-
-  </style>
-
-</head>
-
-<body class="dark">
-  <div id="cesiumContainer"></div>
-<script type="text/javascript">
-    "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      baseLayerPicker: false,
-      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-        new Cesium.AmapImageryProvider({
-          layerType: Cesium.AmapLayerType.SATELLITE,
-        })
-      )
-    })
-    viewer.scene.globe.depthTestAgainstTerrain = false
-    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 1
-    viewer.scene.screenSpaceCameraController.maximumZoomDistance = 5000000
-
-    fetch('/data/geojson/siChuanPolygon.json')
-      .then(response => response.json())
-      .then(res => {
-        var features = res.features;
-        var geo = []
-        for (var k = 0; k < features.length; k++) {
-          const geometries = getGoordGeometry(features[k].geometry)
-          for (var i = 0; i < geometries.length; i++) {
-            geo.push(geometries[i])
-          }
-        }
-        var maskLayer = viewer.entities.add({
-          polygon: {
-            hierarchy: {
-              positions: Cesium.Cartesian3.fromDegreesArray([
-                180.0,90.0,
-                180.0, 0.0,
-                10.0,0.0,
-                0.0,90.0
-              ]),
-              holes: [{
-                positions: Cesium.Cartesian3.fromDegreesArray(
-                  geo
-                )
-              }]
-            },
-            outline: false,
-            height:0,
-            material: Cesium.Color.fromCssColorString('#000e3bcc'),
-          },
-        })
-        var hierarchy = maskLayer.polygon.hierarchy.getValue(Cesium.JulianDate.now())
-        var positions = hierarchy.holes[0].positions
-        viewer.entities.add({
-            name: 'boderLine',
-            polyline: {
-                positions:positions,
-                width: 10,
-                material:Cesium.Color.fromCssColorString('#39E09Bcc'),
-                clampToGround: true
-            }
-        })
+  <body class="dark">
+    <div id="cesiumContainer"></div>
+    <script type="text/javascript">
+      'use script'
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE
+          })
+        )
       })
+      // viewer.scene.globe.depthTestAgainstTerrain = false
 
-    function getGoordGeometry(geometry) {
-      const res = [];
-      const coordinates = geometry.coordinates;
-      for (let i = 0; i < coordinates.length; i++) {
-        const coord = coordinates[i];
-        for (let j = 0; j < coord.length; j++) {
-          const item = coord[j];
-          for (let k = 0; k < item.length; k++) {
-            res.push(item[k]);
+      // 可调参数：GUI 面板实时生效
+      var params = {
+        mode: 'entity', // entity = 极地楔形挖洞；clip = 官方反向裁剪
+        step: 4, // 洞坐标抽稀步长，越大越快、边界越粗
+        height: 0, // 遮罩高度
+        alpha: 0.8, // 遮罩不透明度
+        showBorder: true,
+        clipInverse: true,
+        lonBreaks: [
+          [180, 10],
+          [10, -160],
+          [-160, -180]
+        ]
+      }
+
+      var geo = [] // 原始扁平坐标 [lon, lat, lon, lat, ...]
+      var maskEntities = []
+      var borderEntity = null
+      var clippingCollection = null
+      var rebuildTimer = null
+
+      fetch('/data/geojson/siChuanPolygon.json')
+        .then(function (response) {
+          return response.json()
+        })
+        .then(function (res) {
+          var features = res.features
+          for (var k = 0; k < features.length; k++) {
+            var geometries = getGoordGeometry(features[k].geometry)
+            for (var i = 0; i < geometries.length; i++) {
+              geo.push(geometries[i])
+            }
           }
+          setupGui()
+          rebuild()
+          ExampleGui.finishedLoading()
+        })
+
+      /** 抽稀后的洞坐标（4 万点三角化很慢，按 step 取 1/N） */
+      function holeCartesians() {
+        var thin = []
+        for (var g = 0; g < geo.length; g += 2 * params.step) {
+          thin.push(geo[g], geo[g + 1])
+        }
+        return Cesium.Cartesian3.fromDegreesArray(thin)
+      }
+
+      /**
+       * 极地楔形环：每个 = 极点 + 赤道两点。
+       * 相邻经度断点的差值必须 < 180°，否则大圆航线方向有歧义，多边形会盖到隔壁去。
+       */
+      function buildGlobalMaskRings(holePositions) {
+        var poles = [90, -90]
+        var rings = []
+        poles.forEach(function (pole) {
+          params.lonBreaks.forEach(function (pair, index) {
+            var from = pair[0]
+            var to = pair[1]
+            rings.push({
+              positions: Cesium.Cartesian3.fromDegreesArray([
+                from,
+                pole,
+                from,
+                0.0,
+                to,
+                0.0,
+                to,
+                pole
+              ]),
+              holes: pole === 90 && index === 0 ? [{ positions: holePositions }] : undefined
+            })
+          })
+        })
+        return rings
+      }
+
+      function maskColor() {
+        return Cesium.Color.fromCssColorString('#000e3b').withAlpha(params.alpha)
+      }
+
+      function clearMask() {
+        maskEntities.forEach(function (entity) {
+          viewer.entities.remove(entity)
+        })
+        maskEntities = []
+        if (borderEntity) {
+          viewer.entities.remove(borderEntity)
+          borderEntity = null
+        }
+        if (clippingCollection) {
+          viewer.scene.globe.clippingPolygons = undefined
+          clippingCollection = null
         }
       }
-      return res;
-    }
 
-    viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 3000000.0),
-    })
+      function rebuild() {
+        if (!geo.length) {
+          return
+        }
+        clearMask()
+        var hole = holeCartesians()
 
-  </script>
-</body>
+        if (params.mode === 'clip') {
+          // 官方方案：直接裁掉几何体（四川之外会变成没有地球，不是盖一层黑布）
+          clippingCollection = new Cesium.ClippingPolygonCollection({
+            polygons: [new Cesium.ClippingPolygon({ positions: hole })],
+            inverse: params.clipInverse
+          })
+          viewer.scene.globe.clippingPolygons = clippingCollection
+        } else {
+          buildGlobalMaskRings(hole).forEach(function (ring) {
+            maskEntities.push(
+              viewer.entities.add({
+                polygon: {
+                  hierarchy: { positions: ring.positions, holes: ring.holes },
+                  outline: false,
+                  height: params.height,
+                  material: maskColor()
+                }
+              })
+            )
+          })
+        }
 
+        if (params.showBorder) {
+          borderEntity = viewer.entities.add({
+            name: 'borderLine',
+            polyline: {
+              positions: hole,
+              width: 10,
+              material: Cesium.Color.fromCssColorString('#39E09Bcc'),
+              clampToGround: true
+            }
+          })
+        }
+      }
+
+      /** 拖动滑块时合并重建，避免每个刻度都重新三角化 */
+      function scheduleRebuild() {
+        if (rebuildTimer) {
+          clearTimeout(rebuildTimer)
+        }
+        rebuildTimer = setTimeout(rebuild, 120)
+      }
+
+      function setLonBreaks(breaks) {
+        params.lonBreaks = breaks
+        rebuild()
+      }
+
+      function setupGui() {
+        ExampleGui.addButton('方案A · 极地楔形挖洞', function () {
+          params.mode = 'entity'
+          rebuild()
+        })
+        ExampleGui.addButton('方案B · 官方反向裁剪', function () {
+          params.mode = 'clip'
+          rebuild()
+        })
+
+        ExampleGui.addSlider('抽稀步长 step', params.step, 1, 20, 1, function (value) {
+          params.step = value
+          scheduleRebuild()
+        })
+        ExampleGui.addSlider('遮罩高度 height', params.height, 0, 5000, 100, function (value) {
+          params.height = value
+          scheduleRebuild()
+        })
+        ExampleGui.addSlider('遮罩不透明度', params.alpha, 0, 1, 0.05, function (value) {
+          params.alpha = value
+          maskEntities.forEach(function (entity) {
+            entity.polygon.material = maskColor()
+          })
+        })
+
+        ExampleGui.addToggleButton('显示边界线', params.showBorder, function (checked) {
+          params.showBorder = checked
+          rebuild()
+        })
+        ExampleGui.addToggleButton('裁剪取反 inverse', params.clipInverse, function (checked) {
+          params.clipInverse = checked
+          rebuild()
+        })
+
+        ExampleGui.addButton('经度断点 · 170/170/20', function () {
+          setLonBreaks([
+            [180, 10],
+            [10, -160],
+            [-160, -180]
+          ])
+        })
+        ExampleGui.addButton('经度断点 · 90×4', function () {
+          setLonBreaks([
+            [180, 90],
+            [90, 0],
+            [0, -90],
+            [-90, -180]
+          ])
+        })
+        ExampleGui.addButton('经度断点 · 40×9', function () {
+          setLonBreaks([
+            [180, 140],
+            [140, 100],
+            [100, 60],
+            [60, 20],
+            [20, -20],
+            [-20, -60],
+            [-60, -100],
+            [-100, -140],
+            [-140, -180]
+          ])
+        })
+      }
+
+      function getGoordGeometry(geometry) {
+        const res = []
+        const coordinates = geometry.coordinates
+        for (let i = 0; i < coordinates.length; i++) {
+          const coord = coordinates[i]
+          for (let j = 0; j < coord.length; j++) {
+            const item = coord[j]
+            for (let k = 0; k < item.length; k++) {
+              res.push(item[k])
+            }
+          }
+        }
+        return res
+      }
+
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 3000000.0)
+      })
+    </script>
+  </body>
 </html>

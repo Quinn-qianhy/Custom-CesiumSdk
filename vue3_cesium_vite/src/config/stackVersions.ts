@@ -1,27 +1,29 @@
-import pkg from '../../package.json'
-
 export interface VersionItem {
   label: string
   value: string
 }
 
-function normalizeVersion(version: string | undefined): string {
-  if (!version) {
-    return '-'
-  }
-  return version.replace(/^[\^~>=<]*/, '')
+/**
+ * 构建时由 vite.config.js 注入的版本信息。
+ * - 依赖版本取自 package.json 声明的版本范围
+ * - Cesium 版本解析自 public/cesium 构建产物的 license 头注释
+ */
+declare const __BUILD_VERSIONS__: Record<string, string>
+
+function pickVersion(key: string): string {
+  return __BUILD_VERSIONS__?.[key] || '-'
 }
 
-/** 技术栈版本信息（构建时从 package.json 读取） */
+/** 技术栈版本信息（构建时注入） */
 export const stackVersions = {
-  project: pkg.version,
-  vue: normalizeVersion(pkg.dependencies?.vue),
-  vueRouter: normalizeVersion(pkg.dependencies?.['vue-router']),
-  pinia: normalizeVersion(pkg.dependencies?.pinia),
-  elementPlus: normalizeVersion(pkg.dependencies?.['element-plus']),
-  vite: normalizeVersion(pkg.devDependencies?.vite),
-  lilGui: normalizeVersion(pkg.dependencies?.['lil-gui']),
-  cesium: '1.135.0'
+  project: pickVersion('project'),
+  vue: pickVersion('vue'),
+  vueRouter: pickVersion('vueRouter'),
+  pinia: pickVersion('pinia'),
+  elementPlus: pickVersion('elementPlus'),
+  vite: pickVersion('vite'),
+  lilGui: pickVersion('lilGui'),
+  cesium: pickVersion('cesium')
 }
 
 export function getVersionList(): VersionItem[] {

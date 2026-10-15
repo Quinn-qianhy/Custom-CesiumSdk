@@ -118,13 +118,6 @@ export const EXAMPLE_STATUS = {
     ],
     "reason": "依赖本地/内网服务器数据"
   },
-  "coordinateDisplay.html": {
-    "status": "pending",
-    "tags": [
-      "server-data"
-    ],
-    "reason": "依赖第三方地图服务或 API Key"
-  },
   "DepthOfFieldEfect.html": {
     "status": "ok",
     "tags": [],

@@ -312,13 +312,10 @@ const menu = [
             url: '/examples/cesium/html/statusBar.html'
           },
           {
-            name: '经纬度拾取',
-            image: '/examples/cesium/cards/PickLocation.png',
+            name: '气泡弹窗',
+            image: '/examples/cesium/cards/Prompt.png',
             type: 'html',
-            url: '/examples/cesium/html/coordinateDisplay.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/cesium/html/prompt.html'
           }
         ]
       }
