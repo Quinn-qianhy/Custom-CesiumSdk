@@ -5,6 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "outDir": "./node_modules/.tmp",
     "strict": true
   },
   "include": ["vite.config.js"]
