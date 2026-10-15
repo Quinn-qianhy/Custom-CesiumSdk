@@ -39,7 +39,10 @@ jobs:
           # Pages 项目页部署在 https://<user>.github.io/Custom-CesiumSdk/ 子路径下
           VITE_BASE: /Custom-CesiumSdk/
 
+      # enablement: 仓库未开通 Pages 时自动开通，免去手动到 Settings 配置
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
