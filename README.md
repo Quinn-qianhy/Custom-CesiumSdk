@@ -35,7 +35,7 @@ pnpm preview
 | Element Plus | 2.6 | UI 组件库 |
 | Vite | 5.4 | 构建工具 |
 | TypeScript | 5.7 | `strict: true` |
-| Cesium | 1.135 | 自编译发行包，位于 `public/cesium/` |
+| Cesium | 1.144 | 自编译发行包，位于 `public/cesium/` |
 | OpenLayers | 10.9 | 二维地图引擎 |
 | lil-gui | 0.19 | 示例参数面板 |
 
@@ -71,7 +71,6 @@ vue3_cesium_vite/
 │   ├── layouts/                   # DefaultLayout / MapLayout
 │   ├── shaders/                   # 自定义着色器
 │   └── styles/                    # 全局样式
-├── CLAUDE.md                      # 面向 AI 助手的项目指引
 ├── CONTEXT.md                     # 领域术语表
 └── vite.config.js
 ```
@@ -203,13 +202,6 @@ python -m playwright install chromium-headless-shell
 ```
 
 支持参数：`--name`（单个示例）、`--names`（逗号分隔多个）、`--base-url`（默认 `http://localhost:3000`）。
-
-## 约定
-
-- 新增或修改的代码，注释一律使用中文，且能不写就不写，只在「为什么 / 坑 / 魔法值 / 临时方案」四类情形下添加
-- 自编译 Cesium 无完整类型声明，部分示例组件与自定义材质工具使用 `@ts-nocheck`
-- HTML 示例源码统一走 `loadHtmlExampleSource` 内存缓存，避免重复 fetch
-- `src/config/config.js` 与 `olMenu.js` 保持 JS 写法（`allowJs: true`），不强制迁移到 TypeScript
 
 ## 许可
 

@@ -14,7 +14,8 @@ dist-ssr
 
 # TypeScript 增量构建缓存（tsc --build / IDE TS 服务生成）
 *.tsbuildinfo
-
+# AI 约束文件
+CLAUDE.md
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
