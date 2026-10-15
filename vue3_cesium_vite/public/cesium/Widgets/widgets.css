@@ -104,18 +104,19 @@
 
 /* packages/widgets/Source/Animation/Animation-modern.css */
 :root {
-  --anim-primary: var(--blp-primary, #3b82f6);
-  --anim-primary-hover: var(--blp-primary-hover, #60a5fa);
-  --anim-accent: var(--blp-accent, #06b6d4);
-  --anim-success: var(--blp-success, #10b981);
-  --anim-bg-dark: var(--blp-bg-dark, rgba(15, 23, 42, 0.92));
-  --anim-bg-darker: var(--blp-bg-darker, rgba(10, 15, 30, 0.95));
-  --anim-text-primary: var(--blp-text-primary, #e2e8f0);
-  --anim-text-secondary: var(--blp-text-secondary, #94a3b8);
-  --anim-border: var(--blp-border, rgba(59, 130, 246, 0.3));
-  --anim-border-hover: var(--blp-border-hover, rgba(59, 130, 246, 0.6));
-  --anim-transition: var( --blp-transition, all 0.3s cubic-bezier(0.4, 0, 0.2, 1) );
-  --anim-font-family: var( --blp-font-family, "SF Pro Display", -apple-system, "Segoe UI", "Roboto", sans-serif );
+  --anim-primary: var(--geocoder-primary, #3b82f6);
+  --anim-primary-hover: var(--geocoder-primary-hover, #60a5fa);
+  --anim-accent: var(--geocoder-accent, #06b6d4);
+  --anim-bg-dark: var(--geocoder-bg-dark, rgba(15, 23, 42, 0.85));
+  --anim-bg-darker: var(--geocoder-bg-darker, rgba(15, 23, 42, 0.95));
+  --anim-text-primary: var(--geocoder-text-primary, #e2e8f0);
+  --anim-text-secondary: var(--geocoder-text-secondary, #94a3b8);
+  --anim-border: var(--geocoder-border, rgba(59, 130, 246, 0.3));
+  --anim-border-hover: var(--geocoder-border-hover, rgba(59, 130, 246, 0.6));
+  --anim-glow: var(--geocoder-glow, rgba(59, 130, 246, 0.4));
+  --anim-shadow: var(--geocoder-shadow, 0 4px 20px rgba(0, 0, 0, 0.3));
+  --anim-transition: var( --geocoder-transition, all 0.3s cubic-bezier(0.4, 0, 0.2, 1) );
+  --anim-font-family: var( --geocoder-font-family, "SF Pro Display", -apple-system, "Segoe UI", "Roboto", sans-serif );
 }
 .cesium-animation-theme {
   visibility: hidden;
@@ -124,28 +125,28 @@
   z-index: -100;
 }
 .cesium-animation-themeNormal {
-  color: #1e293b;
+  color: #18243a;
 }
 .cesium-animation-themeHover {
-  color: #60a5fa;
+  color: #2c5fbf;
 }
 .cesium-animation-themeSelect {
-  color: #06b6d4;
+  color: #1f4da6;
 }
 .cesium-animation-themeDisabled {
-  color: #475569;
+  color: #1f2937;
 }
 .cesium-animation-themeKnob {
   color: #0f172a;
 }
 .cesium-animation-themePointer {
-  color: #06b6d4;
+  color: var(--anim-accent);
 }
 .cesium-animation-themeSwoosh {
-  color: #3b82f6;
+  color: var(--anim-primary);
 }
 .cesium-animation-themeSwooshHover {
-  color: #60a5fa;
+  color: var(--anim-primary-hover);
 }
 .cesium-animation-svgText {
   fill: var(--anim-text-primary);
@@ -162,80 +163,79 @@
 }
 .cesium-animation-rectButton {
   cursor: pointer;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  transition:
-    stroke 0.2s ease,
-    fill-opacity 0.2s ease,
-    opacity 0.2s ease;
+  transition: var(--anim-transition);
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .cesium-animation-rectButton .cesium-animation-buttonGlow {
   fill: var(--anim-primary);
   stroke: none;
+  filter: url(#animation_blurred);
   display: none;
-  opacity: 0.22;
-  transition: opacity 0.2s ease;
+  opacity: 0.25;
 }
 .cesium-animation-rectButton:hover .cesium-animation-buttonGlow {
   display: block;
-  opacity: 0.4;
+  opacity: 0.45;
 }
 .cesium-animation-rectButton .cesium-animation-buttonPath {
   fill: var(--anim-text-primary);
-  transition: fill 0.2s ease;
+  transition: var(--anim-transition);
+  filter: drop-shadow(0 0 2px var(--anim-glow));
 }
 .cesium-animation-rectButton:hover .cesium-animation-buttonPath {
   fill: #ffffff;
+  filter: drop-shadow(0 0 6px var(--anim-primary));
 }
 .cesium-animation-rectButton .cesium-animation-buttonMain {
   stroke: var(--anim-border);
   stroke-width: 1;
-  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+  transition: var(--anim-transition);
 }
 .cesium-animation-rectButton:hover .cesium-animation-buttonMain {
   stroke: var(--anim-border-hover);
-  stroke-width: 1.25;
+  stroke-width: 1.5;
+}
+.cesium-animation-rectButton:active {
+  transform: scale(0.96);
 }
 .cesium-animation-rectButton:active .cesium-animation-buttonMain {
-  fill: rgba(59, 130, 246, 0.28);
+  fill: rgba(59, 130, 246, 0.35) !important;
 }
 .cesium-animation-buttonDisabled {
   cursor: not-allowed;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 .cesium-animation-buttonDisabled .cesium-animation-buttonMain {
-  stroke: rgba(71, 85, 105, 0.55);
+  stroke: rgba(71, 85, 105, 0.5);
 }
 .cesium-animation-buttonDisabled .cesium-animation-buttonPath {
-  fill: var(--anim-text-secondary);
+  fill: #64748b;
+  filter: none;
 }
 .cesium-animation-buttonDisabled .cesium-animation-buttonGlow {
   display: none;
 }
 .cesium-animation-buttonToggled .cesium-animation-buttonGlow {
   display: block;
-  fill: var(--anim-success);
-  opacity: 0.45;
+  fill: var(--anim-primary);
+  opacity: 0.5;
 }
 .cesium-animation-buttonToggled .cesium-animation-buttonMain {
-  stroke: var(--anim-success);
-  stroke-width: 1.35;
+  stroke: var(--anim-primary);
+  stroke-width: 1.5;
 }
 .cesium-animation-buttonToggled .cesium-animation-buttonPath {
   fill: #ffffff;
 }
 .cesium-animation-buttonToggled:hover .cesium-animation-buttonGlow {
-  fill: #34d399;
-  opacity: 0.55;
+  fill: var(--anim-primary-hover);
+  opacity: 0.65;
 }
 .cesium-animation-buttonToggled:hover .cesium-animation-buttonMain {
-  stroke: #34d399;
+  stroke: var(--anim-primary-hover);
 }
 .cesium-animation-shuttleRingG {
   cursor: pointer;
@@ -244,40 +244,33 @@
   fill: var(--anim-bg-dark);
   stroke: var(--anim-border);
   stroke-width: 1.2;
-  transition: fill 0.2s ease, stroke 0.2s ease;
 }
 .cesium-animation-shuttleRingSwoosh line {
   stroke: var(--anim-primary);
   stroke-width: 2;
-  stroke-opacity: 0.28;
+  stroke-opacity: 0.3;
   stroke-linecap: round;
 }
 .cesium-animation-shuttleRingPointer {
-  stroke: var(--anim-accent);
-  stroke-width: 0.35;
-  stroke-opacity: 0.65;
-  paint-order: stroke fill;
+  filter: drop-shadow(0 0 6px var(--anim-accent)) drop-shadow(0 0 12px rgba(6, 182, 212, 0.45));
 }
 .cesium-animation-shuttleRingPausePointer {
-  stroke: var(--anim-text-secondary);
-  stroke-width: 0.35;
-  stroke-opacity: 0.55;
-  paint-order: stroke fill;
+  filter: drop-shadow(0 0 4px #64748b);
 }
 .cesium-animation-knobOuter {
   cursor: pointer;
   stroke: var(--anim-border);
-  stroke-width: 1.35;
-  transition: stroke 0.2s ease;
-}
-.cesium-animation-knobOuter:hover {
-  stroke: var(--anim-border-hover);
+  stroke-width: 1.5;
 }
 .cesium-animation-knobInner {
   cursor: pointer;
 }
-.cesium-viewer-animationContainer {
-  filter: none;
+.cesium-widget-animation {
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.35));
+  transition: var(--anim-transition);
+}
+.cesium-widget-animation:hover {
+  filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 18px rgba(59, 130, 246, 0.25));
 }
 @media (min-width: 1920px) {
   .cesium-animation-svgText {
@@ -298,14 +291,6 @@
   .cesium-animation-shuttleRingBack {
     fill: var(--anim-bg-darker);
     stroke: var(--anim-border-hover);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cesium-animation-rectButton,
-  .cesium-animation-svgText,
-  .cesium-animation-shuttleRingBack,
-  .cesium-animation-knobOuter {
-    transition: none;
   }
 }
 
@@ -348,8 +333,8 @@
   box-sizing: content-box;
   top: auto;
   right: 0;
-  width: 420px !important;
-  max-height: 520px !important;
+  width: 360px;
+  max-height: 520px;
   margin-top: 8px;
   background: var(--blp-bg-dark);
   border: 1px solid var(--blp-border);
@@ -1912,6 +1897,14 @@ span.cesium-projectionPicker-wrapper {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.cesium-viewer-navigationBallContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  pointer-events: auto;
+  z-index: 999;
+}
 .cesium-viewer-navigationContainer {
   position: absolute;
   top: 70px;
@@ -2248,6 +2241,7 @@ span.cesium-projectionPicker-wrapper {
   user-select: none;
   opacity: 1;
   transition: opacity 0.25s ease-out;
+  overflow: hidden;
 }
 .cesium-statusbar-main:not(.cesium-statusbar-visible) {
   opacity: 0;
@@ -2256,6 +2250,7 @@ span.cesium-projectionPicker-wrapper {
 .cesium-statusbar-scale {
   display: flex;
   align-items: flex-end;
+  flex-shrink: 0;
   height: 100%;
   padding-bottom: 4px;
 }
@@ -2264,7 +2259,6 @@ span.cesium-projectionPicker-wrapper {
   border: 2px solid #eee;
   border-top: none;
   height: 12px;
-  min-width: 100px;
 }
 .cesium-statusbar-scale-label {
   margin-left: 8px;
@@ -2275,6 +2269,9 @@ span.cesium-projectionPicker-wrapper {
   display: flex;
   gap: 15px;
   align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow-x: auto;
 }
 .cesium-statusbar-info-item {
   display: flex;
@@ -2289,355 +2286,97 @@ span.cesium-projectionPicker-wrapper {
   color: #eee;
   font-weight: 500;
 }
-
-/* packages/engine/Source/HyCustom/Righttool/rightTool.css */
-:root {
-  --righttool-accent: #68adfe;
-  --righttool-accent-soft: rgba(104, 173, 254, 0.14);
-  --righttool-accent-glow: rgba(104, 173, 254, 0.35);
-  --righttool-teal: #22d3ee;
-  --righttool-bg: rgba(15, 23, 42, 0.9);
-  --righttool-submenu-bg: rgba(17, 24, 39, 0.96);
-  --righttool-border: rgba(104, 173, 254, 0.22);
-  --righttool-border-subtle: rgba(255, 255, 255, 0.07);
-  --righttool-text: #f1f5f9;
-  --righttool-text-muted: #94a3b8;
-  --righttool-text-hover: #e0f2fe;
-  --righttool-menu-min-width: 188px;
-  --righttool-menu-radius: 8px;
-  --righttool-item-radius: 6px;
-  --righttool-item-height: 34px;
-  --righttool-icon-size: 15px;
-  --righttool-z-menu: 50;
-  --righttool-z-submenu: 51;
-  --righttool-z-panel: 60;
-  --righttool-transition: 180ms ease-out;
-  --righttool-shadow: 0 10px 38px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-}
-.righttool-menu {
-  position: absolute;
-  z-index: var(--righttool-z-menu);
-  min-width: var(--righttool-menu-min-width);
-  padding: 6px;
-  border-radius: var(--righttool-menu-radius);
-  border: 1px solid var(--righttool-border);
-  background: var(--righttool-bg);
-  box-shadow: var(--righttool-shadow);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  color: var(--righttool-text);
-  pointer-events: auto;
-  display: none;
-  user-select: none;
-  overflow: visible;
-  font-family:
-    system-ui,
-    "Segoe UI",
-    "Microsoft YaHei",
-    sans-serif;
-  font-size: 13px;
-  line-height: 1;
-}
-.righttool-menu--visible {
-  display: block;
-  animation: righttool-menu-in var(--righttool-transition);
-}
-.righttool-menu-list {
-  list-style: none;
-  margin: 0;
+.cesium-statusbar-decoupled.cesium-statusbar-main {
+  background-color: transparent;
+  border-top: none;
   padding: 0;
+  height: auto;
+  justify-content: flex-start;
 }
-.righttool-menu-item {
-  position: relative;
-  display: flex;
+.cesium-statusbar-decoupled .cesium-statusbar-scale,
+.cesium-statusbar-decoupled .cesium-statusbar-info {
+  height: 26px;
+  padding: 0 10px;
+  color: #e9e9e9;
+  background-color: #0006;
+  border-top: solid 1px #555;
+}
+.cesium-statusbar-decoupled .cesium-statusbar-scale {
   align-items: center;
-  gap: 10px;
-  min-height: var(--righttool-item-height);
-  margin: 2px 0;
-  padding: 0 10px 0 8px;
-  border-radius: var(--righttool-item-radius);
-  cursor: pointer;
-  white-space: nowrap;
-  color: var(--righttool-text);
-  transition: background-color var(--righttool-transition), color var(--righttool-transition);
 }
-.righttool-menu-item::before {
-  content: "";
+.cesium-statusbar-decoupled .cesium-statusbar-info {
+  margin-left: auto;
+}
+
+/* packages/widgets/Source/Prompt/Prompt.css */
+.cesium-prompt {
   position: absolute;
-  left: 0;
-  top: 5px;
-  bottom: 5px;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background:
-    linear-gradient(
-      180deg,
-      var(--righttool-accent),
-      var(--righttool-teal));
-  opacity: 0;
-  transition: opacity var(--righttool-transition);
+  top: -9999px;
+  left: -9999px;
+  z-index: 99;
+  pointer-events: auto;
 }
-.righttool-menu-item:hover,
-.righttool-menu-item--active,
-.righttool-menu-item--has-submenu:hover {
-  background: var(--righttool-accent-soft);
-  color: var(--righttool-text-hover);
-}
-.righttool-menu-item:hover::before,
-.righttool-menu-item--active::before,
-.righttool-menu-item--has-submenu:hover::before {
-  opacity: 1;
-}
-.righttool-menu-item-icon {
-  flex-shrink: 0;
-  width: var(--righttool-icon-size);
-  height: var(--righttool-icon-size);
-  padding: 4px;
-  box-sizing: content-box;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.05);
-  display: block;
-  opacity: 0.88;
-  transition: background-color var(--righttool-transition), opacity var(--righttool-transition);
-}
-.righttool-menu-item:hover .righttool-menu-item-icon {
-  background: rgba(104, 173, 254, 0.18);
-  opacity: 1;
-}
-.righttool-menu-item-label {
-  flex: 1;
-  font-weight: 450;
-  letter-spacing: 0.01em;
-}
-.righttool-menu-item-arrow {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  opacity: 0.55;
-  transition: opacity var(--righttool-transition), transform var(--righttool-transition);
-}
-.righttool-menu-item--has-submenu:hover .righttool-menu-item-arrow {
-  opacity: 1;
-  transform: translateX(2px);
-}
-.righttool-menu-item--has-submenu::after {
-  content: "";
+.cesium-prompt-close {
   position: absolute;
   top: 0;
-  left: 100%;
-  width: 12px;
-  height: 100%;
+  right: 0;
+  padding: 4px 4px 0 0;
+  border: none;
+  text-align: center;
+  width: 18px;
+  height: 14px;
+  font:
+    16px/14px Tahoma,
+    Verdana,
+    sans-serif;
+  color: #c3c3c3;
+  text-decoration: none;
+  font-weight: bold;
   background: transparent;
-}
-.righttool-menu-item--has-submenu > .righttool-submenu {
-  display: none;
-  position: absolute;
-  left: calc(100% + 4px);
-  top: -4px;
-  z-index: var(--righttool-z-submenu);
-  min-width: var(--righttool-menu-min-width);
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-  border-radius: var(--righttool-menu-radius);
-  border: 1px solid var(--righttool-border);
-  background: var(--righttool-submenu-bg);
-  box-shadow: var(--righttool-shadow);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  pointer-events: auto;
-}
-.righttool-menu-item--has-submenu:hover > .righttool-submenu,
-.righttool-menu-item--has-submenu.righttool-menu-item--submenu-open > .righttool-submenu {
-  display: block;
-  animation: righttool-submenu-in var(--righttool-transition);
-}
-.righttool-menu-item--has-submenu > .righttool-submenu.righttool-submenu--flip {
-  left: auto;
-  right: calc(100% + 4px);
-}
-.righttool-panel {
-  position: absolute;
-  z-index: var(--righttool-z-panel);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 320px;
-  max-width: min(500px, calc(100% - 32px));
-  border-radius: 10px;
-  border: 1px solid var(--righttool-border);
-  background: var(--righttool-bg);
-  box-shadow: var(--righttool-shadow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: var(--righttool-text);
-  pointer-events: auto;
-  display: none;
-  overflow: hidden;
-}
-.righttool-panel::before {
-  content: "";
-  display: block;
-  height: 3px;
-  background:
-    linear-gradient(
-      90deg,
-      var(--righttool-accent),
-      var(--righttool-teal));
-}
-.righttool-panel--visible {
-  display: block;
-  animation: righttool-panel-in 220ms ease-out;
-}
-.righttool-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px 8px;
-}
-.righttool-panel-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--righttool-text);
-}
-.righttool-panel-title::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: var(--righttool-accent);
-  vertical-align: middle;
-  box-shadow: 0 0 6px var(--righttool-accent-glow);
-}
-.righttool-panel-close {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  margin: 0;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--righttool-text-muted);
-  font-size: 18px;
-  line-height: 1;
   cursor: pointer;
-  transition:
-    background-color var(--righttool-transition),
-    border-color var(--righttool-transition),
-    color var(--righttool-transition);
 }
-.righttool-panel-close:hover {
-  background: var(--righttool-accent-soft);
-  border-color: var(--righttool-border);
-  color: var(--righttool-text);
-}
-.righttool-panel-close:focus-visible {
-  outline: 2px solid var(--righttool-accent);
-  outline-offset: 2px;
-}
-.righttool-panel-divider {
-  height: 1px;
-  margin: 0 14px;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--righttool-border-subtle) 20%,
-      var(--righttool-border-subtle) 80%,
-      transparent);
-}
-.righttool-panel-body {
-  padding: 12px 14px 14px;
-  max-height: min(480px, 60vh);
-  overflow: auto;
-}
-.righttool-panel-content {
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--righttool-text-muted);
-  word-break: break-all;
-}
-.righttool-panel-content strong {
-  color: var(--righttool-accent);
-  font-weight: 600;
-}
-.righttool-panel-content ul {
-  margin: 8px 0;
-  padding: 8px 10px;
-  list-style: none;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid var(--righttool-border-subtle);
-}
-.righttool-panel-content li {
-  font-family:
-    ui-monospace,
-    "Cascadia Code",
-    Consolas,
-    monospace;
-  font-size: 12px;
-  color: var(--righttool-text);
-}
-.righttool-panel-body::-webkit-scrollbar {
-  width: 5px;
-}
-.righttool-panel-body::-webkit-scrollbar-thumb {
+.cesium-prompt-content-container {
+  max-width: 400px;
   border-radius: 4px;
-  background: rgba(104, 173, 254, 0.35);
+  padding: 1px;
+  background: white;
+  color: #333;
+  box-shadow: 0 3px 14px rgb(0 0 0 / 40%);
 }
-.righttool-panel-body::-webkit-scrollbar-track {
-  background: transparent;
+.cesium-prompt-content {
+  margin: 13px 19px;
 }
-@keyframes righttool-menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-3px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.cesium-prompt-anchor-container {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  left: 50%;
+  margin-left: -20px;
+  overflow: hidden;
+  pointer-events: none;
 }
-@keyframes righttool-submenu-in {
-  from {
-    opacity: 0;
-    transform: translateX(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.cesium-prompt-anchor {
+  margin: -10px auto 0;
+  background: white;
+  width: 17px;
+  height: 17px;
+  transform: rotate(45deg);
 }
-@keyframes righttool-panel-in {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
+.component-prompt-container {
+  position: relative;
 }
-@media (prefers-reduced-motion: reduce) {
-  .righttool-menu--visible,
-  .righttool-panel--visible,
-  .righttool-menu-item--has-submenu:hover > .righttool-submenu,
-  .righttool-menu-item--has-submenu.righttool-menu-item--submenu-open > .righttool-submenu {
-    animation: none;
-  }
-  .righttool-menu-item,
-  .righttool-menu-item-icon,
-  .righttool-menu-item-arrow,
-  .righttool-panel-close {
-    transition: none;
-  }
+.component-prompt-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  color: white;
+  padding: 2px 6px;
+  font-weight: bold;
+  z-index: 1;
 }
 
-/* packages/engine/Source/HyCustom/OverviewMap/OverviewMap.css */
+/* packages/widgets/Source/OverviewMap/OverviewMap.css */
 :root {
   --overview-map-accent: #5eb8ff;
   --overview-map-accent-glow: rgba(94, 184, 255, 0.55);
@@ -2718,80 +2457,6 @@ span.cesium-projectionPicker-wrapper {
   box-shadow: 0 0 6px 2px rgba(94, 184, 255, 0.75);
   pointer-events: none;
   z-index: 2;
-}
-
-/* packages/widgets/Source/Prompt/Prompt.css */
-.cesium-prompt {
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-  z-index: 99;
-  pointer-events: auto;
-}
-.cesium-prompt-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 4px 4px 0 0;
-  border: none;
-  text-align: center;
-  width: 18px;
-  height: 14px;
-  font:
-    16px/14px Tahoma,
-    Verdana,
-    sans-serif;
-  color: #c3c3c3;
-  text-decoration: none;
-  font-weight: bold;
-  background: transparent;
-  cursor: pointer;
-}
-.cesium-prompt-content-container {
-  max-width: 400px;
-  border-radius: 4px;
-  padding: 1px;
-  background: white;
-  color: #333;
-  box-shadow: 0 3px 14px rgb(0 0 0 / 40%);
-}
-.cesium-prompt-content {
-  margin: 13px 19px;
-}
-.cesium-prompt-anchor-container {
-  position: absolute;
-  width: 40px;
-  height: 20px;
-  left: 50%;
-  margin-left: -20px;
-  overflow: hidden;
-  pointer-events: none;
-}
-.cesium-prompt-anchor {
-  margin: -10px auto 0;
-  background: white;
-  width: 17px;
-  height: 17px;
-  transform: rotate(45deg);
-}
-.component-prompt-container {
-  position: relative;
-}
-.component-prompt-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-  color: white;
-  padding: 2px 6px;
-  font-weight: bold;
-  z-index: 1;
-}
-.cesium-prompt.draw-tooltip-prompt {
-  pointer-events: none;
-}
-.cesium-prompt.draw-tooltip-prompt .cesium-prompt-content {
-  margin: 8px 12px;
 }
 
 /* packages/widgets/Source/widgets.css */

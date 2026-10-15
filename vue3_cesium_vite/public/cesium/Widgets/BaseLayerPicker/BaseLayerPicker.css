@@ -13,8 +13,8 @@
   box-sizing: content-box;
   top: auto;
   right: 0;
-  width: 420px !important;
-  max-height: 500px !important;
+  width: 320px;
+  max-height: 500px;
   margin-top: 5px;
   background-color: rgba(38, 38, 38, 0.75);
   border: 1px solid #444;

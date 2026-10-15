@@ -65,9 +65,3 @@
   font-weight: bold;
   z-index: 1;
 }
-.cesium-prompt.draw-tooltip-prompt {
-  pointer-events: none;
-}
-.cesium-prompt.draw-tooltip-prompt .cesium-prompt-content {
-  margin: 8px 12px;
-}

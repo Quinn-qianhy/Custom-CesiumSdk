@@ -105,6 +105,14 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+.cesium-viewer-navigationBallContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  pointer-events: auto;
+  z-index: 999;
+}
 .cesium-viewer-navigationContainer {
   position: absolute;
   top: 70px;

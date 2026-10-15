@@ -486,9 +486,9 @@
 }
 
 /* packages/widgets/Source/StatusBar/lighter.css */
-.cesium-lighter .cesium-statusbar-wrapper {
-}
-.cesium-lighter .cesium-statusbar-main {
+.cesium-lighter .cesium-statusbar-main,
+.cesium-lighter .cesium-statusbar-decoupled .cesium-statusbar-scale,
+.cesium-lighter .cesium-statusbar-decoupled .cesium-statusbar-info {
   background:
     linear-gradient(
       to bottom,

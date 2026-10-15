@@ -37,8 +37,8 @@
   box-sizing: content-box;
   top: auto;
   right: 0;
-  width: 420px !important;
-  max-height: 520px !important;
+  width: 360px;
+  max-height: 520px;
   margin-top: 8px;
   background: var(--blp-bg-dark);
   border: 1px solid var(--blp-border);
