@@ -45,7 +45,7 @@
         topRadius: 150.0,
       };
       Cesium.knockout.track(viewModel);
-      / ExampleGui 参数面板
+      // ExampleGui 参数面板
       ExampleGui.addSlider("高度", 300.0, 100, 600, 10, function (value) {
         viewModel.length = value;
       });
@@ -74,9 +74,9 @@
 
       var position = Cesium.Cartesian3.fromDegrees(104.063245, 30.6628335, 300);
 
-      var heading = 0; /偏航角（Y轴）
-      var pitch = 0; /俯仰角（X轴）
-      var roll = 0; /翻滚角（Z轴）
+      var heading = 0; //偏航角（Y轴）
+      var pitch = 0; //俯仰角（X轴）
+      var roll = 0; //翻滚角（Z轴）
       function rotate() {
         heading = heading + Cesium.Math.toRadians(viewModel.speed);
         var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);

@@ -36,12 +36,12 @@
 
       viewer.scene.globe.depthTestAgainstTerrain = false
 
-      /初始定位位置
+      //初始定位位置
       viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 5000000.0) /四川省政府
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 5000000.0) //四川省政府
       })
 
-      /entity方式自定义billboard
+      //entity方式自定义billboard
       function addPoint(lat, lon) {
         var entityPoint = viewer.entities.add({
           position: Cesium.Cartesian3.fromDegrees(lat, lon),
@@ -53,16 +53,16 @@
         })
       }
 
-      /根据差值随机生成值
+      //根据差值随机生成值
       function randomRange(myMin, myMax) {
         return Math.random() * (myMax - myMin + 1) + myMin
       }
 
-      /entity方式添加大量billboard点
+      //entity方式添加大量billboard点
       function addPoints(num) {
         for (let i = 0; i < num; i++) {
-          const lat = randomRange(73.33, 135.05) /根据经度差生成随机值
-          const lon = randomRange(10.51, 53.33) /根据纬度差生成随机值
+          const lat = randomRange(73.33, 135.05) //根据经度差生成随机值
+          const lon = randomRange(10.51, 53.33) //根据纬度差生成随机值
           addPoint(lat, lon)
         }
       }

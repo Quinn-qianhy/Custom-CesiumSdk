@@ -34,7 +34,7 @@
     })
 
     viewer.scene.globe.depthTestAgainstTerrain = false
-    /初始定位位置
+    //初始定位位置
     viewer.camera.flyTo({
       destination: {
         x: -1296496.9471364329,
@@ -56,7 +56,7 @@
       }
     })
 
-    /entity方式自定义billboard
+    //entity方式自定义billboard
     function addPoint(lat, lon) {
       cluster.entities.add({
         position: Cesium.Cartesian3.fromDegrees(lat, lon),
@@ -64,21 +64,21 @@
           image: '../../../examples/cesium/assets/clusterPicture/billBoardIcon.png',
           show: true,
           scale: 0.6
-          / pixelOffset: new Cesium.Cartesian2(0, -20),
+          // pixelOffset: new Cesium.Cartesian2(0, -20),
         }
       })
     }
 
-    /根据差值随机生成值
+    //根据差值随机生成值
     function randomRange(myMin, myMax) {
       return Math.random() * (myMax - myMin + 1) + myMin;
     }
 
-    /entity方式添加大量billboard点 
+    //entity方式添加大量billboard点 
     function addPoints(num) {
       for (let i = 0; i < num; i++) {
-        const lat = randomRange(98.33, 105.05) /根据经度差生成随机值
-        const lon = randomRange(28.51, 32.33) /根据纬度差生成随机值
+        const lat = randomRange(98.33, 105.05) //根据经度差生成随机值
+        const lon = randomRange(28.51, 32.33) //根据纬度差生成随机值
         addPoint(lat, lon)
       }
     }
@@ -120,7 +120,7 @@
       });
 
      
-      /聚合开关
+      //聚合开关
       function clusterEnable() {
         dataSource.clustering.enabled = !dataSource.clustering.enabled
       }

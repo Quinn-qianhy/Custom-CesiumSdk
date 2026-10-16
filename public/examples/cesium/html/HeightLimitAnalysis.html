@@ -44,7 +44,7 @@
       tileslimitHeight: 14.49
     }
     Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addSlider('限制高度', 14.49, 0.0, 80.0, 1, function(value) {
       viewModel.tileslimitHeight = value;
     });
@@ -67,12 +67,12 @@ Cesium.knockout
     }
     let tileset;
     var paramObj = {
-      url: "http://earthsdk.com/v/last/Apps/assets/dayanta/tileset.json", /大雁塔倾斜模型数据地址
+      url: "http://earthsdk.com/v/last/Apps/assets/dayanta/tileset.json", //大雁塔倾斜模型数据地址
       position: [114.0595, 22.539, 10],
-      heading: 0, / 方位角(heading)
-      pitch: 0, / 俯仰角(pitch) 旋转角度
-      roll: 360, / 滚动角(roll)
-      destination: [114.0595, 22.539, 50], /相机视角
+      heading: 0, // 方位角(heading)
+      pitch: 0, // 俯仰角(pitch) 旋转角度
+      roll: 360, // 滚动角(roll)
+      destination: [114.0595, 22.539, 50], //相机视角
       orientation: {
         heading: 0.0,
         pitch: 0.0,
@@ -92,7 +92,7 @@ Cesium.knockout
         limitHeight: true,
       });
 
-      / 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建
+      // 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建
       tileset = await Cesium.Cesium3DTileset.fromUrl(url, {
         clippingPlanes: clippingPlanes,
       });
@@ -148,7 +148,7 @@ Cesium.knockout
             const caheight = ellipsoid.cartesianToCartographic(
               boundingSphere.center
             );
-            / 限制高度
+            // 限制高度
             tileslimitHeight = caheight.height.toFixed(2);
             const planeEntity = viewer.entities.add({
               position: boundingSphere.center,

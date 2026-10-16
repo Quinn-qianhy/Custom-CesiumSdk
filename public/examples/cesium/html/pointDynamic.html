@@ -274,7 +274,7 @@
           })
         )
       })
-      /地图亮度设置
+      //地图亮度设置
       var stages = viewer.scene.postProcessStages
       viewer.scene.brightness =
         viewer.scene.brightness ||
@@ -310,7 +310,7 @@
         }
       }
 
-      /根据差值随机生成值
+      //根据差值随机生成值
       function randomRange(myMin, myMax) {
         return Math.random() * (myMax - myMin + 1) + myMin
       }
@@ -318,8 +318,8 @@
       function addPoints(num) {
         const colors = ['#0ff', '#b5a603', '#239233', 'red', '#8c4d34', '#32CD32']
         for (let i = 0; i < num; i++) {
-          const lat = randomRange(104.33, 105.05) /根据经度差生成随机值
-          const lon = randomRange(30.51, 31.33) /根据纬度差生成随机值
+          const lat = randomRange(104.33, 105.05) //根据经度差生成随机值
+          const lon = randomRange(30.51, 31.33) //根据纬度差生成随机值
           const color = colors[Math.floor(Math.random() * colors.length)]
           addPoint(lat, lon, color)
         }

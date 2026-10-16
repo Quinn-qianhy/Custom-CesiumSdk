@@ -80,10 +80,10 @@
         })
       )
 
-      / 每帧绘制飞行进度线（只注册一次，重新播放时复用）
+      // 每帧绘制飞行进度线（只注册一次，重新播放时复用）
       tileLayer.on('postrender', animateFlights)
 
-      / 每毫秒绘制的弧线点数，控制飞行动画速度
+      // 每毫秒绘制的弧线点数，控制飞行动画速度
       let pointsPerMs = 0.02
 
       function loadFlights() {

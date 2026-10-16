@@ -86,7 +86,7 @@
         endScale: 20.0,
       };
       Cesium.knockout.track(viewModel);
-      / ExampleGui 参数面板
+      // ExampleGui 参数面板
       ExampleGui.addSlider('emissionRate', 40.0, 0, 100, 1, function (value) {
         viewModel.emissionRate = value;
       });
@@ -183,7 +183,7 @@
       const gravityScratch = new Cesium.Cartesian3();
 
       function applyGravity(p, dt) {
-        / We need to compute a local up vector for each particle in geocentric space.
+        // We need to compute a local up vector for each particle in geocentric space.
         const position = p.position;
 
         Cesium.Cartesian3.normalize(position, gravityScratch);
@@ -203,7 +203,7 @@
       viewer.scene.preUpdate.addEventListener(function (scene, time) {
         particleSystem.modelMatrix = computeModelMatrix(entity, time);
 
-        / Account for any changes to the emitter model matrix.
+        // Account for any changes to the emitter model matrix.
         particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
       });
 

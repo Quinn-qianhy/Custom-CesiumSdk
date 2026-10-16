@@ -27,7 +27,7 @@
         baseLayerPicker: false,
       });
 
-      /添加本地影像
+      //添加本地影像
       var localImage = new Cesium.SingleTileImageryProvider({
         url: "../../../examples/cesium/assets/singlePicture/南河片区.png",
         rectangle: Cesium.Rectangle.fromDegrees(
@@ -39,7 +39,7 @@
       });
       viewer.scene.imageryLayers.addImageryProvider(localImage);
 
-      /初始定位位置
+      //初始定位位置
       viewer.camera.flyTo({
         destination: {
           x: -1470798.012489264,

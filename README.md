@@ -180,8 +180,6 @@ if (page.status === 'pending') {
 - 仅需补充说明时使用 `statusTags: ['hint']` + `statusHint: '...'`，不影响点击
 - 移除待修复标记时，需把 `status`、`statusTags`、`statusReason` 三个字段整体删除
 
-`src/config/exampleStatus.js` 是自动生成的状态表，`config.js` 中的显式字段优先于它。
-
 ## 脚本工具
 
 `scripts/` 目录下的 Node 与 Python 脚本：
@@ -193,6 +191,7 @@ if (page.status === 'pending') {
 | `migrate-example-gui.mjs` | 将示例的旧 GUI 写法迁移为 `ExampleGui` |
 | `migrate-knockout-gui.mjs` | 将 Knockout 面板迁移为 `ExampleGui` |
 | `patch-example-data-urls.mjs` | 批量修正示例中的数据资源路径 |
+| `fix-broken-comments.mjs` | 修复被迁移脚本破坏的注释（`/` → `//`），默认 dry-run，`--write` 落盘，`--dir=` 指定目录 |
 
 截图脚本依赖 Python 环境：
 

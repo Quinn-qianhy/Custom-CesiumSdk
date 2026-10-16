@@ -38,13 +38,13 @@
           Cesium.ArcGisMapServerImageryProvider.fromUrl('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
         )
     });
-    / viewer.scene.globe.depthTestAgainstTerrain = true; /开启深度检测
+    // viewer.scene.globe.depthTestAgainstTerrain = true; //开启深度检测
     const viewModel = {
-        distance: 30 /缓冲距离
+        distance: 30 //缓冲距离
     }
     Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
-    ExampleGui.addSlider('缓冲距离(米)', 30, /缓冲距离
+    // ExampleGui 参数面板
+    ExampleGui.addSlider('缓冲距离(米)', 30, //缓冲距离
       10, 100, 10, function(value) {
       viewModel.distance = value;
     });
@@ -57,7 +57,7 @@ Cesium.knockout
           return;
         }
       });
-      /实体坐标串
+      //实体坐标串
       var point = [104.022638966289, 30.5698367125623]
       var linePoints = [
             [104.025203158107, 30.5694914480581],
@@ -77,13 +77,13 @@ Cesium.knockout
     function initPointBuffer(viewModel) {
         let distance = viewModel.distance
         let pointF = turf.point(point);
-        let buffered = turf.buffer(pointF, distance, { units: 'meters' });/生成缓冲面数据
-        let coordinates = buffered.geometry.coordinates;/缓冲面坐标串
+        let buffered = turf.buffer(pointF, distance, { units: 'meters' });//生成缓冲面数据
+        let coordinates = buffered.geometry.coordinates;//缓冲面坐标串
         let points = coordinates[0];
         let degreesArray = pointsToDegreesArray(points);
-        addBufferPolyogn(Cesium.Cartesian3.fromDegreesArray(degreesArray));/缓冲面实体添加
+        addBufferPolyogn(Cesium.Cartesian3.fromDegreesArray(degreesArray));//缓冲面实体添加
     }
-    /添加点
+    //添加点
     function addPoint(point) {
         viewer.entities.add({
             position: Cesium.Cartesian3.fromDegrees(point[0], point[1], 0),
@@ -94,7 +94,7 @@ Cesium.knockout
         });
     }
    
-    /初始化线缓冲
+    //初始化线缓冲
     function initPolylineBuffer(viewModel) {
         let distance = viewModel.distance
         let polylineF = turf.lineString(linePoints);
@@ -104,7 +104,7 @@ Cesium.knockout
         let degreesArray = pointsToDegreesArray(points);
         addBufferPolyogn(Cesium.Cartesian3.fromDegreesArray(degreesArray));
     }
-    /添加线
+    //添加线
     function addPolyline(positions) {
         viewer.entities.add({
             polyline: {
@@ -115,7 +115,7 @@ Cesium.knockout
         })
     }
 
-    /初始化面缓冲
+    //初始化面缓冲
     function initPolygonBuffer(viewModel) {
         let distance = viewModel.distance
         let polygonF = turf.polygon([polygonPoints]);
@@ -132,15 +132,15 @@ Cesium.knockout
                 material: Cesium.Color.YELLOW.withAlpha(0.6),
                 classificationType: Cesium.ClassificationType.BOTH
             },
-            / polyline: {
-            /     positions: positions,
-            /     width: 2,
-            /     material: Cesium.Color.YELLOW.withAlpha(0.4),
-            / }
+            // polyline: {
+            //     positions: positions,
+            //     width: 2,
+            //     material: Cesium.Color.YELLOW.withAlpha(0.4),
+            // }
         });
     }
 
-     /添加缓冲面
+     //添加缓冲面
     function addBufferPolyogn(positions) {
         viewer.entities.add({
             id: 'buffer',
@@ -151,7 +151,7 @@ Cesium.knockout
             },
         });
     }
-     /格式转换
+     //格式转换
     function pointsToDegreesArray(points) {
         let degreesArray = [];
         points.map(item => {

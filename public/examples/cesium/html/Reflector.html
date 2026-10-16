@@ -72,7 +72,7 @@
       Promise.resolve(tileset_nanpu)
         .then(function(tileset) {
           viewer.scene.primitives.add(tileset);
-          var surface = Cesium.Cartesian3.fromDegrees(121.5009, 31.2075, -5.7); /-5.7
+          var surface = Cesium.Cartesian3.fromDegrees(121.5009, 31.2075, -5.7); //-5.7
           var mat = Cesium.Transforms.eastNorthUpToFixedFrame(surface);
           var rotationZ = Cesium.Matrix4.fromRotationTranslation(
             Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(-22.33))
@@ -80,7 +80,7 @@
           Cesium.Matrix4.multiply(mat, rotationZ, mat);
           tileset._root.transform = mat;
         })
-      / http://180.167.213.122:18000/model/nanpudaqiao/
+      // http://180.167.213.122:18000/model/nanpudaqiao/
       let water;
       Cesium.GeoJsonDataSource.load(
         '../../../data/geojson/' + encodeURIComponent('四川国道线_裁剪.geojson')
@@ -101,10 +101,10 @@
             scene: scene,
             materialsOptions: {
               reflector: true,
-              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), /水的颜色
-              frequency: 1000, / 控制波数的数字
-              animationSpeed: 0.005, / 水流速度
-              amplitude: 35, /控制水波振幅的数字
+              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), //水的颜色
+              frequency: 1000, // 控制波数的数字
+              animationSpeed: 0.005, // 水流速度
+              amplitude: 35, //控制水波振幅的数字
               distortionScale: 8
             }
           });
@@ -151,12 +151,12 @@
         z: 0.77,
         alpha: 1,
         frequency: 1000.0,
-        animationSpeed: 0.005, / 水流速度
+        animationSpeed: 0.005, // 水流速度
         amplitude: 35,
         distortionScale: 8
       };
       Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addSlider('frequency 频率', 1000.0, 10, 100000, 10, function(value) {
       viewModel.frequency = value;
     });
@@ -211,12 +211,12 @@ Cesium.knockout.getObservable(viewModel, "x").subscribe(function(_z) {
         );
       }
       ExampleGui.addToolbarButton("倒影", function() {
-        / viewer.scene._context.msaaEnable = true;
+        // viewer.scene._context.msaaEnable = true;
         water._primitive.appearance.material.uniforms.reflector = !water
           ._primitive.appearance.material.uniforms.reflector;
       });
       ExampleGui.addToolbarButton("msaa", function() {
-        / viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
+        // viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
         viewer.scene._useMSAA = !viewer.scene._useMSAA;
       });
     

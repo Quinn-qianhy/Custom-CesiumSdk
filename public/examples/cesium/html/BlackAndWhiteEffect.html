@@ -33,7 +33,7 @@
     if (viewer.scene.imageryLayers.length > 0) {
       viewer.scene.imageryLayers.get(0).alpha = 0.35
     }
-    /初始定位位置
+    //初始定位位置
     viewer.camera.flyTo({
       destination: {
         x: -1469200.109729519,
@@ -61,7 +61,7 @@
       blackAndWhiteShow: false,
       blackAndWhiteGradations: 5.0,
     };
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addToggleButton('blackAndWhiteShow', false, function(checked) {
       viewModel.blackAndWhiteShow = checked;
       updatePostProcess();

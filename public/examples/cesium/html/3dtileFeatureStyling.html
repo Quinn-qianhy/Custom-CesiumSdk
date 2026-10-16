@@ -47,19 +47,19 @@
 
   <script type="text/javascript">
     "use script";
-    / How to use the 3D Tiles Styling language to style individual features, like buildings.
-    / Styling language specification: https://github.com/CesiumGS/3d-tiles/tree/master/specification/Styling
+    // How to use the 3D Tiles Styling language to style individual features, like buildings.
+    // Styling language specification: https://github.com/CesiumGS/3d-tiles/tree/master/specification/Styling
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      / terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
+      // terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
     });
     viewer.scene.globe.depthTestAgainstTerrain = true;
     var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
-    / Add Cesium OSM buildings to the scene as our example 3D Tileset.
+    // Add Cesium OSM buildings to the scene as our example 3D Tileset.
     var osmBuildingsTileset = Cesium.createOsmBuildings();
     viewer.scene.primitives.add(osmBuildingsTileset);
 
-    / Set the initial camera to look at Seattle
+    // Set the initial camera to look at Seattle
     viewer.scene.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(-122.3472, 47.598, 370),
       orientation: {
@@ -68,10 +68,10 @@
       },
     });
 
-    / Styling functions
+    // Styling functions
 
-    / Color by material checks for null values since not all
-    / buildings have the material property.
+    // Color by material checks for null values since not all
+    // buildings have the material property.
     function colorByMaterial() {
       osmBuildingsTileset.style = new Cesium.Cesium3DTileStyle({
         defines: {
@@ -86,7 +86,7 @@
             ["${material} === 'stone'", "color('lightslategrey')"],
             ["${material} === 'metal'", "color('lightgrey')"],
             ["${material} === 'steel'", "color('lightsteelblue')"],
-            ["true", "color('white')"], / This is the else case
+            ["true", "color('white')"], // This is the else case
           ],
         },
       });
@@ -123,7 +123,7 @@
       }
     }
 
-    / Color the buildings based on their distance from a selected central location
+    // Color the buildings based on their distance from a selected central location
     function colorByDistanceToCoordinate(pickedLatitude, pickedLongitude) {
       osmBuildingsTileset.style = new Cesium.Cesium3DTileStyle({
         defines: {
@@ -145,14 +145,14 @@
       });
     }
 
-    / When dropdown option is not "Color By Distance To Selected Location",
-    / remove the left click input event for selecting a central location
+    // When dropdown option is not "Color By Distance To Selected Location",
+    // remove the left click input event for selecting a central location
     function removeCoordinatePickingOnLeftClick() {
       document.querySelector(".infoPanel").style.visibility = "hidden";
       handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
 
-    / Add event listeners to dropdown menu options
+    // Add event listeners to dropdown menu options
     document.querySelector(".infoPanel").style.visibility = "hidden";
     var menu = document.getElementById("dropdown");
 
@@ -162,10 +162,10 @@
     };
 
     menu.options[1].onselect = function () {
-      / Default to Space Needle as the central location
+      // Default to Space Needle as the central location
       colorByDistanceToCoordinate(47.62051, -122.34931);
       document.querySelector(".infoPanel").style.visibility = "visible";
-      / Add left click input to select a building to and extract its coordinates
+      // Add left click input to select a building to and extract its coordinates
       handler.setInputAction(function (movement) {
         viewer.selectedEntity = undefined;
         var pickedBuilding = viewer.scene.pick(movement.position);

@@ -29,15 +29,15 @@
       "use script";
       var viewer = new Cesium.Viewer("cesiumContainer");
 
-      / viewer.imageryLayers.addImageryProvider(
-      /   new Cesium.AmapImageryProvider({
-      /     layerType: Cesium.AmapLayerType.SATELLITE,
-      /   })
-      / )
+      // viewer.imageryLayers.addImageryProvider(
+      //   new Cesium.AmapImageryProvider({
+      //     layerType: Cesium.AmapLayerType.SATELLITE,
+      //   })
+      // )
 
-      /初始定位位置
+      //初始定位位置
       viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), /四川省政府
+        destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), //四川省政府
       });
 
       var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -46,9 +46,9 @@
         console.log(movement.endPosition);
       }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
-      /屏幕坐标直接转为经纬度坐标
-      /功能封装
-      /position 屏幕坐标
+      //屏幕坐标直接转为经纬度坐标
+      //功能封装
+      //position 屏幕坐标
       function ScreenToCoordinates(position) {
         var longitudeString;
         var latitudeString;

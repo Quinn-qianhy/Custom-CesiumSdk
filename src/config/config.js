@@ -819,10 +819,10 @@ const menu = [
         menuItemName: '3DTiles模型',
         pages: [
           {
-            name: '倾斜摄影模型',
+            name: '水面倒影（在线数据）',
             image: '/examples/cesium/cards/3DTilesPicture.png',
             type: 'html',
-            url: '/examples/cesium/html/3DTile.html',
+            url: '/examples/cesium/html/ReflectorOnline.html',
             status: 'pending',
             statusTags: ['server-data'],
             statusReason: '依赖本地/内网服务器数据'

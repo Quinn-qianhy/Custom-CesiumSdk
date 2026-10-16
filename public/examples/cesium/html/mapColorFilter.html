@@ -28,9 +28,9 @@
     "use script";
     var viewer = new Cesium.Viewer("cesiumContainer")
     
-    /初始定位位置
+    //初始定位位置
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), /四川省政府
+      destination: Cesium.Cartesian3.fromDegrees(104.08, 30.65, 10000000.0), //四川省政府
     })
     const baseLayer = viewer.imageryLayers.get(0);
     function openRGB() {

@@ -34,7 +34,7 @@
     var viewer = new Cesium.Viewer("cesiumContainer", {
       terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1))
     })
-    /初始定位位置
+    //初始定位位置
     viewer.camera.setView({
       destination: new Cesium.Cartesian3(
         1216352.4855131074,
@@ -49,62 +49,62 @@
       endTransform: Cesium.Matrix4.IDENTITY,
     })
 
-    /单体化楼栋以及层级参数
+    //单体化楼栋以及层级参数
     var buildingOptions = [{
-        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), /旋转矩阵
-        translation: new Cesium.Cartesian3(-8, 15.5, 5.0), /平移矩阵
-        rectangle: new Cesium.Cartesian3(70.0, 36.5, 10.0), /矩形长宽高
-        name: '楼1层4' /矩形名字
+        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), //旋转矩阵
+        translation: new Cesium.Cartesian3(-8, 15.5, 5.0), //平移矩阵
+        rectangle: new Cesium.Cartesian3(70.0, 36.5, 10.0), //矩形长宽高
+        name: '楼1层4' //矩形名字
       },
       {
-        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), /旋转矩阵
-        translation: new Cesium.Cartesian3(-8, 15.5, -2.0), /平移矩阵
-        rectangle: new Cesium.Cartesian3(70.0, 36.5, 5.0), /矩形长宽高
-        name: '楼1层3' /矩形名字
+        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), //旋转矩阵
+        translation: new Cesium.Cartesian3(-8, 15.5, -2.0), //平移矩阵
+        rectangle: new Cesium.Cartesian3(70.0, 36.5, 5.0), //矩形长宽高
+        name: '楼1层3' //矩形名字
       },
       {
-        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), /旋转矩阵
-        translation: new Cesium.Cartesian3(-8, 15.5, -6.0), /平移矩阵
-        rectangle: new Cesium.Cartesian3(70.0, 36.5, 4.0), /矩形长宽高
-        name: '楼1层2' /矩形名字
+        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), //旋转矩阵
+        translation: new Cesium.Cartesian3(-8, 15.5, -6.0), //平移矩阵
+        rectangle: new Cesium.Cartesian3(70.0, 36.5, 4.0), //矩形长宽高
+        name: '楼1层2' //矩形名字
       },
       {
-        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), /旋转矩阵
-        translation: new Cesium.Cartesian3(-8, 15.5, -10.0), /平移矩阵
-        rectangle: new Cesium.Cartesian3(70.0, 36.5, 4.0), /矩形长宽高
-        name: '楼1层1' /矩形名字
+        center: new Cesium.Cartesian3(1216389.3637977627, -4736323.641980423, 4081321.7428341154), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(2.619728786416368, 0.0, 0.0), //旋转矩阵
+        translation: new Cesium.Cartesian3(-8, 15.5, -10.0), //平移矩阵
+        rectangle: new Cesium.Cartesian3(70.0, 36.5, 4.0), //矩形长宽高
+        name: '楼1层1' //矩形名字
       },
 
       {
-        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), /旋转矩阵
-        translation: new Cesium.Cartesian3(0, -1, 0), /平移矩阵
-        rectangle: new Cesium.Cartesian3(77.0, 38, 10.0), /矩形长宽高
-        name: '楼2层3' /矩形名字
+        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), //旋转矩阵
+        translation: new Cesium.Cartesian3(0, -1, 0), //平移矩阵
+        rectangle: new Cesium.Cartesian3(77.0, 38, 10.0), //矩形长宽高
+        name: '楼2层3' //矩形名字
       },
       {
-        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), /旋转矩阵
-        translation: new Cesium.Cartesian3(0, -1, -7), /平移矩阵
-        rectangle: new Cesium.Cartesian3(77.0, 38, 4.0), /矩形长宽高
-        name: '楼2层2' /矩形名字
+        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), //旋转矩阵
+        translation: new Cesium.Cartesian3(0, -1, -7), //平移矩阵
+        rectangle: new Cesium.Cartesian3(77.0, 38, 4.0), //矩形长宽高
+        name: '楼2层2' //矩形名字
       },
       {
-        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), /矩形中心点
-        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), /旋转矩阵
-        translation: new Cesium.Cartesian3(0, -1, -11), /平移矩阵
-        rectangle: new Cesium.Cartesian3(77.0, 38, 4.0), /矩形长宽高
-        name: '楼2层1' /矩形名字
+        center: new Cesium.Cartesian3(1216303.4975655659, -4736325.156402523, 4081345.200025963), //矩形中心点
+        rotation: new Cesium.HeadingPitchRoll(-2.0958728786416368, 0, 0), //旋转矩阵
+        translation: new Cesium.Cartesian3(0, -1, -11), //平移矩阵
+        rectangle: new Cesium.Cartesian3(77.0, 38, 4.0), //矩形长宽高
+        name: '楼2层1' //矩形名字
       },
     ]
 
     var scene = viewer.scene;
     var camera = scene.camera;
-    /矩形以及初始模型矩阵
+    //矩形以及初始模型矩阵
     for (let i = 0; i < buildingOptions.length; i++) {
       var rectangleCenter = buildingOptions[i].center;
       var centerModelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(rectangleCenter);

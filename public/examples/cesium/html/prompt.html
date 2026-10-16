@@ -41,7 +41,7 @@
         ),
       });
 
-      / 北京落在画面右下，便于观察固定世界坐标弹窗
+      // 北京落在画面右下，便于观察固定世界坐标弹窗
       viewer.camera.setView({
         destination: Cesium.Cartesian3.fromDegrees(114.5, 41.5, 1600000.0),
       });
@@ -88,7 +88,7 @@
         }
       }
 
-      / type=2 固定世界坐标：锚定在地图上，随地球转动
+      // type=2 固定世界坐标：锚定在地图上，随地球转动
       function createFixedPrompt(name) {
         destroyPrompt();
         var lonLat = CITIES[name];
@@ -105,7 +105,7 @@
         });
       }
 
-      / type=1 跟随屏幕坐标：弹窗跟随鼠标位置
+      // type=1 跟随屏幕坐标：弹窗跟随鼠标位置
       function createFollowPrompt() {
         destroyPrompt();
         prompt = new Cesium.Prompt(viewer.container, viewer.scene, {
@@ -134,7 +134,7 @@
         });
       }
 
-      / 暴露 API：new Cesium.Prompt(viewer.container, viewer.scene, opt)
+      // 暴露 API：new Cesium.Prompt(viewer.container, viewer.scene, opt)
       ExampleGui.addDefaultButton("new Cesium.Prompt(viewer, opt)", function () {
         createFixedPrompt("北京");
       });

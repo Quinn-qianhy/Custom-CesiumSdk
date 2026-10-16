@@ -48,7 +48,7 @@
             result.shift();
             var points = result;
             var pointsLength = points.length;
-            / Create center points for each clipping plane
+            // Create center points for each clipping plane
             var clippingPlanes = [];
             for (var i = 0; i < pointsLength; ++i) {
               var nextIndex = (i + 1) % pointsLength;
@@ -81,7 +81,7 @@
               );
               normal = Cesium.Cartesian3.normalize(normal, normal);
 
-              / Compute distance by pretending the plane is at the origin
+              // Compute distance by pretending the plane is at the origin
               var originCenteredPlane = new Cesium.Plane(normal, 0.0);
               var distance = Cesium.Plane.getPointDistance(
                 originCenteredPlane,
@@ -98,14 +98,14 @@
                 enabled: true
               }
             );
-            / viewer.entities.add({
-            /   name: "Green extruded polygon",
-            /   polygon: {
-            /     hierarchy: points,
-            /     height: -50.0,
-            /     material: Cesium.Color.GREEN
-            /   }
-            / });
+            // viewer.entities.add({
+            //   name: "Green extruded polygon",
+            //   polygon: {
+            //     hierarchy: points,
+            //     height: -50.0,
+            //     material: Cesium.Color.GREEN
+            //   }
+            // });
 
             points.push(points[0]);
             var excavationregion_bottom = viewer.scene.primitives.add(

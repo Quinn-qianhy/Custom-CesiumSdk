@@ -91,9 +91,9 @@
         edgeWidth: 1.0,
       })
       tileset.clippingPlanes = clippingPlanes
-      / Track and create the bindings for the view model
+      // Track and create the bindings for the view model
 Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addSlider('距离', 20, 0, 500, 1, function(value) {
       viewModel.distance = value;
     });

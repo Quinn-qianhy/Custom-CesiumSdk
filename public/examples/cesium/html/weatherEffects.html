@@ -35,7 +35,7 @@
     var tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(40866));
 
     viewer.scene.primitives.add(tileset);
-    /初始定位位置
+    //初始定位位置
     viewer.camera.setView({
       destination: new Cesium.Cartesian3(
         1216356.033078094,
@@ -51,7 +51,7 @@
     })
     var snowSystem;
     var rainSystem;
-    /Rain
+    //Rain
     function rain() {
       var rainParticleSize = 15.0;
       var rainRadius = 100000.0;
@@ -106,7 +106,7 @@
         updateCallback: rainUpdate,
       });
     }
-    /Snow
+    //Snow
     function snow() {
       var snowParticleSize = 12.0;
       var snowRadius = 100000.0;

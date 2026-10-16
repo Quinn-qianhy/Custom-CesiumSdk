@@ -78,7 +78,7 @@
     }
 
     function getAspectContourMaterial() {
-      / Creates a composite material with both aspect shading and contour lines
+      // Creates a composite material with both aspect shading and contour lines
       return new Cesium.Material({
         fabric: {
           type: "AspectColorContour",
@@ -114,13 +114,13 @@
         values = aspectRamp;
       }
       var grd = ctx.createLinearGradient(0, 0, 100, 0);
-      grd.addColorStop(values[0], "#000000"); /black
-      grd.addColorStop(values[1], "#2747E0"); /blue
-      grd.addColorStop(values[2], "#D33B7D"); /pink
-      grd.addColorStop(values[3], "#D33038"); /red
-      grd.addColorStop(values[4], "#FF9742"); /orange
-      grd.addColorStop(values[5], "#ffd700"); /yellow
-      grd.addColorStop(values[6], "#ffffff"); /white
+      grd.addColorStop(values[0], "#000000"); //black
+      grd.addColorStop(values[1], "#2747E0"); //blue
+      grd.addColorStop(values[2], "#D33B7D"); //pink
+      grd.addColorStop(values[3], "#D33038"); //red
+      grd.addColorStop(values[4], "#FF9742"); //orange
+      grd.addColorStop(values[5], "#ffd700"); //yellow
+      grd.addColorStop(values[6], "#ffffff"); //white
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, 100, 1);
       return ramp;
@@ -131,7 +131,7 @@
       selectedShading: "slope",
     };
     Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addMenu([
       { text: '坡度', onselect: function() { viewModel.selectedShading = 'slope'; updateMaterial(); } },
       { text: '坡向', onselect: function() { viewModel.selectedShading = 'aspect'; updateMaterial(); } },
@@ -173,7 +173,7 @@ function updateMaterial() {
       },
     });
 
-    /开启绘制多边形
+    //开启绘制多边形
     var drawPolygon = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYGON);
 
     function deActivateAll() {
@@ -193,7 +193,7 @@ function updateMaterial() {
         const points = []
         drawPolygon.clear();
         result.shift();
-        /在最后的位置添加第一个坐标，形成闭环
+        //在最后的位置添加第一个坐标，形成闭环
         result.push(result[0])
         result.forEach(item => {
           const point = []

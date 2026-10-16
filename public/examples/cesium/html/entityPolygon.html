@@ -37,7 +37,7 @@
       });
       viewer.scene.globe.depthTestAgainstTerrain = true
 
-      /红色材质的面
+      //红色材质的面
       var redPolygon = viewer.entities.add({
         name: 'Red polygon on surface',
         polygon: {
@@ -48,19 +48,19 @@
         }
       })
 
-      /三角形挤压高度、去掉上下面
+      //三角形挤压高度、去掉上下面
       var greenPolygon = viewer.entities.add({
         name: 'Green extruded polygon',
         polygon: {
           hierarchy: Cesium.Cartesian3.fromDegreesArray([-108.0, 42.0, -100.0, 42.0, -104.0, 40.0]),
-          extrudedHeight: 500000.0, /挤压高度
+          extrudedHeight: 500000.0, //挤压高度
           material: Cesium.Color.GREEN,
-          closeTop: false, /打开顶部
-          closeBottom: false /打开底部
+          closeTop: false, //打开顶部
+          closeBottom: false //打开底部
         }
       })
 
-      /开启挤压高度形成的多变形
+      //开启挤压高度形成的多变形
       var orangePolygon = viewer.entities.add({
         name: 'Orange polygon with per-position heights and outline',
         polygon: {
@@ -68,14 +68,14 @@
             -108.0, 25.0, 100000, -100.0, 25.0, 100000, -100.0, 30.0, 100000, -108.0, 30.0, 300000
           ]),
           extrudedHeight: 0,
-          perPositionHeight: true, /是否开启每个位置的高度
+          perPositionHeight: true, //是否开启每个位置的高度
           material: Cesium.Color.ORANGE.withAlpha(0.5),
           outline: true,
           outlineColor: Cesium.Color.BLACK
         }
       })
 
-      /一个面中间开了三次孔洞结构
+      //一个面中间开了三次孔洞结构
       var bluePolygon = viewer.entities.add({
         name: 'Blue polygon with holes',
         polygon: {
@@ -108,7 +108,7 @@
           material: Cesium.Color.BLUE.withAlpha(0.5)
         }
       })
-      /取消挤压高度
+      //取消挤压高度
       var cyanPolygon = viewer.entities.add({
         name: 'Cyan vertical polygon with per-position heights and outline',
         polygon: {
@@ -116,14 +116,14 @@
             -90.0, 41.0, 0.0, -85.0, 41.0, 500000.0, -80.0, 41.0, 0.0
           ]),
           perPositionHeight: true,
-          / extrudedHeight:0,
+          // extrudedHeight:0,
           material: Cesium.Color.CYAN.withAlpha(0.5),
           outline: true,
           outlineColor: Cesium.Color.BLACK
         }
       })
 
-      /开启挤压高度，关闭每个点位的高度设置
+      //开启挤压高度，关闭每个点位的高度设置
       var purplePolygonUsingRhumbLines = viewer.entities.add({
         name: 'Purple polygon using rhumb lines with outline',
         polygon: {
@@ -134,7 +134,7 @@
           material: Cesium.Color.PURPLE,
           outline: true,
           outlineColor: Cesium.Color.MAGENTA,
-          arcType: Cesium.ArcType.RHUMB / 边线必须遵循的路径规则
+          arcType: Cesium.ArcType.RHUMB // 边线必须遵循的路径规则
         }
       })
 

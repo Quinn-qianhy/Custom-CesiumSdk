@@ -35,7 +35,7 @@
           }),
         )
       })
-      / 加载飞机模型
+      // 加载飞机模型
       var entity = viewer.entities.add({
         model: {
           uri: '../../../examples/cesium/assets/sampleData/models/Cesium_Air.glb',
@@ -86,7 +86,7 @@
         maximumParticleLife: 1.2,
       };
       Cesium.knockout.track(viewModel);
-      / ExampleGui 参数面板
+      // ExampleGui 参数面板
       ExampleGui.addSlider('emissionRate', 10.0, 0, 100, 1, function (value) {
         viewModel.emissionRate = value;
       });

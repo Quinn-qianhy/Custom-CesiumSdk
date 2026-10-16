@@ -34,9 +34,9 @@
               enablePickFeatures: false,
             },
           ),
-        ), / 初始化使用 ArcGIS 卫星图
+        ), // 初始化使用 ArcGIS 卫星图
       });
-      /初始地球色调
+      //初始地球色调
       var layer = viewer.imageryLayers.get(0);
       layer.saturation = 0;
       layer.hue = 0.56;
@@ -44,7 +44,7 @@
       layer.brightness = 1.1;
       layer.gamma = layer.gamma ?? 1;
 
-      / The viewModel tracks the state of our mini application.
+      // The viewModel tracks the state of our mini application.
       var viewModel = {
         brightness: layer.brightness,
         contrast: layer.contrast,
@@ -52,9 +52,9 @@
         saturation: layer.saturation,
         gamma: layer.gamma,
       };
-      / Convert the viewModel members into knockout observables.
+      // Convert the viewModel members into knockout observables.
       Cesium.knockout.track(viewModel);
-      / ExampleGui 参数面板
+      // ExampleGui 参数面板
       ExampleGui.addSlider(
         "亮度",
         viewModel.brightness,
@@ -100,8 +100,8 @@
       );
       ExampleGui.finishedLoading();
 
-      / Bind the viewModel to the DOM elements of the UI that call for it.
-      / Make the active imagery layer a subscriber of the viewModel.
+      // Bind the viewModel to the DOM elements of the UI that call for it.
+      // Make the active imagery layer a subscriber of the viewModel.
       function subscribeLayerParameter(name) {
         Cesium.knockout
           .getObservable(viewModel, name)
@@ -117,7 +117,7 @@
       subscribeLayerParameter("saturation");
       subscribeLayerParameter("gamma");
 
-      / Make the viewModel react to base layer changes.
+      // Make the viewModel react to base layer changes.
       function updateViewModel() {
         if (viewer.imageryLayers.length > 0) {
           viewModel.brightness = layer.brightness;

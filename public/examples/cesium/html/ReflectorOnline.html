@@ -1256,7 +1256,7 @@
           }
           let polygonHierarchy1 = new Cesium.PolygonHierarchy(positions);
           console.log(polygonHierarchy1);
-          /polygonHierarchy1 = polygonHierarchy;
+          //polygonHierarchy1 = polygonHierarchy;
           let polygon = new Cesium.PolygonGeometry({
             polygonHierarchy: polygonHierarchy1,
             height: 30.5,
@@ -1268,10 +1268,10 @@
             scene: scene,
             materialsOptions: {
               reflector: true,
-              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), /水的颜色
-              frequency: 10000, / 控制波数的数字
-              animationSpeed: 0.5, / 水流速度
-              amplitude: 10, /控制水波振幅的数字
+              baseWaterColor: new Cesium.Color(0.0, 0.75, 0.77, 1), //水的颜色
+              frequency: 10000, // 控制波数的数字
+              animationSpeed: 0.5, // 水流速度
+              amplitude: 10, //控制水波振幅的数字
               distortionScale: 8
             }
           });
@@ -1285,12 +1285,12 @@
         z: 0.77,
         alpha: 1,
         frequency: 10000.0,
-        animationSpeed: 0.5, / 水流速度
+        animationSpeed: 0.5, // 水流速度
         amplitude: 10,
         distortionScale: 8
       };
       Cesium.knockout.track(viewModel);
-    / ExampleGui 参数面板
+    // ExampleGui 参数面板
     ExampleGui.addSlider('frequency 频率', 10000.0, 10, 100000, 10, function(value) {
       viewModel.frequency = value;
     });
@@ -1354,13 +1354,13 @@ Cesium.knockout.getObservable(viewModel, "x").subscribe(function(_z) {
         );
       }
       ExampleGui.addToolbarButton("倒影", function() {
-        / viewer.scene._context.msaaEnable = true;
+        // viewer.scene._context.msaaEnable = true;
         water._primitive.appearance.material.uniforms.reflector = !water
           ._primitive.appearance.material.uniforms.reflector;
       });
       ExampleGui.addToolbarButton("msaa", function() {
         console.log(viewer);
-        / viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
+        // viewer.scene._context.msaaEnable = !viewer.scene._context.msaaEnable;
         viewer.scene._useMSAA = !viewer.scene._useMSAA;
       });
     

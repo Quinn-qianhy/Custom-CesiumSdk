@@ -35,7 +35,7 @@
               enablePickFeatures: false,
             },
           ),
-        ), / 初始化使用 ArcGIS 卫星图
+        ), // 初始化使用 ArcGIS 卫星图
         contextOptions: {
           webgl: {
             alpha: true,
@@ -48,14 +48,14 @@
         },
       });
 
-      /初始地球色调
+      //初始地球色调
       var layer = viewer.imageryLayers.get(0);
       layer.saturation = 0;
       layer.hue = 0.56;
       layer.contrast = 1.74;
       layer.brightness = 1.1;
 
-      /下载图片
+      //下载图片
       function download() {
         var image = new Image();
         const el = document.getElementById("cesiumContainer");
@@ -63,14 +63,14 @@
           useCORS: true,
           allowTaint: true,
         }).then((canvas) => {
-          image.src = canvas.toDataURL("image/png", 0.1); / base64
+          image.src = canvas.toDataURL("image/png", 0.1); // base64
         });
         image.onload = function () {
           var a = document.createElement("a");
           var event = new MouseEvent("click");
-          a.download = new Date().getTime() + ".png"; / 指定下载图片的名称
+          a.download = new Date().getTime() + ".png"; // 指定下载图片的名称
           a.href = image.src;
-          a.dispatchEvent(event); / 触发超链接的点击事件
+          a.dispatchEvent(event); // 触发超链接的点击事件
         };
       }
 
