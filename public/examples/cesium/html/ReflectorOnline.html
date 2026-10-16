@@ -1250,7 +1250,7 @@
           for (var j = 0; j < pos.length; j++) {
             var item = pos[j];
             positions.push(
-              new Cesium.Cartesian3.fromDegrees(
+              Cesium.Cartesian3.fromDegrees(
                 item.longitudeString + 0.00017,
                 item.latitudeString + 0.00014
               )

@@ -96,7 +96,7 @@
       };
 
       rainSystem = new Cesium.ParticleSystem({
-        modelMatrix: new Cesium.Matrix4.fromTranslation(
+        modelMatrix: Cesium.Matrix4.fromTranslation(
           viewer.scene.camera.position
         ),
         speed: -1.0,
@@ -153,7 +153,7 @@
         }
       };
       snowSystem = new Cesium.ParticleSystem({
-        modelMatrix: new Cesium.Matrix4.fromTranslation(
+        modelMatrix: Cesium.Matrix4.fromTranslation(
           viewer.scene.camera.position
         ),
         minimumSpeed: -1.0,

@@ -630,10 +630,7 @@ const menu = [
             name: '飞线',
             image: '/examples/cesium/cards/PolylineTrailMaterialProperty.gif',
             type: 'html',
-            url: '/examples/cesium/html/PolylineTrailMaterialProperty.html',
-            status: 'pending',
-            statusTags: ['server-data', 'cesium-api'],
-            statusReason: '依赖本地/内网服务器数据；使用定制 Cesium API 或扩展插件'
+            url: '/examples/cesium/html/PolylineTrailMaterialProperty.html'
           },
           {
             name: '面渐变填充',

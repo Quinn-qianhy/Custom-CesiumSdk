@@ -1,0 +1,11 @@
+# 二进制资源一律禁止 git 做换行符/编码转换，防止图片等资源被文本化破坏
+# （terrainClip 贴图曾因被当文本处理而整体损坏，见 2026-10 修复记录）
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.glb binary
+*.wasm binary
+*.kmz binary
+*.woff binary
