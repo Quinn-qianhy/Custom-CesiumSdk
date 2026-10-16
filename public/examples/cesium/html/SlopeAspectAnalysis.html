@@ -43,13 +43,12 @@
   <div id="cesiumContainer"></div>
   <script type="text/javascript">
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrain: new Cesium.Terrain(
-          Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestMetadata: true,
+    var viewer = new Cesium.Viewer("cesiumContainer");
+    viewer.scene.setTerrain(new Cesium.Terrain(
+      Cesium.CesiumTerrainProvider.fromUrl("http://172.20.16.213:8888/cesiumLocal_dem", { requestMetadata: true,
         requestWaterMask: true,
         requestVertexNormals: true })
-        )
-    });
+    ));
     viewer.scene.globe.enableLighting = true;
     viewer.scene.globe.depthTestAgainstTerrain = true
 

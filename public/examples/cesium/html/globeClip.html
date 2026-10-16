@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <link rel="shortcut icon" type="image/x-icon" />
@@ -26,179 +26,207 @@
 <script type="text/javascript">
       "use script";
 
-      var viewer = new Cesium.Viewer("cesiumContainer");
+      var viewer = new Cesium.Viewer("cesiumContainer", {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
+        )
+      });
       viewer.scene.globe.depthTestAgainstTerrain = true;
 
-      var drawPolygon = new Cesium.DrawHandler(viewer, Cesium.DrawMode.POLYGON);
+      // 开挖面贴图，本地资源在 examples/cesium/assets/terrainClip/
+      // 需要更换时可直接替换为 mars3d 等开源站点的 excavate_side / excavate_bottom 贴图
+      var TEX_TOP = "../../../examples/cesium/assets/terrainClip/excavationregion_top.jpg";
+      var TEX_TOP_NORMAL = "../../../examples/cesium/assets/terrainClip/excavationregion_top_Normal.jpg";
+      var TEX_SIDE = "../../../examples/cesium/assets/terrainClip/excavationregion_side.jpg";
+      var TEX_SIDE_NORMAL = "../../../examples/cesium/assets/terrainClip/excavationregion_side_Normal.jpg";
 
-      function deActivateAll() {
-        drawPolygon.deactivate();
-      }
+      var params = {
+        depth: 50
+      };
 
-      function clearAll() {
-        drawPolygon.clear();
-      }
-
-      ExampleGui.addToolbarButton("绘制开挖范围，逆时针凸多边形", function() {
-        deActivateAll();
-        drawPolygon.activate();
-        drawPolygon &&
-          drawPolygon.addDrawCompleteEventListener(result => {
-            drawPolygon.clear();
-            result.shift();
-            var points = result;
-            var pointsLength = points.length;
-            // Create center points for each clipping plane
-            var clippingPlanes = [];
-            for (var i = 0; i < pointsLength; ++i) {
-              var nextIndex = (i + 1) % pointsLength;
-              var midpoint = Cesium.Cartesian3.add(
-                points[i],
-                points[nextIndex],
-                new Cesium.Cartesian3()
-              );
-              midpoint = Cesium.Cartesian3.multiplyByScalar(
-                midpoint,
-                0.5,
-                midpoint
-              );
-
-              var up = Cesium.Cartesian3.normalize(
-                midpoint,
-                new Cesium.Cartesian3()
-              );
-              var right = Cesium.Cartesian3.subtract(
-                points[nextIndex],
-                midpoint,
-                new Cesium.Cartesian3()
-              );
-              right = Cesium.Cartesian3.normalize(right, right);
-
-              var normal = Cesium.Cartesian3.cross(
-                right,
-                up,
-                new Cesium.Cartesian3()
-              );
-              normal = Cesium.Cartesian3.normalize(normal, normal);
-
-              // Compute distance by pretending the plane is at the origin
-              var originCenteredPlane = new Cesium.Plane(normal, 0.0);
-              var distance = Cesium.Plane.getPointDistance(
-                originCenteredPlane,
-                midpoint
-              );
-
-              clippingPlanes.push(new Cesium.ClippingPlane(normal, distance));
-            }
-            viewer.scene.globe.clippingPlanes = new Cesium.ClippingPlaneCollection(
-              {
-                planes: clippingPlanes,
-                edgeWidth: 1.0,
-                edgeColor: Cesium.Color.WHITE,
-                enabled: true
-              }
-            );
-            // viewer.entities.add({
-            //   name: "Green extruded polygon",
-            //   polygon: {
-            //     hierarchy: points,
-            //     height: -50.0,
-            //     material: Cesium.Color.GREEN
-            //   }
-            // });
-
-            points.push(points[0]);
-            var excavationregion_bottom = viewer.scene.primitives.add(
-              new Cesium.Primitive({
-                geometryInstances: new Cesium.GeometryInstance({
-                  geometry: new Cesium.PolygonGeometry({
-                    polygonHierarchy: new Cesium.PolygonHierarchy(points),
-                    height: -50
-                  })
-                }),
-                appearance: new Cesium.MaterialAppearance({
-                  aboveGround: false
-                })
-              })
-            );
-
-            excavationregion_bottom.appearance.material = new Cesium.Material({
-              fabric: {
-                materials: {
-                  diffuseMaterial: {
-                    type: "DiffuseMap",
-                    uniforms: {
-                      image: "../../../examples/cesium/assets/terrainClip/excavationregion_top.jpg"
-                    }
-                  },
-                  bumpMaterial: {
-                    type: "BumpMap",
-                    uniforms: {
-                      image:
-                        "../../../examples/cesium/assets/terrainClip/excavationregion_top_Normal.jpg",
-                      strength: 0.8
-                    }
-                  }
-                },
-                components: {
-                  diffuse: "diffuseMaterial.diffuse",
-                  specular: 0.01,
-                  normal: "bumpMaterial.normal"
-                }
-              }
-            });
-
-            var max = [],
-              min = [];
-            for (var i = 0; i < points.length; i++) {
-              max.push(0);
-              min.push(-50);
-            }
-
-            var excavationregion = viewer.scene.primitives.add(
-              new Cesium.Primitive({
-                geometryInstances: new Cesium.GeometryInstance({
-                  geometry: new Cesium.WallGeometry({
-                    positions: points.reverse(),
-                    maximumHeights: max,
-                    minimumHeights: min
-                  })
-                }),
-                appearance: new Cesium.MaterialAppearance({
-                  aboveGround: false
-                })
-              })
-            );
-
-            excavationregion.appearance.material = new Cesium.Material({
-              fabric: {
-                materials: {
-                  diffuseMaterial: {
-                    type: "DiffuseMap",
-                    uniforms: {
-                      image: "../../../examples/cesium/assets/terrainClip/excavationregion_side.jpg"
-                    }
-                  },
-                  bumpMaterial: {
-                    type: "BumpMap",
-                    uniforms: {
-                      image:
-                        "../../../examples/cesium/assets/terrainClip/excavationregion_side_Normal.jpg",
-                      strength: 0.8
-                    }
-                  }
-                },
-                components: {
-                  diffuse: "diffuseMaterial.diffuse",
-                  specular: 0.01,
-                  normal: "bumpMaterial.normal"
-                }
-              }
-            });
-            viewer.scene.globe.backFaceCulling = true;
-            viewer.scene.globe.showSkirts = false;
-          });
+      // 绘制工具用自编译 Cesium 自带的 DrawHandle
+      var drawHandle = new Cesium.DrawHandle(viewer, {
+        borderWidth: 2,
+        borderColor: Cesium.Color.YELLOW
       });
+
+      var excavationPrimitives = [];
+      var currentPositions = null;
+
+      function clearExcavation() {
+        viewer.scene.globe.clippingPlanes = undefined;
+        excavationPrimitives.forEach(function (primitive) {
+          viewer.scene.primitives.remove(primitive);
+        });
+        excavationPrimitives = [];
+      }
+
+      function extractPositions(entity) {
+        var hierarchy = entity && entity.polygon && entity.polygon.hierarchy;
+        if (!Cesium.defined(hierarchy)) {
+          return undefined;
+        }
+        var value = Cesium.defined(hierarchy.getValue)
+          ? hierarchy.getValue(Cesium.JulianDate.now())
+          : hierarchy;
+        if (!value || !value.positions) {
+          return undefined;
+        }
+        var positions = value.positions.slice();
+        // 去掉闭合时重复的首尾点
+        if (
+          positions.length > 1 &&
+          Cesium.Cartesian3.equals(positions[0], positions[positions.length - 1])
+        ) {
+          positions.pop();
+        }
+        return positions;
+      }
+
+      function createSurfaceMaterial(topImage, topNormal, strength) {
+        return new Cesium.Material({
+          fabric: {
+            materials: {
+              diffuseMaterial: {
+                type: "DiffuseMap",
+                uniforms: { image: topImage }
+              },
+              bumpMaterial: {
+                type: "BumpMap",
+                uniforms: { image: topNormal, strength: strength }
+              }
+            },
+            components: {
+              diffuse: "diffuseMaterial.diffuse",
+              specular: 0.01,
+              normal: "bumpMaterial.normal"
+            }
+          }
+        });
+      }
+
+      // 凸多边形：逐边构造裁剪平面，并按开挖深度生成底面与侧壁
+      function buildExcavation(points) {
+        var depth = params.depth;
+        var pointsLength = points.length;
+        var clippingPlanes = [];
+        for (var i = 0; i < pointsLength; ++i) {
+          var nextIndex = (i + 1) % pointsLength;
+          var midpoint = Cesium.Cartesian3.add(
+            points[i],
+            points[nextIndex],
+            new Cesium.Cartesian3()
+          );
+          midpoint = Cesium.Cartesian3.multiplyByScalar(midpoint, 0.5, midpoint);
+
+          var up = Cesium.Cartesian3.normalize(midpoint, new Cesium.Cartesian3());
+          var right = Cesium.Cartesian3.subtract(
+            points[nextIndex],
+            midpoint,
+            new Cesium.Cartesian3()
+          );
+          right = Cesium.Cartesian3.normalize(right, right);
+
+          var normal = Cesium.Cartesian3.cross(right, up, new Cesium.Cartesian3());
+          normal = Cesium.Cartesian3.normalize(normal, normal);
+
+          var originCenteredPlane = new Cesium.Plane(normal, 0.0);
+          var distance = Cesium.Plane.getPointDistance(originCenteredPlane, midpoint);
+
+          clippingPlanes.push(new Cesium.ClippingPlane(normal, distance));
+        }
+
+        viewer.scene.globe.clippingPlanes = new Cesium.ClippingPlaneCollection({
+          planes: clippingPlanes,
+          edgeWidth: 1.0,
+          edgeColor: Cesium.Color.WHITE,
+          enabled: true
+        });
+
+        var closed = points.concat([points[0]]);
+
+        var bottom = viewer.scene.primitives.add(
+          new Cesium.Primitive({
+            geometryInstances: new Cesium.GeometryInstance({
+              geometry: new Cesium.PolygonGeometry({
+                polygonHierarchy: new Cesium.PolygonHierarchy(closed),
+                height: -depth
+              })
+            }),
+            appearance: new Cesium.MaterialAppearance({
+              aboveGround: false
+            })
+          })
+        );
+        bottom.appearance.material = createSurfaceMaterial(TEX_TOP, TEX_TOP_NORMAL, 0.8);
+
+        var max = [];
+        var min = [];
+        for (var j = 0; j < closed.length; j++) {
+          max.push(0);
+          min.push(-depth);
+        }
+
+        var side = viewer.scene.primitives.add(
+          new Cesium.Primitive({
+            geometryInstances: new Cesium.GeometryInstance({
+              geometry: new Cesium.WallGeometry({
+                positions: closed.slice().reverse(),
+                maximumHeights: max,
+                minimumHeights: min
+              })
+            }),
+            appearance: new Cesium.MaterialAppearance({
+              aboveGround: false
+            })
+          })
+        );
+        side.appearance.material = createSurfaceMaterial(TEX_SIDE, TEX_SIDE_NORMAL, 0.8);
+
+        excavationPrimitives.push(bottom, side);
+        viewer.scene.globe.backFaceCulling = true;
+        viewer.scene.globe.showSkirts = false;
+      }
+
+      function rebuild() {
+        if (!currentPositions || currentPositions.length < 3) {
+          return;
+        }
+        clearExcavation();
+        buildExcavation(currentPositions);
+      }
+
+      drawHandle.on(Cesium.DrawHandle.DrawEvents.DRAW_COMPLETE, function (data) {
+        var positions = extractPositions(data.entity);
+        if (!positions || positions.length < 3) {
+          return;
+        }
+        currentPositions = positions;
+        rebuild();
+      });
+
+      ExampleGui.addButton("绘制开挖范围（左键加点，右键结束）", function () {
+        clearExcavation();
+        currentPositions = null;
+        drawHandle.clear();
+        drawHandle.startDraw(Cesium.DrawHandle.DrawMode.POLYGON, {});
+      });
+
+      ExampleGui.addButton("清除开挖", function () {
+        clearExcavation();
+        currentPositions = null;
+        drawHandle.clear();
+      });
+
+      ExampleGui.addSlider("开挖深度(米)", 50, 10, 500, 10, function (value) {
+        params.depth = Number(value);
+        rebuild();
+      });
+
+      ExampleGui.finishedLoading();
     </script>
   </body>
 </html>

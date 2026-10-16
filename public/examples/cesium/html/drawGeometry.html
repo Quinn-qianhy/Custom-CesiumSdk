@@ -26,7 +26,14 @@
     <script type="text/javascript">
       'use strict'
 
-      var viewer = new Cesium.Viewer('cesiumContainer')
+      var viewer = new Cesium.Viewer('cesiumContainer', {
+        baseLayerPicker: false,
+        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
+        )
+      })
       viewer.scene.globe.depthTestAgainstTerrain = true
 
       var drawHandle = new Cesium.DrawHandle(viewer)

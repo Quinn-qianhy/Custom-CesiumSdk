@@ -543,28 +543,19 @@ const menu = [
             name: '地形开挖(凸多边形)',
             image: '/examples/cesium/cards/globeClip.png',
             type: 'html',
-            url: '/examples/cesium/html/globeClip.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/cesium/html/globeClip.html'
           },
           {
             name: '地形开挖(任意多边形)',
             image: '/examples/cesium/cards/globeClipArbitrarily.png',
             type: 'html',
-            url: '/examples/cesium/html/globeClipArbitrarily.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/cesium/html/globeClipArbitrarily.html'
           },
           {
             name: '淹没分析',
             image: '/examples/cesium/cards/Inundation Analysis.gif',
             type: 'html',
-            url: '/examples/cesium/html/Inundation Analysis.html',
-            status: 'pending',
-            statusTags: ['cesium-api'],
-            statusReason: '使用定制 Cesium API 或扩展插件'
+            url: '/examples/cesium/html/Inundation Analysis.html'
           },
           {
             name: '坡度坡向分析',

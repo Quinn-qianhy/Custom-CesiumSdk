@@ -26,17 +26,12 @@
     <script type="text/javascript">
       "use script";
 
-      var ARCGIS_BASEMAP_OPTIONS = {
-        enablePickFeatures: false,
-      };
-
       var viewer = new Cesium.Viewer("cesiumContainer", {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
-            Cesium.ArcGisBaseMapType.SATELLITE,
-            ARCGIS_BASEMAP_OPTIONS,
-          ),
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
         ),
       });
 

@@ -47,8 +47,15 @@
 (async function () {
     "use script";
     // Power Plant design model provided by Bentley Systems
-    Cesium.ExperimentalFeatures.enableModelExperimental = true;
-    const viewer = new Cesium.Viewer("cesiumContainer",{timeline:true});
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        }),
+      ),
+      timeline: true,
+    });
     const scene = viewer.scene;
 
     const tileset = scene.primitives.add(

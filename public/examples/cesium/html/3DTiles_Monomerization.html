@@ -31,9 +31,8 @@
 // 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
 (async function () {
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1))
-    })
+    var viewer = new Cesium.Viewer("cesiumContainer")
+    viewer.scene.setTerrain(new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)))
     //初始定位位置
     viewer.camera.setView({
       destination: new Cesium.Cartesian3(

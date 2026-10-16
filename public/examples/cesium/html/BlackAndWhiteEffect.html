@@ -28,7 +28,14 @@
 // 1.107 起 Cesium3DTileset 只能用 fromUrl 异步创建，主流程包进 async 以便 await
 (async function () {
     "use script";
-    var viewer = new Cesium.Viewer("cesiumContainer")
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    })
     viewer.scene.globe.baseColor = Cesium.Color.DARKOLIVEGREEN
     if (viewer.scene.imageryLayers.length > 0) {
       viewer.scene.imageryLayers.get(0).alpha = 0.35

@@ -22,14 +22,7 @@
     <div id="cesiumContainer"></div>
     <script type="text/javascript">
       "use script";
-      const viewer = new Cesium.Viewer("cesiumContainer",{
-        baseLayerPicker: false,
-        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.AmapImageryProvider({
-            layerType: Cesium.AmapLayerType.SATELLITE,
-          }),
-        )
-      });
+      const viewer = new Cesium.Viewer("cesiumContainer");
       viewer.scene.setTerrain(
         new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
       );

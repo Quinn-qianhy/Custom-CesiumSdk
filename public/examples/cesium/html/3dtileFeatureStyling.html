@@ -50,7 +50,12 @@
     // How to use the 3D Tiles Styling language to style individual features, like buildings.
     // Styling language specification: https://github.com/CesiumGS/3d-tiles/tree/master/specification/Styling
     var viewer = new Cesium.Viewer("cesiumContainer", {
-      // terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        }),
+      ),
     });
     viewer.scene.globe.depthTestAgainstTerrain = true;
     var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);

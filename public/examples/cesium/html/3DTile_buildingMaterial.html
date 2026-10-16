@@ -28,12 +28,9 @@
       var viewer = new Cesium.Viewer('cesiumContainer', {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
-            Cesium.ArcGisBaseMapType.SATELLITE,
-            {
-              enablePickFeatures: false
-            }
-          )
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
         )
       })
       // viewer.scene.globe.show = false

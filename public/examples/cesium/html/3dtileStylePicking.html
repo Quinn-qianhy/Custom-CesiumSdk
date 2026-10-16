@@ -47,9 +47,8 @@
 (async function () {
     "use script";
 
-    var viewer = new Cesium.Viewer("cesiumContainer", {
-      terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
-    });
+    var viewer = new Cesium.Viewer("cesiumContainer");
+    viewer.scene.setTerrain(new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)));
 
     viewer.scene.globe.depthTestAgainstTerrain = true;
 

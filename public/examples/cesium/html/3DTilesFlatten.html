@@ -31,12 +31,8 @@
 (async function () {
       "use script";
 
-      const viewer = new Cesium.Viewer("cesiumContainer", {
-        terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
-        contextOptions: {
-            requestWebgl2: true
-        }
-      });
+      const viewer = new Cesium.Viewer("cesiumContainer");
+      viewer.scene.setTerrain(new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)));
 
       const tileset = await Cesium.Cesium3DTileset.fromUrl(await Cesium.IonResource.fromAssetId(75343));
 

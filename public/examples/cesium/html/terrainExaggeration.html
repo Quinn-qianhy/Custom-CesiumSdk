@@ -26,14 +26,7 @@
     <script type="text/javascript">
       "use script";
 
-      var viewer = new Cesium.Viewer("cesiumContainer", {
-        baseLayerPicker: false,
-        baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          new Cesium.AmapImageryProvider({
-            layerType: Cesium.AmapLayerType.SATELLITE,
-          }),
-        )
-      });
+      var viewer = new Cesium.Viewer("cesiumContainer");
       viewer.scene.setTerrain(
         new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain")),
       );

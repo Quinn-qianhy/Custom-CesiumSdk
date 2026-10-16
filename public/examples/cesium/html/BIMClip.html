@@ -28,7 +28,7 @@
 (async function () {
       "use script";
 
-      var viewer = new Cesium.Viewer("cesiumContainer", { baseLayerPicker: true});
+      var viewer = new Cesium.Viewer("cesiumContainer");
       viewer.scene.globe.depthTestAgainstTerrain = true;
 
       var tileset = await Cesium.Cesium3DTileset.fromUrl("http://180.167.213.122:18000/fangjianmodel/tileset.json");

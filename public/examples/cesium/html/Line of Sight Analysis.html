@@ -30,7 +30,14 @@
 (async function () {
     "use script";
 
-    var viewer = new Cesium.Viewer("cesiumContainer");
+    var viewer = new Cesium.Viewer("cesiumContainer", {
+      baseLayerPicker: false,
+      baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+        new Cesium.AmapImageryProvider({
+          layerType: Cesium.AmapLayerType.SATELLITE,
+        })
+      )
+    });
 
     viewer.scene.globe.depthTestAgainstTerrain = true;
 

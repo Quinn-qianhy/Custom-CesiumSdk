@@ -7235,11 +7235,8 @@
       },
     ];
 
-    const viewer = new Cesium.Viewer("cesiumContainer", {
-        baseLayerPicker: false,
-      terrain: new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)),
-      shouldAnimate: true,
-    });
+    const viewer = new Cesium.Viewer("cesiumContainer", { shouldAnimate: true });
+    viewer.scene.setTerrain(new Cesium.Terrain(Cesium.CesiumTerrainProvider.fromIonAssetId(1)));
 
     viewer.dataSources
       .add(Cesium.CzmlDataSource.load(czml))

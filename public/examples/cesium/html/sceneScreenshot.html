@@ -29,13 +29,10 @@
       var viewer = new Cesium.Viewer("cesiumContainer", {
         baseLayerPicker: false,
         baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-          Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
-            Cesium.ArcGisBaseMapType.SATELLITE,
-            {
-              enablePickFeatures: false,
-            },
-          ),
-        ), // 初始化使用 ArcGIS 卫星图
+          new Cesium.AmapImageryProvider({
+            layerType: Cesium.AmapLayerType.SATELLITE,
+          })
+        ),
         contextOptions: {
           webgl: {
             alpha: true,
